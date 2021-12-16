@@ -10,9 +10,9 @@ class export_console(object):
 
     def publish(self, inverter):
 
-        print("{:<25} {:<25}".format('Register','Value'))
+        print("{:<40} {:<25}".format('Register','Value'))
         for register in inverter:
-            print("{:<25} {:<25}".format(register,str(inverter.get(register))))
+            print("{:<40} {:<25}".format(register,str(inverter.get(register))))
 
         print(f"Logged {len(inverter)} registers to Console")
 

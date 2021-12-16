@@ -18,12 +18,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 logging.info(f'Starting SunGather {__version__}')
 
-try:
-    registers = yaml.safe_load(open('registers.yaml'))
-    logging.info(f"Loaded registers: registers.yaml")
-except Exception as err:
-    logging.error(f"Failed: Loading registers: registers.yaml {err}")
-    sys.exit(1)
+#opts = sys.getopt(sys.argv[1:],"hi:o:",["ifile=","ofile="])
 
 try:
     config = yaml.safe_load(open('config.yaml'))
@@ -33,6 +28,13 @@ except Exception as err:
     sys.exit(1)
 
 logging.getLogger().setLevel(config['inverter'].get('logging',30))
+
+try:
+    registers = yaml.safe_load(open('registers.yaml'))
+    logging.info(f"Loaded registers: registers.yaml")
+except Exception as err:
+    logging.error(f"Failed: Loading registers: registers.yaml {err}")
+    sys.exit(1)
 
 exports = []
 if config.get('exports'):
@@ -83,7 +85,7 @@ def load_registers(register_type, start, count=100):
         else:
             raise RuntimeError(f"Unsupported register type: {type}")
     except Exception as err:
-        logging.warning(f'No data. Try increasing the timeout or scan interval. {err}')
+        logging.warning(f'No data. Try increasing the timeout or scan interval for {register_type}, {start}:{count}: {err}')
         return True
 
     if rr.isError():
@@ -193,15 +195,24 @@ def scrape_inverter():
         if scan.get('read'):
             for subscan in registers['scan'][0]['read']:
                 if subscan.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
-                    logging.debug(f'Scanning: read, {subscan.get("start")}:{subscan.get("range")}')
-                    if not load_registers("read", int(subscan.get('start')), int(subscan.get('range'))):
-                        return False
+                    if not subscan.get('hybrid', False):
+                        logging.debug(f'Scanning: read, {subscan.get("start")}:{subscan.get("range")}')
+                        if not load_registers("read", int(subscan.get('start')), int(subscan.get('range'))):
+                            return False
+                    elif subscan.get('hybrid', False) and config['inverter'].get('hybrid',False):
+                        logging.debug(f'Scanning: read, {subscan.get("start")}:{subscan.get("range")}')
+                        if not load_registers("read", int(subscan.get('start')), int(subscan.get('range'))):
+                            return False
         if scan.get('hold'):
             for subscan in registers['scan'][1]['hold']:
-                if subscan.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
-                    logging.debug(f'Scanning: hold, {subscan.get("start")}:{subscan.get("range")}')
-                    if not load_registers("hold", int(subscan.get('start')), int(subscan.get('range'))):
-                        return False
+                    if not subscan.get('hybrid', False):
+                        logging.debug(f'Scanning: hold, {subscan.get("start")}:{subscan.get("range")}')
+                        if not load_registers("hold", int(subscan.get('start')), int(subscan.get('range'))):
+                            return False
+                    elif subscan.get('hybrid', False) and config['inverter'].get('hybrid',False):
+                        logging.debug(f'Scanning: hold, {subscan.get("start")}:{subscan.get("range")}')
+                        if not load_registers("hold", int(subscan.get('start')), int(subscan.get('range'))):
+                            return False
 
     # Create a registers for Power imported and exported to/from Grid
     if config['inverter'].get('level',1) >= 1:
