@@ -42,6 +42,12 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### TO BO
+* Commandline Arguments
+* Docker
+* Better Home Assistant Support
+
+
 ### Built With
 
 * [Python3](https://www.python.org/)
@@ -73,6 +79,16 @@ python3 sungather.py
 
 See config-exmaple.py it contains default options and comments.
 
+If you want to use the new Energy section in Home Assistant, add the following sensors to convert from Power to Energy:
+```
+sensor:
+  - platform: integration
+    source: sensor.inverter_active_power
+  - platform: integration
+    source: sensor.inverter_export_to_grid
+  - platform: integration
+    source: sensor.inverter_import_from_grid
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
