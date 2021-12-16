@@ -7,6 +7,7 @@ inverter:
   connection: http      # options: modbus, sungrow, http
   # model: "SG7.0RT"    # This is autodected on startup, only needed if detection issues or for testing
   smart_meter: True     # Default is False, Set to true if inverter supports reading grind / house consumption
+  # hybrid: False         # Default false, if you have a Hybrid (battery) set to True
   # logging: 30           # 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error
   # level: 1              # 0 = Model and Solar Generation, 
                         # 1 (default) = Useful data, all required for exports, 
