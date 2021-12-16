@@ -1,0 +1,102 @@
+inverter:
+  host: 192.168.1.100
+  # port: 502           # Default for modbus is 502, for http is 8082
+  # slave: 0x01         # Default is 0x01
+  # timeout: 10         # Default is 10
+  # scan_interval: 30   # Default is 30
+  connection: http      # options: modbus, sungrow, http
+  # model: "SG7.0RT"    # This is autodected on startup, only needed if detection issues or for testing
+  smart_meter: True     # Default is False, Set to true if inverter supports reading grind / house consumption
+  # logging: 30           # 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error
+  # level: 1              # 0 = Model and Solar Generation, 
+                        # 1 (default) = Useful data, all required for exports, 
+                        # 2 everything your Inverter supports, 
+                        # 3 Everything from every register 
+
+exports:
+  - name: console   # Print Registers to console, good for debugging / troubleshooting
+    enabled: False
+
+  - name: mqtt      # Publish Registers to MQTT / Home Assistant
+    host: 192.168.1.200
+    # port: 1883
+    topic: "tele/inverter_{model}/SENSOR" # Variable {model} will be replaced with model number
+    # username: 
+    # password:
+    ha_discovery: True                    # Home Assistant Discovery, False by default
+    ha_topics:                            # Name in HA, from Register
+      - name: "Daily Generation"
+        register: daily_power_yields
+        unit: kWh
+        dev_class: energy
+        state_class: total_increasing
+      - name: "Active Power"
+        register: total_active_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Load Power"
+        register: load_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Meter Power"
+        register: meter_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Export to Grid"
+        register: export_to_grid
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Import from Grid"
+        register: import_from_grid
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Temperature"
+        register: internal_temperature
+        unit: °C
+        dev_class: temperature
+        state_class: measurement
+
+  - name: pvoutput      # Publish Registers to PVOutput
+    api: "xxxxx"
+    sid: "xxxxx"
+    # 60 for regular accounts, 300 for donation accounts
+    rate_limit: 60
+    enabled: True
+    parameters:
+      - name: v1    # Energy Generation
+        register: daily_power_yields    # Solar Generated Today (Energy)
+        multiple: 1000
+      - name: v2    # Power Generation
+        register: total_active_power    # Current Generation (Power)
+#     - name: v3    # Energy Consumption
+#       register: 
+      - name: v4    # Power Consumption
+        register: load_power            # Current Home usage (Power)
+      - name: v5    # Temperature
+        register: internal_temperature  # Inverter internal temperature
+#     - name: v6    # Voltage
+#       register: total_active_power
+      - name: c1    # Cumulative Flag, 
+        value: 1    # If using v2/v4 set to 1
+#      - name: "n"   # Net Flag
+#        value: 1
+#     - name: "v7"  # Extended Value v7 - Donation Only
+#       register:
+#     - name: "v8"  # Extended Value v8 - Donation Only
+#       register:
+#     - name: "v9"  # Extended Value v9 - Donation Only
+#       register:
+#     - name: "v10" # Extended Value v10 - Donation Only
+#       register:
+#     - name: "v11" # Extended Value v11 - Donation Only
+#       register:
+#     - name: "v12" # Extended Value v12 - Donation Only
+#       register:
+#     - name: "m1"  # Text Message 1 - Donation Only
+#       register:
+  

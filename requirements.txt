@@ -1,0 +1,5 @@
+paho-mqtt>=1.5.1
+pymodbus>=2.4.0
+SungrowModbusTcpClient>=0.1.5
+SungrowModbusWebClient>=0.2.4
+
