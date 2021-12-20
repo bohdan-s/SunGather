@@ -134,8 +134,8 @@ def load_registers(register_type, start, count=100):
                     if register.get('smart_meter') and config['inverter'].get('smart_meter'):
                         inverter[register_name] = register_value
                     elif register.get('models') and not config['inverter'].get('level',1) == 3:
-                        for model in register.get('models'):
-                            if model == config['inverter'].get('model'):
+                        for supported_model in register.get('models'):
+                            if supported_model == inverter.get('device_type_code'):
                                 inverter[register_name] = register_value
                     else:
                         inverter[register_name] = register_value
@@ -165,18 +165,19 @@ def load_registers(register_type, start, count=100):
                     register_value = 0
 
                 if register.get('multiple'):
-                    register_value = round(register_value * register.get('multiple'),2)
+                    register_value = round(register_value * register.get('multiple',0),2)
 
-                # Set the final register name and value after checking model, any adjustments above included
+                # Set the final register name and value after checking model, any adjustments above included 
                 if register.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
                     if register.get('smart_meter') and config['inverter'].get('smart_meter'):
                         inverter[register_name] = register_value
                     elif register.get('models') and not config['inverter'].get('level',1) == 3:
-                        for model in register.get('models'):
-                            if model == config['inverter'].get('model'):
+                        for supported_model in register.get('models'):
+                            if supported_model == inverter.get('device_type_code'):
                                 inverter[register_name] = register_value
                     else:
                         inverter[register_name] = register_value
+
 
     return True
 
@@ -185,20 +186,14 @@ inverter = {}
 model = None
 
 if config['inverter'].get('model'):
-    model = config['inverter']['model']
     inverter['device_type_code'] = model
     logging.info(f'Bypassing Model Detection, Using config: {model}')
 else:
     if load_registers("read", 4999, 1):
-        model = inverter.get('device_type_code')
-        logging.info(f'Detected Model: {model}')
+        logging.info(f"Detected Model: {inverter.get('device_type_code')}")
     else:
-        model = 'unknown'
+        inverter['device_type_code'] = 'unknown'
         logging.info(f'Model detection failed, please set model in config.py')
-    if not config['inverter'].get('model') and model == config['inverter'].get('model'):
-        logging.info(f'Model specified in config {config["inverter"].get("model")} does not match model reported by inverter {model}')
-
-
 
 
 # Core monitoring loop
@@ -241,6 +236,19 @@ def scrape_inverter():
                 inverter["import_from_grid"] = power
         except Exception:
             pass
+
+    # See if the inverter is running, This is added to inverters so can be read via MQTT etc...
+    # It is also used below, as some registers hold the last value on 'stop' so we need to set to 0
+    # to help with graphing.
+    try:
+        if inverter.get('start_stop'):
+            if inverter.get('start_stop') == 'Start':
+                inverter["is_running"] = True
+        else:
+            if inverter.get('start_stop') == 'Stop':
+                inverter["is_running"] = False
+    except Exception:
+        pass
 
     try:
         inverter["timestamp"] = "%s-%s-%s %s:%02d:%02d" % (

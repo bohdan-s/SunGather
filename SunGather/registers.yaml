@@ -1140,7 +1140,6 @@ registers:
       level: 2
       address: 5037
       datatype: "S16"
-      multiple: 0.1
 #   - name: "Reserved"    
 #     address: 5038
     - name: "power_limitation_adjustment"
@@ -1152,7 +1151,6 @@ registers:
       level: 2
       address: 5040
       datatype: "S16"
-      multiple: 0.1
     - name: "pid_recovery"
       level: 2
       address: 5041
