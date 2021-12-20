@@ -64,8 +64,14 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 ## Getting Started
 ```sh
 git clone https://github.com/bohdan-s/SunGather.git
+cd SunGather
+pip3 install requirements.txt
 ```
 Copy config-example.py to config.py, change values as required (see comments in file)
+```sh
+copy config-example.py config.py
+```
+Run SunGather:
 ```sh
 python3 sungather.py
 ```
