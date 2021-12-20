@@ -4,9 +4,10 @@ inverter:
   # slave: 0x01         # Default is 0x01
   # timeout: 10         # Default is 10
   # scan_interval: 30   # Default is 30
-  connection: http      # options: modbus, sungrow, http
+  connection: sungrow   # options: modbus, sungrow, http
   # model: "SG7.0RT"    # This is autodected on startup, only needed if detection issues or for testing
-  smart_meter: True     # Default is False, Set to true if inverter supports reading grind / house consumption
+                        # See model list here: https://github.com/bohdan-s/SunGather#supported
+  # smart_meter: True     # Default is False, Set to true if inverter supports reading grind / house consumption
   # hybrid: False         # Default false, if you have a Hybrid (battery) set to True
   # logging: 30           # 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error
   # level: 1              # 0 = Model and Solar Generation, 

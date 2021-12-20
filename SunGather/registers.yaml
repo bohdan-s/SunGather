@@ -991,6 +991,8 @@ registers:
       address: 13018
       datatype: "U32"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
+
+
   - hold:
     - name: "year"
       level: 0
@@ -1189,13 +1191,13 @@ registers:
 #     address: 5155-5199
 scan: # these have to be 1 less than the first register   
   - read:
-    - start: "4999"
+    - start: "5000"
       range: "100"
       level: 1
-    - start: "5099"
+    - start: "5100"
       range: "100"
       level: 1
-    - start: "5199"
+    - start: "5200"
       range: "100"
       level: 3
     - start: "6099"
@@ -1238,7 +1240,7 @@ scan: # these have to be 1 less than the first register
       level: 1
       hybrid: true
   - hold:
-#    - start: "4999"
+#    - start: "4999"   # Get current date / time only
 #      range: "7"
     - start: "4999"
       range: "10"

@@ -50,8 +50,6 @@ if config.get('exports'):
             logging.error(f"Failed loading export: {err}" +
                            f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
 
-
-
 client_payload = {
     "host": config['inverter'].get('host', '127.0.0.1'),
     "port": config['inverter'].get('port', 502),
@@ -90,7 +88,7 @@ def load_registers(register_type, start, count=100):
 
     if rr.isError():
         logging.warning("Modbus connection failed")
-        return False
+        return
 
     if not hasattr(rr, 'registers'):
         logging.warning("No registers returned")
@@ -186,6 +184,23 @@ def load_registers(register_type, start, count=100):
 inverter = {}
 model = None
 
+if config['inverter'].get('model'):
+    model = config['inverter']['model']
+    inverter['device_type_code'] = model
+    logging.info(f'Bypassing Model Detection, Using config: {model}')
+else:
+    if load_registers("read", 4999, 1):
+        model = inverter.get('device_type_code')
+        logging.info(f'Detected Model: {model}')
+    else:
+        model = 'unknown'
+        logging.info(f'Model detection failed, please set model in config.py')
+    if not config['inverter'].get('model') and model == config['inverter'].get('model'):
+        logging.info(f'Model specified in config {config["inverter"].get("model")} does not match model reported by inverter {model}')
+
+
+
+
 # Core monitoring loop
 def scrape_inverter():
     """ Connect to the inverter and scrape the metrics """
@@ -247,14 +262,6 @@ def scrape_inverter():
 
     client.close()
     return True
-
-if load_registers("read", 4999, 1):
-    model = inverter.get('device_type_code')
-    logging.info(f'Detected Model: {model}')
-if not config['inverter'].get('model'):
-    config['inverter']['model'] = model
-elif not model == config['inverter'].get('model'):
-    logging.warn(f'Model specified in config {config["inverter"].get("model")} does not match model reported by inverter {model}')
 
 while True:
     # Scrape the inverter
