@@ -46,7 +46,7 @@ class export_mqtt(object):
 
             for ha_topic in self.ha_topics:
                 msg = discovery_payload.format( ha_topic.get('name'),  "inverter_" + ha_topic.get('name').lower().replace(' ','_'),    self.sensor_topic,   self.sensor_topic,  ha_topic.get('unit'),   ha_topic.get('dev_class'),  ha_topic.get('state_class'),    ha_topic.get('register'), inverter.get('device_type_code', 'unknown').replace('.',''))
-                result = self.mqtt_client.publish(discovery_topic.format(ha_topic.get('name').lower().replace(' ','_')), msg)
+                result = self.mqtt_client.publish(discovery_topic.format(ha_topic.get('name').lower().replace(' ','_')), msg, retain=True)
                 result.wait_for_publish()
             self.ha_discovery = False
 

@@ -311,7 +311,7 @@ registers:
 #     address: 5037
 #     datatype: "U16"
     - name: "work_state_1"                # See Appendix 1
-      level: 2
+      level: 1
       address: 5038
       datatype: "U16"
       datarange:
