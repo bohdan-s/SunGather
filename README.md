@@ -62,6 +62,7 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <!-- GETTING STARTED -->
 ## Getting Started
+# Local
 ```sh
 git clone https://github.com/bohdan-s/SunGather.git
 cd SunGather
@@ -76,6 +77,11 @@ Run SunGather:
 python3 sungather.py
 ```
 
+# Docker
+```sh
+docker pull bohdans/sungather
+docker run -v {path to}/config.yaml:/usr/src/sungather/config.yaml --name sungather bohdans/sungather
+```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
