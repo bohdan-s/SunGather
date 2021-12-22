@@ -31,7 +31,7 @@ Register information based on official documentation: <a href="https://github.co
 
 Has muliple export locations out of the box:
 * Console - Log directly to screen
-* MQQT - Load into MQTT, and optionally Home Assistance Discovery
+* MQTT - Load into MQTT, and optionally Home Assistance Discovery
 * PVOutput - Load into PVOutput.org
 * and more coming....
 
@@ -42,9 +42,8 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### TO BO
+### TO DO
 * Commandline Arguments
-* Docker
 * Better Home Assistant Support
 
 
@@ -66,7 +65,7 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 ```sh
 git clone https://github.com/bohdan-s/SunGather.git
 cd SunGather
-pip3 install requirements.txt
+pip3 install --upgrade -r requirements.txt
 ```
 Copy config-example.py to config.py, change values as required (see comments in file)
 ```sh
@@ -80,11 +79,10 @@ python3 sungather.py
 # Docker
 ```sh
 docker pull bohdans/sungather
-docker run -v {path to}/config.yaml:/usr/src/sungather/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
+docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
 ```
 Note: replace Australia/Sydney with relevent timezone
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
@@ -92,7 +90,28 @@ Note: replace Australia/Sydney with relevent timezone
 
 See config-exmaple.py it contains default options and comments.
 
-If you want to use the new Energy section in Home Assistant, add the following sensors to convert from Power to Energy:
+If you want to use the new Energy section in Home Assistant, follow the Home Assitant setup below.
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Home Assistant setup
+
+In the SunGather config.yaml you need to set the smart_meter if you have one;
+
+```
+smart_meter: True
+```
+
+HA sensors created by the MQTT auto-discovery;
+```
+sensor.inverter_active_power
+sensor.inverter_daily_generation
+sensor.inverter_export_to_grid
+sensor.inverter_import_from_grid
+sensor.inverter_load_power
+sensor.inverter_meter_power
+```
+
+Put the following into your sensors.yaml
 ```
 sensor:
   - platform: integration
@@ -103,11 +122,39 @@ sensor:
     source: sensor.inverter_import_from_grid
 ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+The additional sensors then setup in HA are the following with Wh unit of measurement for the Energy platform.
 
+```
+sensor.sensor_inverter_active_power_integral
+sensor.sensor_inverter_export_to_grid_integral
+sensor.sensor_inverter_import_from_grid_integral
+```
+
+You need to utilise the customize.yaml manual method to get some friendly names and icons. Add the following;
+```
+sensor.sensor_inverter_active_power_integral:
+  icon: mdi:solar-power
+  friendly_name: Solar Generation
+sensor.sensor_inverter_export_to_grid_integral:
+  icon: mdi:transmission-tower-export
+  friendly_name: Grid Export
+sensor.sensor_inverter_import_from_grid_integral:
+  icon: mdi:transmission-tower-import
+  friendly_name: Grid Import
+```
+Restart Home Assistant for the sensors.yaml and customize.yaml to be loaded.
+Make sure SunGather is running, wait 5 minutes for inital data to populate.
+Navigate to the Energy platform (Configuration > Energy). Add these sensors to the following areas:
+
+Electricity Grid > Grid Import - sensor.sensor_inverter_import_from_grid_integral  
+Electricity Grid > Grid Export - sensor.sensor_inverter_export_to_grid_integral  
+Solar Panels > Solar Production - sensor.sensor_inverter_active_power_integral  
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Tested
 * SG7.0RT with WiNet-S Dongle
+* SG10RT with WiNet-S Dongle and Ethernet (Credit: @rark-ha)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
