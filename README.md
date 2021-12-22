@@ -80,8 +80,9 @@ python3 sungather.py
 # Docker
 ```sh
 docker pull bohdans/sungather
-docker run -v {path to}/config.yaml:/usr/src/sungather/config.yaml --name sungather bohdans/sungather
+docker run -v {path to}/config.yaml:/usr/src/sungather/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
 ```
+Note: replace Australia/Sydney with relevent timezone
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
