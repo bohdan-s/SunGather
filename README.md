@@ -31,7 +31,7 @@ Register information based on official documentation: <a href="https://github.co
 
 Has muliple export locations out of the box:
 * Console - Log directly to screen
-* MQQT - Load into MQTT, and optionally Home Assistance Discovery
+* MQTT - Load into MQTT, and optionally Home Assistance Discovery
 * PVOutput - Load into PVOutput.org
 * and more coming....
 
@@ -42,9 +42,8 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### TO BO
+### TO DO
 * Commandline Arguments
-* Docker
 * Better Home Assistant Support
 
 
@@ -66,7 +65,7 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 ```sh
 git clone https://github.com/bohdan-s/SunGather.git
 cd SunGather
-pip3 install requirements.txt
+pip3 install --upgrade -r requirements.txt
 ```
 Copy config-example.py to config.py, change values as required (see comments in file)
 ```sh
@@ -92,7 +91,7 @@ Note: replace Australia/Sydney with relevent timezone
 
 See config-exmaple.py it contains default options and comments.
 
-If you want to use the new Energy section in Home Assistant, add the following sensors to convert from Power to Energy:
+If you want to use the new Energy section in Home Assistant, add the following sensors to convert from Power to Energy. You may need to wait 5 mins for data to be generated.
 ```
 sensor:
   - platform: integration
@@ -108,6 +107,7 @@ sensor:
 
 ## Tested
 * SG7.0RT with WiNet-S Dongle
+* SG10RT with WiNet-S Dongle and Ethernet
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
