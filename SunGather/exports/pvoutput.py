@@ -1,6 +1,6 @@
 import logging
-import datetime
 import requests
+import datetime
 
 # Configure PVOutput
 class export_pvoutput(object):
@@ -63,7 +63,7 @@ class export_pvoutput(object):
         """
         at_least_one_of = set(["v1", "v2", "v3", "v4"])
 
-        now = datetime.datetime.now()
+        now = datetime.datetime.strptime(inverter.get('timestamp'), "%Y-%m-%d %H:%M:%S")
 
         if self.latest_run:
             # Spread out our publishes over the hour based on the rate limit

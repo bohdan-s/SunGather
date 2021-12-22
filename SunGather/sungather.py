@@ -5,12 +5,14 @@ from SungrowModbusWebClient import SungrowModbusWebClient
 from pymodbus.client.sync import ModbusTcpClient
 from threading import Thread
 from version import __version__
+from datetime import datetime
 
 import importlib
 import logging
 import sys
 import yaml
 import time
+import os
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -20,21 +22,34 @@ logging.info(f'Starting SunGather {__version__}')
 
 #opts = sys.getopt(sys.argv[1:],"hi:o:",["ifile=","ofile="])
 
+IS_DOCKER = os.environ.get('IS_DOCKER', False)
+
+# If we are in docker, get config.py from a easy location to map via volumes
+if IS_DOCKER:
+    try:
+        config = yaml.safe_load(open('/config/config.yaml'))
+        logging.info(f"Loaded config: /config/config.yaml")
+    except Exception as err:
+        logging.error(f"Failed: Loading config: /config/config.yaml {err}")
+        sys.exit(1)
+else:
+    try:
+        config = yaml.safe_load(open('config.yaml'))
+        logging.info(f"Loaded config: {os.getcwd()}/config.yaml")
+    except Exception as err:
+        logging.error(f"Failed: Loading config: {os.getcwd()}/config.yaml {err}")
+        sys.exit(1)
+
 try:
-    config = yaml.safe_load(open('config.yaml'))
-    logging.info(f"Loaded config: config.yaml")
+    registers = yaml.safe_load(open('registers.yaml'))
+    logging.info(f"Loaded registers: {os.getcwd()}/registers.yaml")
 except Exception as err:
-    logging.error(f"Failed: Loading config: config.yaml {err}")
+    logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
     sys.exit(1)
 
 logging.getLogger().setLevel(config['inverter'].get('logging',30))
 
-try:
-    registers = yaml.safe_load(open('registers.yaml'))
-    logging.info(f"Loaded registers: registers.yaml")
-except Exception as err:
-    logging.error(f"Failed: Loading registers: registers.yaml {err}")
-    sys.exit(1)
+
 
 exports = []
 if config.get('exports'):
@@ -250,23 +265,34 @@ def scrape_inverter():
     except Exception:
         pass
 
-    try:
-        inverter["timestamp"] = "%s-%s-%s %s:%02d:%02d" % (
-            inverter["year"],
-            inverter["month"],
-            inverter["day"],
-            inverter["hour"],
-            inverter["minute"],
-            inverter["second"],
-        )
+    if config['inverter'].get('use_local_time',False):
+        inverter["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        logging.debug(f'Using Local Computer Time: {inverter.get("timestamp")}')       
         del inverter["year"]
         del inverter["month"]
         del inverter["day"]
         del inverter["hour"]
         del inverter["minute"]
         del inverter["second"]
-    except Exception:
-        pass
+    else:
+        try:
+            inverter["timestamp"] = "%s-%s-%s %s:%02d:%02d" % (
+                inverter["year"],
+                inverter["month"],
+                inverter["day"],
+                inverter["hour"],
+                inverter["minute"],
+                inverter["second"],
+            )
+            logging.debug(f'Using Inverter Time: {inverter.get("timestamp")}')       
+            del inverter["year"]
+            del inverter["month"]
+            del inverter["day"]
+            del inverter["hour"]
+            del inverter["minute"]
+            del inverter["second"]
+        except Exception:
+            pass
 
     client.close()
     return True
