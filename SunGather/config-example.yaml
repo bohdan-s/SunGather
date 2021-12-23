@@ -20,6 +20,10 @@ exports:
   - name: console   # Print Registers to console, good for debugging / troubleshooting
     enabled: False
 
+  - name: http
+    enabled: True   # Access at http://localhost:8080 or http://[serverip]:8080
+    # port: 8080    # Default port is 8080
+
   - name: mqtt      # Publish Registers to MQTT / Home Assistant
     host: 192.168.1.200
     # port: 1883
