@@ -10,35 +10,59 @@ from datetime import datetime
 import importlib
 import logging
 import sys
+import getopt
 import yaml
 import time
 import os
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=20,
+    level=30,
     datefmt='%Y-%m-%d %H:%M:%S')
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:],"hc:v:", "runonce")
+except getopt.GetoptError:
+    logging.debug(f'No options passed via command line')
+
+configfile = 'config.yaml'
+
+for opt, arg in opts:
+    if opt == '-h':
+        print(f'\nSunGather {__version__}')
+        print(f'usage: python3 sungather.py [options]')
+        print(f'\nCommandling arguemnts override any config file settings')
+        print(f'Options and arguments:')
+        print(f'-c config.yaml     : Specify config file.')
+        print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error')
+        print(f'--runonce          : Run once then exit')
+        print(f'-h                 : print this help message and exit (also --help)')
+        print(f'\nExample:')
+        print(f'python3 sungather.py -c /full/path/config.yaml\n')
+        sys.exit()
+    elif opt == '-c':
+        configfile = arg     
+    elif opt  == '-v':
+        if arg.isnumeric():
+            if int(arg) >= 0 and int(arg) <= 50:
+                loglevel = int(arg)
+            else:
+                logging.error(f"Valid verbos options: 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error")
+                sys.exit(2)        
+        else:
+            logging.error(f"Valid verbos options: 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error")
+            sys.exit(2) 
+    elif opt == '--runonce':
+        runonce = True   
+
 logging.info(f'Starting SunGather {__version__}')
 
-#opts = sys.getopt(sys.argv[1:],"hi:o:",["ifile=","ofile="])
-
-IS_DOCKER = os.environ.get('IS_DOCKER', False)
-
-# If we are in docker, get config.py from a easy location to map via volumes
-if IS_DOCKER:
-    try:
-        config = yaml.safe_load(open('/config/config.yaml'))
-        logging.info(f"Loaded config: /config/config.yaml")
-    except Exception as err:
-        logging.error(f"Failed: Loading config: /config/config.yaml {err}")
-        sys.exit(1)
-else:
-    try:
-        config = yaml.safe_load(open('config.yaml'))
-        logging.info(f"Loaded config: {os.getcwd()}/config.yaml")
-    except Exception as err:
-        logging.error(f"Failed: Loading config: {os.getcwd()}/config.yaml {err}")
-        sys.exit(1)
+try:
+    config = yaml.safe_load(open(configfile))
+    logging.info(f"Loaded config: {configfile}")
+except Exception as err:
+    logging.error(f"Failed: Loading config: {configfile} \n\t\t\t     {err}")
+    sys.exit(1)
 
 try:
     registers = yaml.safe_load(open('registers.yaml'))
@@ -47,8 +71,14 @@ except Exception as err:
     logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
     sys.exit(1)
 
-logging.getLogger().setLevel(config['inverter'].get('logging',30))
+if not config.get('inverter'):
+        logging.error(f"Failed Loading config, missing Inverter settings")
+        sys.exit(1)   
 
+if 'loglevel' in locals():
+    logging.getLogger().setLevel(loglevel)
+else:
+    logging.getLogger().setLevel(config['inverter'].get('logging',30))
 
 
 exports = []
@@ -85,8 +115,9 @@ else:
     client = ModbusTcpClient(**client_payload)
 logging.info("Connection: " + str(client))
 
-client.connect()
-client.close()
+if not config['inverter'].get("connection") == "http":
+    client.connect()
+    client.close()  
 
 def load_registers(register_type, start, count=100):
     try:
@@ -98,11 +129,11 @@ def load_registers(register_type, start, count=100):
         else:
             raise RuntimeError(f"Unsupported register type: {type}")
     except Exception as err:
-        logging.warning(f'No data. Try increasing the timeout or scan interval for {register_type}, {start}:{count}: {err}')
-        return True
+        logging.warning(f'No data returned for {register_type}, {start}:{count}\n\t\t\t\t{str(err)}')
+        return
 
     if rr.isError():
-        logging.warning("Modbus connection failed")
+        logging.warning(f"Modbus connection failed: {rr}")
         return
 
     if not hasattr(rr, 'registers'):
@@ -309,5 +340,8 @@ while True:
 #        logging.info("Exiting due to --one-shot")
 #        break
 
-    # Sleep until the next scan
-    time.sleep(config['inverter'].get('scan_interval', 30))
+    if not 'runonce' in locals():
+        # Sleep until the next scan
+        time.sleep(config['inverter'].get('scan_interval', 30))
+    else:
+        sys.exit(0)
