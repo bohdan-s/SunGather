@@ -65,7 +65,7 @@ Initial build
 * [paho-mqtt>=1.5.1](https://pypi.org/project/paho-mqtt/)
 * [pymodbus>=2.4.0](https://pypi.org/project/pymodbus/)
 * [SungrowModbusTcpClient>=0.1.6](https://pypi.org/project/SungrowModbusTcpClient/)
-* [SungrowModbusWebClient>=0.2.4](https://pypi.org/project/SungrowModbusWebClient/)
+* [SungrowModbusWebClient>=0.2.6](https://pypi.org/project/SungrowModbusWebClient/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -126,7 +126,7 @@ python3 sungather.py -c /full/path/config.yaml
 A collection of exports are available:
 
 * console:  Output information to console, useful for troubleshooting
-* http:     Output to a simple website, default http://localhost:8080 or http://<serverip>:8080
+* http:     Output to a simple website, default http://localhost:8080 or http://\<serverip\>:8080
 * mqtt:     Output to a pre-existing MQTT server, needed for Home Assistant integration
 * pvoutput: Output to PVOutput.org, requires account and solar is set up on website first. 
 
