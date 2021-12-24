@@ -33,6 +33,7 @@ Has multiple export locations out of the box:
 * Console - Log directly to screen
 * MQTT - Load into MQTT, and optionally Home Assistance Discovery
 * PVOutput - Load into PVOutput.org
+* Simple webserver showing collected data
 * and more coming....
 
 I have borrowed HEAVILY from the following projects, THANK YOU
@@ -42,9 +43,19 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### TO DO
+## TO DO
 * Better Home Assistant Support
+* Prometheus / Grafana support
 
+
+## Updates
+**0.1.1**
+* Added docker image
+* Added simple http web server
+* Improved recovery when errors (See: SungrowModbusWebClient 0.2.6)
+
+**0.1.0**
+Initial build
 
 ### Built With
 
