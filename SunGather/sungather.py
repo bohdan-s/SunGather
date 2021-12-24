@@ -31,10 +31,10 @@ for opt, arg in opts:
     if opt == '-h':
         print(f'\nSunGather {__version__}')
         print(f'usage: python3 sungather.py [options]')
-        print(f'\nCommandling arguemnts override any config file settings')
+        print(f'\nCommandling arguments override any config file settings')
         print(f'Options and arguments:')
         print(f'-c config.yaml     : Specify config file.')
-        print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error')
+        print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
         print(f'--runonce          : Run once then exit')
         print(f'-h                 : print this help message and exit (also --help)')
         print(f'\nExample:')
@@ -47,10 +47,10 @@ for opt, arg in opts:
             if int(arg) >= 0 and int(arg) <= 50:
                 loglevel = int(arg)
             else:
-                logging.error(f"Valid verbos options: 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error")
+                logging.error(f"Valid verbose options: 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error")
                 sys.exit(2)        
         else:
-            logging.error(f"Valid verbos options: 10 = Debug, 20 = Info, 30 = Warnning (default), 40 = Error")
+            logging.error(f"Valid verbose options: 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error")
             sys.exit(2) 
     elif opt == '--runonce':
         runonce = True   
