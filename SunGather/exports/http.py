@@ -11,7 +11,7 @@ class export_http(object):
 
     # Configure HTTP
     def configure(self, config):
-        self.webServer = HTTPServer(('localhost', config.get('port',8080)), MyServer)
+        self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
         t = Thread(target=self.webServer.serve_forever)
         t.start()
         logging.info("Configured Simple HTTP Server")

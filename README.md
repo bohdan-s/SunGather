@@ -80,6 +80,10 @@ python3 sungather.py
 docker pull bohdans/sungather
 docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
 ```
+or if using the http export
+```sh
+docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
+```
 Note: replace Australia/Sydney with relevant timezone
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -92,6 +96,19 @@ See config-example.py it contains default options and comments.
 If you want to use the new Energy section in Home Assistant, follow the Home Assistant setup below.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Commandline Arguments
+usage: python3 sungather.py [options]
+
+Commandline arguments override any config file settings  
+**-c config.yaml** - Specify config file.  
+**-v 30** - Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error  
+**--runonce** - Run once then exit  
+**-h** - print this help message and exit (also --help)  
+
+Example:  
+```sh
+python3 sungather.py -c /full/path/config.yaml
+```
 
 ## Exports
 
