@@ -284,7 +284,7 @@ def scrape_inverter():
             pass
     
     try:
-        if inverter.get('manual_load', False):     # Inverter is returning no data, we need to calculate it manually
+        if config['inverter'].get('manual_load', False):     # Inverter is returning no data, we need to calculate it manually
             inverter["load_power"] = int(inverter.get('total_active_power')) + int(inverter.get('meter_power'))
     except Exception:
         pass  
