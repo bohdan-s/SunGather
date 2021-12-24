@@ -282,6 +282,12 @@ def scrape_inverter():
                 inverter["import_from_grid"] = power
         except Exception:
             pass
+    
+    try:
+        if inverter.get('manual_load', False):     # Inverter is returning no data, we need to calculate it manually
+            inverter["load_power"] = int(inverter.get('total_active_power')) + int(inverter.get('meter_power'))
+    except Exception:
+        pass  
 
     # See if the inverter is running, This is added to inverters so can be read via MQTT etc...
     # It is also used below, as some registers hold the last value on 'stop' so we need to set to 0

@@ -685,7 +685,7 @@ registers:
 #   - name: "Reserved"    
 #     address: 5152
 #     datatype: "U16"
-    # Folling 2 registers are not in the documentation, but other projects are using them
+    # Following 2 registers are not in the documentation, but other projects are using them
     - name: "export_power"
       level: 3
       address: 5216
