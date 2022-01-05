@@ -5,7 +5,7 @@ class export_console(object):
         return
 
     # Configure MQTT
-    def configure(self, config):
+    def configure(self, config, config_inverter):
         logging.info("Configured Console Logging")
 
     def publish(self, inverter):

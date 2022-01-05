@@ -11,7 +11,7 @@ class export_mqtt(object):
         self.update_model = True
 
     # Configure MQTT
-    def configure(self, config):
+    def configure(self, config, config_inverter):
         self.mqtt_client = mqtt.Client("pv_data")
 
         if config.get('username') and config.get('password'):
@@ -35,7 +35,7 @@ class export_mqtt(object):
         global mqtt_client
 
         if (self.update_model):
-            self.sensor_topic = self.sensor_topic.replace('{model}', inverter.get('device_type_code', 'unknown').replace('.',''))
+            self.sensor_topic = self.sensor_topic.replace('{model}', inverter.get('device_type_code', 'unknown').replace('.','').replace('-',''))
             self.update_model = False
 
         if self.ha_discovery:
