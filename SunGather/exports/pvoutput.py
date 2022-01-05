@@ -22,7 +22,7 @@ class export_pvoutput(object):
             "cache-control": "no-cache",
         }
 
-    def configure(self, config):
+    def configure(self, config, config_inverter):
         self.api_key = config.get('api')
         self.system_id = config.get('sid')
         self.rate_limit = config.get('rate_limit', 60)

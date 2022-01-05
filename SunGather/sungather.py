@@ -81,6 +81,16 @@ else:
     logging.getLogger().setLevel(config['inverter'].get('logging',30))
 
 
+client_payload = {
+    "host": config['inverter'].get('host', '127.0.0.1'),
+    "port": config['inverter'].get('port', 502),
+    "timeout": config['inverter'].get('timeout', 10),
+    "retries": config['inverter'].get('retries', 3),
+    "RetryOnEmpty": config['inverter'].get('RetryOnEmpty', False),
+}
+
+inverter = {}
+
 exports = []
 if config.get('exports'):
     for export in config.get('exports'):
@@ -89,19 +99,11 @@ if config.get('exports'):
                 export_load = importlib.import_module("exports." + export.get('name'))
                 logging.info(f"Loaded Export: exports\{export.get('name')}")
                 exports.append(getattr(export_load, "export_" + export.get('name'))())
-                exports[-1].configure(export)
+                exports[-1].configure(export, config['inverter'])
                 logging.info(f"Configured export: {export.get('name')}")
         except Exception as err:
             logging.error(f"Failed loading export: {err}" +
                            f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
-
-client_payload = {
-    "host": config['inverter'].get('host', '127.0.0.1'),
-    "port": config['inverter'].get('port', 502),
-    "timeout": config['inverter'].get('timeout', 10),
-    "retries": config['inverter'].get('retries', 3),
-    "RetryOnEmpty": config['inverter'].get('RetryOnEmpty', False),
-}
 
 if config['inverter'].get("connection") == "http":
     client_payload['port'] = config['inverter'].get('port', '8082')
@@ -151,8 +153,14 @@ def load_registers(register_type, start, count=100):
             if register_type == "read" and register['address'] == run:
                 register_name = register['name']
 
-                # We convert a system response to a human value 
                 register_value = None
+                # Return the 32bit value if needed
+                if register.get('datatype') == "U32" or register.get('datatype') == "S32":
+                    u32_value = rr.registers[num+1]
+                    if u32_value and register_value:
+                        register_value = (u32_value * 65535) + register_value
+
+                # We convert a system response to a human value 
                 if register.get('datarange'):
                     for value in register.get('datarange'):
                         if value['response'] == rr.registers[num]:
@@ -167,9 +175,9 @@ def load_registers(register_type, start, count=100):
                         register_value = -1 * (65535 - register_value)
 
                 # If xFF (U 65535 / S 32767) then change to 0, looks better when logging / graphing
-                if register.get('datatype') == 'S16' and register_value == 32767:
+                if register.get('datatype') == 'S16' and (register_value == 32767 or register_value == 65535):
                     register_value = 0
-                elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32') and register_value == 65535:
+                elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32' or register.get('datatype') == 'U32') and register_value == 65535:
                     register_value = 0
 
                 if register.get('multiple'):
@@ -189,8 +197,15 @@ def load_registers(register_type, start, count=100):
         for register in registers['registers'][1]['hold']:
             if register_type == "hold" and register['address'] == run:
                 register_name = register['name']
-                # We convert a system response to a human value 
+
                 register_value = None
+                # Return the 32bit value if needed
+                if register.get('datatype') == "U32" or register.get('datatype') == "S32":
+                    u32_value = rr.registers[num+1]
+                    if u32_value and register_value:
+                        register_value = (u32_value * 65535) + register_value
+
+                # We convert a system response to a human value 
                 if register.get('datarange'):
                     for value in register.get('datarange'):
                         if value['response'] == rr.registers[num]:
@@ -205,9 +220,9 @@ def load_registers(register_type, start, count=100):
                         register_value = -1 * (65535 - register_value)
 
                 # If xFF (U 65535 / S 32767) then change to 0, looks better when logging / graphing
-                if register.get('datatype') == 'S16' and register_value == 32767:
+                if register.get('datatype') == 'S16' and (register_value == 32767 or register_value == 65535):
                     register_value = 0
-                elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32') and register_value == 65535:
+                elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32' or register.get('datatype') == 'U32') and register_value == 65535:
                     register_value = 0
 
                 if register.get('multiple'):
@@ -227,20 +242,19 @@ def load_registers(register_type, start, count=100):
 
     return True
 
-# Inverter Scanning
-inverter = {}
-model = None
-
+# Inverter Model Scanning
 if config['inverter'].get('model'):
-    inverter['device_type_code'] = model
-    logging.info(f'Bypassing Model Detection, Using config: {model}')
+    inverter['device_type_code'] = config['inverter'].get('model')
+    logging.info(f'Bypassing Model Detection, Using config: {inverter.get("device_type_code")}')
 else:
     if load_registers("read", 4999, 1):
+        if isinstance(inverter.get('device_type_code'),int):
+            logging.warning(f"Unknown Type Code Detected: {inverter.get('device_type_code')}")
+            inverter['device_type_code'] = 'unknown'
         logging.info(f"Detected Model: {inverter.get('device_type_code')}")
     else:
         inverter['device_type_code'] = 'unknown'
         logging.info(f'Model detection failed, please set model in config.py')
-
 
 # Core monitoring loop
 def scrape_inverter():
@@ -283,8 +297,8 @@ def scrape_inverter():
         except Exception:
             pass
     
-    try:
-        if config['inverter'].get('manual_load', False):     # Inverter is returning no data, we need to calculate it manually
+    try: # If inverter is returning no data for load_power, we can calculate it manually
+        if config['inverter'].get('manual_load', False):
             inverter["load_power"] = int(inverter.get('total_active_power')) + int(inverter.get('meter_power'))
     except Exception:
         pass  
@@ -335,6 +349,11 @@ def scrape_inverter():
     return True
 
 while True:
+    # Clear previous inverter values
+    tmp_model = inverter.get('device_type_code')
+    inverter = {}
+    inverter['device_type_code'] = tmp_model
+
     # Scrape the inverter
     success = scrape_inverter()
 
