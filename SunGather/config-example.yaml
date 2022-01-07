@@ -1,31 +1,59 @@
 inverter:
-  host: 192.168.1.100
-  # port: 502             # Default for modbus is 502, for http is 8082
-  # slave: 0x01           # Default is 0x01
-  # timeout: 10           # Default is 10
-  # scan_interval: 30     # Default is 30
-  connection: sungrow     # options: modbus, sungrow, http
-  # model: "SG7.0RT"      # This is autodetected on startup, only needed if detection issues or for testing
+  host: 192.168.1.100     # [Required] IP Address of the Inverter or Dongle
+  # port: 502             # [Optional] Default for modbus is 502, for http is 8082
+  # slave: 0x01           # [Optional] Default is 0x01
+  # timeout: 10           # [Optional] Default is 10
+  # scan_interval: 30     # [Optional] Default is 30
+  connection: sungrow     # [Required] options: modbus, sungrow, http
+  # model: "SG7.0RT"      # [Optional] This is autodetected on startup, only needed if detection issues or for testing
                           # See model list here: https://github.com/bohdan-s/SunGather#supported
-  # smart_meter: True     # Default is False, Set to true if inverter supports reading grind / house consumption
-  # use_local_time: False # Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
-  # hybrid: False         # Default false, if you have a Hybrid (battery) set to True
-  # manual_load: False    # Manually calculate load total_active_power + meter_power if the inverter does not supply it
-  # logging: 30           # 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
-  # level: 1              # 0 = Model and Solar Generation, 
+  # smart_meter: True     # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
+  # use_local_time: False # [Optional] Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
+  # hybrid: False         # [Optional] Default false, if you have a Hybrid (battery) set to True
+  # manual_load: False    # [Optional] Manually calculate load total_active_power + meter_power if the inverter does not supply it
+  # logging: 30           # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
+  # level: 1              # [Optional] Set the amount of information to gather
+                          # 0 = Model and Solar Generation, 
                           # 1 (default) = Useful data, all required for exports, 
                           # 2 everything your Inverter supports, 
                           # 3 Everything from every register 
 
 exports:
-  - name: console   # Print Registers to console, good for debugging / troubleshooting
+  # Print Registers to console, good for debugging / troubleshooting
+  - name: console
     enabled: False
 
-  - name: http
+  # Runs a simple Webserver showing Config and last read registers
+  - name: http 
     enabled: True   # Access at http://localhost:8080 or http://[serverip]:8080
     # port: 8080    # Default port is 8080
 
-  - name: mqtt      # Publish Registers to MQTT / Home Assistant
+  # Output data to InfluxDB
+  - name: influxdb
+    enabled: False
+    token: "xxx"                    # [Required] API Token
+    url: "http://localhost:8086"    # [Optional] Default URL is http://localhost:8086
+    org: "influxdata@bohdan.net"    # [Required] InfluxDB Organization
+    bucket: "SunGather"             # [Required] InfluxDB Bucket
+    measurements:
+      - point: "power"
+        register: daily_power_yields
+      - point: "power"
+        register: total_active_power
+      - point: "power"
+        register: load_power
+      - point: "power"
+        register: meter_power
+      - point: "power"
+        register: export_to_grid
+      - point: "power"
+        register: import_from_grid
+      - point: "temp"
+        register: internal_temperature
+
+
+  # Publish Registers to MQTT / Home Assistant
+  - name: mqtt
     host: 192.168.1.200
     # port: 1883
     topic: "tele/inverter_{model}/SENSOR" # Variable {model} will be replaced with model number
