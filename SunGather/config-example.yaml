@@ -33,7 +33,7 @@ exports:
     enabled: False
     token: "xxx"                    # [Required] API Token
     url: "http://localhost:8086"    # [Optional] Default URL is http://localhost:8086
-    org: "Default"    # [Required] InfluxDB Organization
+    org: "Default"                  # [Required] InfluxDB Organization
     bucket: "SunGather"             # [Required] InfluxDB Bucket
     measurements:
       - point: "power"
