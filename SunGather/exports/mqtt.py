@@ -29,7 +29,7 @@ class export_mqtt(object):
             for ha_topic in config.get('ha_topics'):
                 self.ha_topics.append(ha_topic)
 
-        logging.info("Configured MQTT Client")
+        logging.info(f"Configured MQTT Client: {config.get('host')}:{config.get('port', 1883)}")
 
     def publish(self, inverter):
         global mqtt_client
