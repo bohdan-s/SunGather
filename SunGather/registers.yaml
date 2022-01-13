@@ -220,7 +220,6 @@ registers:
       address: 5011
       datatype: "U16"
       multiple: 0.1
-      zero_on_standby: True
     - name: "mppt_1_current" 
       level: 2   
       address: 5012
@@ -259,6 +258,7 @@ registers:
       address: 5019
       datatype: "U16"
       multiple: 0.1
+      zero_on_standby: True
     - name: "phase_b_voltage"
       level: 2    
       address: 5020
