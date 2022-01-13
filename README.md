@@ -195,6 +195,7 @@ sensor.inverter_export_to_grid
 sensor.inverter_import_from_grid
 sensor.inverter_load_power
 sensor.inverter_meter_power
+
 ```
 
 Put the following into your sensors.yaml
@@ -202,39 +203,30 @@ Put the following into your sensors.yaml
 sensor:
   - platform: integration
     source: sensor.inverter_active_power
+    name: Solar Production (Sungather)
   - platform: integration
     source: sensor.inverter_export_to_grid
+    name: Return to Grid (Sungather)
   - platform: integration
     source: sensor.inverter_import_from_grid
+    name: Grid Consumption (Sungather)
 ```
 
 The additional sensors then setup in HA are the following with Wh unit of measurement for the Energy platform.
 
 ```
-sensor.sensor_inverter_active_power_integral
-sensor.sensor_inverter_export_to_grid_integral
-sensor.sensor_inverter_import_from_grid_integral
+Solar Production (Sungather)
+Return to Grid (Sungather)
+Grid Consumption (Sungather)
 ```
 
-You need to utilise the customize.yaml manual method to get some friendly names and icons. Add the following;
-```
-sensor.sensor_inverter_active_power_integral:
-  icon: mdi:solar-power
-  friendly_name: Solar Generation
-sensor.sensor_inverter_export_to_grid_integral:
-  icon: mdi:transmission-tower-export
-  friendly_name: Grid Export
-sensor.sensor_inverter_import_from_grid_integral:
-  icon: mdi:transmission-tower-import
-  friendly_name: Grid Import
-```
-Restart Home Assistant for the sensors.yaml and customize.yaml to be loaded.
+Restart Home Assistant for the sensors.yaml to be loaded.
 Make sure SunGather is running, wait 5 minutes for initial data to populate.
 Navigate to the Energy platform (Configuration > Energy). Add these sensors to the following areas:
 
-Electricity Grid > Grid Import - sensor.sensor_inverter_import_from_grid_integral  
-Electricity Grid > Grid Export - sensor.sensor_inverter_export_to_grid_integral  
-Solar Panels > Solar Production - sensor.sensor_inverter_active_power_integral  
+Electricity Grid > Grid Consumption -> Grid Consumption (Sungather)  
+Electricity Grid > Return to Grid -> Return to Grid (Sungather)  
+Solar Panels > Solar Production -> Solar Production (Sungather)  
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
