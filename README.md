@@ -51,6 +51,11 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 ## Updates
 
+**0.2.2** 
+* Minor bug fixes
+* Add support for some inverter scrapes to fail
+* Add support for zero_on_standby, this will 0 registers like temp that 'stick' to the last value when the inverter goes into standy. Handy if you want to graph 0 instead of the last read overnight
+
 **0.2.1** 
 * Minor bug fixes
 * Updated config-example.yaml to clearly explain each option and if it is required or optional
