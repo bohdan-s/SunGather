@@ -214,11 +214,9 @@ sensor:
 
 The additional sensors then setup in HA are the following with Wh unit of measurement for the Energy platform.
 
-```
-Solar Production (Sungather)
-Return to Grid (Sungather)
-Grid Consumption (Sungather)
-```
+Solar Production (Sungather)  
+Return to Grid (Sungather)  
+Grid Consumption (Sungather)  
 
 Restart Home Assistant for the sensors.yaml to be loaded.
 Make sure SunGather is running, wait 5 minutes for initial data to populate.

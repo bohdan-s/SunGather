@@ -204,6 +204,9 @@ def load_registers(register_type, start, count=100):
                 if register.get('multiple'):
                     register_value = round(register_value * register.get('multiple'),2)
 
+                if register.get('zero_on_standby') and inverter["run_state"] == "OFF":
+                    register_value = 0
+
                 # Set the final register value with adjustments above included 
                 inverter[register_name] = register_value
                 break
@@ -377,9 +380,12 @@ def main():
     while True:
 
         loop_start = datetime.now()
-        # Clear previous inverter values, keep the model
+        # Clear previous inverter values, keep the model and run state
+        if inverter.get("run_state"): run_state = inverter["run_state"] 
+        else: run_state = "ON"
         inverter = {}
         inverter['device_type_code'] = model
+        inverter["run_state"] = run_state
 
         if not client:
             client = connect_inverter()

@@ -9,6 +9,7 @@ inverter:
                                             # See model list here: https://github.com/bohdan-s/SunGather#supported
   # smart_meter: True                       # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
   # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
+  # zero_on_standby: False                  # [Optional] Default False, Some registers will 'stick' to the last value when inverter goes into standby mode, enabling this will have them force return 0, helps with graphing
   # manual_load: False                      # [Optional] Manually calculate load total_active_power + meter_power if the inverter does not supply it
   # logging: 30                             # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
   # level: 1                                # [Optional] Set the amount of information to gather
@@ -133,8 +134,8 @@ exports:
         register: load_power                # Current Home usage (Power)
       - name: v5                            # Temperature
         register: internal_temperature      # Inverter internal temperature
-#     - name: v6                            # Voltage
-#       register: total_active_power
+      - name: v6                            # Voltage
+        register: mppt_1_voltage            # Read voltage from first MPPT
       - name: c1                            # Cumulative Flag, 
         value: 1                            # If using v2/v4 set to 1
 #      - name: "n"                          # Net Flag
