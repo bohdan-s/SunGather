@@ -216,7 +216,7 @@ registers:
       datatype: "U32"
       models: ["SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT", "SG33K3J", "SG36KTL-M", "SG40KTL-M", "SG50KTL", "SG50KTL-M", "SG60KTL", "SG60KTL-M", "SG60KU-M", "SG80KTL", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG33CX", "SG40CX", "SG50CX", "SG110CX", "SG250HX", "SG30CX", "SG36CX-US", "SG60CX-US", "SG250HX-US", "SG250HX-IN", "SG25CX-SA", "SG100CX", "SG75CX", "SG225HX"]
     - name: "mppt_1_voltage"    
-      level: 1
+      level: 2
       address: 5011
       datatype: "U16"
       multiple: 0.1
@@ -255,7 +255,7 @@ registers:
       address: 5017
       datatype: "S32" # Documentation says Unsigned, but seems to be returning Signed 32bit
     - name: "phase_a_voltage"
-      level: 2    
+      level: 1    
       address: 5019
       datatype: "U16"
       multiple: 0.1

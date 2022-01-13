@@ -135,9 +135,9 @@ exports:
       - name: v5                            # Temperature
         register: internal_temperature      # Inverter internal temperature
       - name: v6                            # Voltage
-        register: mppt_1_voltage            # Read voltage from first MPPT
+        register: phase_a_voltage           # Read voltage from first Phase
       - name: c1                            # Cumulative Flag, 
-        value: 1                            # If using v2/v4 set to 1
+        value: 2                            # If using v2/v4 set to 1
 #      - name: "n"                          # Net Flag
 #        value: 1
 #     - name: "v7"                          # Extended Value v7 - Donation Only
