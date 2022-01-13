@@ -54,6 +54,7 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 **0.2.1** 
 * Minor bug fixes
 * Updated config-example.yaml to clearly explain each option and if it is required or optional
+* Replace is_running with run_state, was using bool which was causing errors in MQTT, run_state uses "ON" and "OFF"
 
 **0.2.0**  
 **IMPORTANT: If updating from v0.1.x please check config against config-example. some options for MQTT and PVOutput have changed**
