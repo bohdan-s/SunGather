@@ -237,6 +237,7 @@ SH5K-20, SH3K6, SH4K6, SH5K-V13, SH5K-30, SH3K6-30, SH4K6-30, SH5.0RS, SH3.6RS, 
 ## Building
 ```sh
 docker build --no-cache --rm -t bohdans/sungather:latest -t bohdans/sungather:v<version> .
+docker buildx --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag bohdans/sungather:latest --tag bohdans/sungather:v<version>
 docker push bohdans/sungather:v<version>
 docker push bohdans/sungather:latest
 ```
