@@ -107,7 +107,7 @@ exports:
         state_class: measurement
       - name: "Power State"
         sensor_type: binary_sensor
-        register: power_state
+        register: run_state
         dev_class: running
         payload_on: "ON"
         payload_off: "OFF"
