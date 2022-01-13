@@ -58,10 +58,18 @@ def scrape_inverter():
     scrape_start = datetime.now()
     client.connect()
 
+    load_registers_count = 0
+    load_registers_failed = 0
+
     for range in register_ranges:
+        load_registers_count +=1
         logging.debug(f'Scraping: {range.get("type")}, {range.get("start")}:{range.get("range")}')
         if not load_registers(range.get('type'), int(range.get('start')), int(range.get('range'))):
-            return False
+            load_registers_failed +=1
+    if load_registers_failed == load_registers_count:
+        return False
+    if load_registers_failed > 0:
+        logging.info(f'Scraping: {load_registers_failed}/{load_registers_count} registers failed to scrape')
 
     client.close()
 
