@@ -31,8 +31,9 @@ Register information based on official documentation: <a href="https://github.co
 
 Has multiple export locations out of the box:
 * Console - Log directly to screen
-* MQTT - Load into MQTT, and optionally Home Assistance Discovery
+* MQTT - Load into MQTT, and optionally Home Assistance including Discovery
 * PVOutput - Load into PVOutput.org
+* InfluxDB - Load data directly into InfluxDB
 * Simple webserver showing collected data
 * and more coming....
 
@@ -44,11 +45,28 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## TO DO
-* Better Home Assistant Support
-* Prometheus / Grafana support
+* I'm sure I'll think of something
+
 
 
 ## Updates
+
+**0.2.1** 
+* Minor bug fixes
+* Updated config-example.yaml to clearly explain each option and if it is required or optional
+
+**0.2.0**  
+**IMPORTANT: If updating from v0.1.x please check config against config-example. some options for MQTT and PVOutput have changed**
+* Re-write to Inverter scanning code, improved performance and more resilient to failures
+* Re-write to PVOutput code, now uploads every 5 minutes as per API documentation, averages all data points over the 5 min window to reduce random high/low values
+* Re-Write to MQTT code, now supports multiple sensor types
+
+**0.1.3**
+* Improved error recovery, e.g. Inverter powers down overnight
+
+**0.1.2**
+* Added InfluxDB export
+
 **0.1.1**
 * Added docker image
 * Added simple http web server
@@ -66,6 +84,9 @@ Initial build
 * [pymodbus>=2.4.0](https://pypi.org/project/pymodbus/)
 * [SungrowModbusTcpClient>=0.1.6](https://pypi.org/project/SungrowModbusTcpClient/)
 * [SungrowModbusWebClient>=0.2.6](https://pypi.org/project/SungrowModbusWebClient/)
+* [PyYAML>=6.0] (https://pypi.org/project/PyYAML/)
+* [requests>=2.26.0](https://pypi.org/project/requests/)
+* [influxdb-client>=1.24.0](https://pypi.org/project/influxdb-client/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -91,7 +112,7 @@ python3 sungather.py
 docker pull bohdans/sungather
 docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
 ```
-or if using the http export
+or if using the webserver export
 ```sh
 docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
 ```
@@ -125,10 +146,11 @@ python3 sungather.py -c /full/path/config.yaml
 
 A collection of exports are available:
 
-* console:  Output information to console, useful for troubleshooting
-* http:     Output to a simple website, default http://localhost:8080 or http://\<serverip\>:8080
-* mqtt:     Output to a pre-existing MQTT server, needed for Home Assistant integration
-* pvoutput: Output to PVOutput.org, requires account and solar is set up on website first. 
+* console:    Output information to console, useful for troubleshooting
+* webserver:  Output to a simple website, default http://localhost:8080 or http://\<serverip\>:8080
+* mqtt:       Output to a pre-existing MQTT server, needed for Home Assistant integration
+* pvoutput:   Output to PVOutput.org, requires account and solar is set up on website first. 
+* InfluxDB:   Output directly to InfluxDB, can then be used by Grafana, etc..
 
 ## Registers
 
@@ -237,9 +259,7 @@ SH5K-20, SH3K6, SH4K6, SH5K-V13, SH5K-30, SH3K6-30, SH4K6-30, SH5.0RS, SH3.6RS, 
 ## Building
 ```sh
 docker build --no-cache --rm -t bohdans/sungather:latest -t bohdans/sungather:v<version> .
-docker buildx --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag bohdans/sungather:latest --tag bohdans/sungather:v<version>
-docker push bohdans/sungather:v<version>
-docker push bohdans/sungather:latest
+docker push bohdans/sungather -a
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
