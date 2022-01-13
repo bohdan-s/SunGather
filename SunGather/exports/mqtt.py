@@ -6,9 +6,12 @@ class export_mqtt(object):
     def __init__(self):
         self.mqtt_client = None
         self.sensor_topic = None
-        self.ha_discovery = False
-        self.ha_topics = []
-        self.update_model = True
+        self.homeassistant = False
+        self.ha_discovery = True
+        self.ha_sensors = []
+        self.model = None
+        self.model_clean = None
+        self.inverter_ip = None
 
     # Configure MQTT
     def configure(self, config, config_inverter):
@@ -22,43 +25,66 @@ class export_mqtt(object):
         
         self.mqtt_client.connect(config.get('host'), port=config.get('port', 1883))
 
-        self.sensor_topic = config.get('topic', 'tele/inverter_{model}/SENSOR')
-        self.ha_discovery = config.get('ha_discovery', False)
+        self.inverter_ip = config_inverter.get('host')
 
-        if self.ha_discovery:
-            for ha_topic in config.get('ha_topics'):
-                self.ha_topics.append(ha_topic)
+        self.sensor_topic = config.get('topic', 'inverter/{model}/registers')
+        self.homeassistant = config.get('homeassistant', False)
 
-        logging.info(f"Configured MQTT Client: {config.get('host')}:{config.get('port', 1883)}")
+        if self.homeassistant:
+            for ha_sensor in config.get('ha_sensors'):
+                self.ha_sensors.append(ha_sensor)
+
+        logging.info(f"MQTT: Configured {config.get('host')}:{config.get('port', 1883)}")
 
     def publish(self, inverter):
         global mqtt_client
 
-        if (self.update_model):
-            self.sensor_topic = self.sensor_topic.replace('{model}', inverter.get('device_type_code', 'unknown').replace('.','').replace('-',''))
-            self.update_model = False
-
-        if self.ha_discovery:
-            self.mqtt_client.reconnect()
-            logging.info("Publishing Home Assistant Discovery messages")
-            discovery_topic = 'homeassistant/sensor/inverter/{}/config'
-            discovery_payload = '{{"name":"Inverter {}", "uniq_id":"{}", "stat_t":"{}", "json_attr_t":"{}", "unit_of_meas":"{}", "dev_cla":"{}", "state_class":"{}", "val_tpl":"{{{{ value_json.{} }}}}", "ic":"mdi:solar-power", "device":{{ "name":"Solar Inverter", "mf":"Sungrow", "mdl":"{}", "connections":[["address", "' + self.mqtt_client._host + '" ]]}}}}'   
-
-            for ha_topic in self.ha_topics:
-                msg = discovery_payload.format( ha_topic.get('name'),  "inverter_" + ha_topic.get('name').lower().replace(' ','_'),    self.sensor_topic,   self.sensor_topic,  ha_topic.get('unit'),   ha_topic.get('dev_class'),  ha_topic.get('state_class'),    ha_topic.get('register'), inverter.get('device_type_code', 'unknown').replace('.',''))
-                result = self.mqtt_client.publish(discovery_topic.format(ha_topic.get('name').lower().replace(' ','_')), msg, retain=True)
-                result.wait_for_publish()
-            self.ha_discovery = False
-
         # After a while you'll need to reconnect, so just reconnect before each publish
         self.mqtt_client.reconnect()
+
+        if not self.model:
+            self.model = inverter.get('device_type_code', 'unknown')
+            self.model_clean = self.model.replace('.','').replace('-','')
+            self.sensor_topic = self.sensor_topic.replace('{model}', self.model_clean)
+
+            logging.debug(f'MQTT: Sensor Topic = {self.sensor_topic}')
+
+        logging.debug(f"MQTT: Publishing: {self.sensor_topic} : {json.dumps(inverter)}")
         result = self.mqtt_client.publish(self.sensor_topic, json.dumps(inverter).replace('"', '\"'))
         result.wait_for_publish()
 
+        if self.homeassistant:
+            if self.ha_discovery:
+                for ha_sensor in self.ha_sensors:
+                    config_msg = {}
+                    if ha_sensor.get('name'):
+                        ha_topic = 'homeassistant/' + ha_sensor.get('sensor_type', 'sensor') + '/inverter/' + ha_sensor.get('name').lower().replace(' ','_') + '/config'
+                        config_msg['name'] = "Inverter " + ha_sensor.get('name')
+                        config_msg['unique_id'] = "inverter_" + ha_sensor.get('name').lower().replace(' ','_')
+                    config_msg['state_topic'] = self.sensor_topic
+                    config_msg['value_template'] = "{{ value_json." + ha_sensor.get('register') + " }}"
+                    if ha_sensor.get('unit'):
+                        config_msg['unit_of_measurement'] = ha_sensor.get('unit')
+                    if ha_sensor.get('dev_class'):
+                        config_msg['device_class'] = ha_sensor.get('dev_class')
+                    if ha_sensor.get('state_class'):
+                        config_msg['state_class'] = ha_sensor.get('state_class')
+                    if ha_sensor.get('payload_on'):
+                        config_msg['payload_on'] = ha_sensor.get('payload_on')
+                    if ha_sensor.get('payload_off'):
+                        config_msg['payload_off'] = ha_sensor.get('payload_off')
+                    config_msg['ic'] = "mdi:solar-power"
+                    config_msg['device'] = { "name":"Solar Inverter", "mf":"Sungrow", "mdl":self.model, "connections":[["address", self.inverter_ip ]]}
+
+                    result = self.mqtt_client.publish(ha_topic, json.dumps(config_msg), retain=True)
+                    result.wait_for_publish()
+                logging.info("MQTT: Published Home Assistant Discovery messages")
+                self.ha_discovery = False
+
         if result.rc != mqtt.MQTT_ERR_SUCCESS:
             # See https://github.com/eclipse/paho.mqtt.python/blob/master/src/paho/mqtt/client.py#L149 for error code mapping
-            logging.error(f"Failed to publish to MQTT with error code: {result.rc}")
+            logging.error(f"MQTT: Failed to publish with error code: {result.rc}")
         else:
-            logging.info("Published to MQTT")
+            logging.info("MQTT: Published")
 
         return result

@@ -1,6 +1,7 @@
 registers:
   - read:
     - name: "serial_number"
+      level: 3
       address: 4990
       datatype: "UTF-8"
     - name: "device_type_code"
@@ -380,10 +381,10 @@ registers:
       address: 5045
       datatype: "U16" 
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT","SG5K-D","SG8K-D"]
-    - name: "Reserved"    
-      address: 5046 - 5048
-      datatype: "U16"
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT","SG5K-D","SG8K-D"]
+#   - name: "Reserved"    
+#     address: 5046 - 5048
+#     datatype: "U16"
+#     models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT","SG5K-D","SG8K-D"]
     - name: "nominal_reactive_power"
       level: 2
       address: 5049
@@ -1192,66 +1193,39 @@ registers:
 #     address: 5155-5199
 scan: # these have to be 1 less than the first register   
   - read:
-    - start: "5000"
-      range: "100"
-      level: 1
-    - start: "5100"
-      range: "100"
-      level: 1
-    - start: "5200"
-      range: "100"
-      level: 3
-    - start: "6099"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6199"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6299"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6399"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6499"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6599"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6699"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "6799"
-      range: "100"
-      level: 1
-      hybrid: true
-    - start: "7012"
-      range: "25"
-      level: 3
-    - start: "12999"
-      range: "125"
-      level: 1
-      hybrid: true
+    - start: 5000
+      range: 100
+    - start: 5100
+      range: 100
+    - start: 5200
+      range: 100
+    - start: 6099
+      range: 100
+    - start: 6199
+      range: 100
+    - start: 6299
+      range: 100
+    - start: 6399
+      range: 100
+    - start: 6499
+      range: 100
+    - start: 6599
+      range: 100
+    - start: 6699
+      range: 100
+    - start: 6799
+      range: 100
+    - start: 7012
+      range: 25
+    - start: 12999
+      range: 125
   - hold:
-#    - start: "4999"   # Get current date / time only
-#      range: "7"
-    - start: "4999"
-      range: "10"
-      level: 0
-    - start: "5009"
-      range: "10"
-      level: 2
-    - start: "5034"
-      range: "10"
-      level: 2
+    - start: 4999
+      range: 10
+    - start: 5009
+      range: 10
+    - start: 5034
+      range: 10
 
 # full Models Supported:
 #["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]

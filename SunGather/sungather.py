@@ -17,6 +17,7 @@ import os
 
 config = None
 registers = None
+register_ranges = None
 inverter = None
 client = None
 
@@ -54,31 +55,15 @@ def connect_inverter():
 def scrape_inverter():
     global inverter
 
-    """ Connect to the inverter and scrape the metrics """
+    scrape_start = datetime.now()
     client.connect()
 
-    for scan in registers['scan']:
-        if scan.get('read'):
-            for subscan in registers['scan'][0]['read']:
-                if subscan.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
-                    if not subscan.get('hybrid', False):
-                        logging.debug(f'Scanning: read, {subscan.get("start")}:{subscan.get("range")}')
-                        if not load_registers("read", int(subscan.get('start')), int(subscan.get('range'))):
-                            return False
-                    elif subscan.get('hybrid', False) and config['inverter'].get('hybrid',False):
-                        logging.debug(f'Scanning: read, {subscan.get("start")}:{subscan.get("range")}')
-                        if not load_registers("read", int(subscan.get('start')), int(subscan.get('range'))):
-                            return False
-        if scan.get('hold'):
-            for subscan in registers['scan'][1]['hold']:
-                    if not subscan.get('hybrid', False):
-                        logging.debug(f'Scanning: hold, {subscan.get("start")}:{subscan.get("range")}')
-                        if not load_registers("hold", int(subscan.get('start')), int(subscan.get('range'))):
-                            return False
-                    elif subscan.get('hybrid', False) and config['inverter'].get('hybrid',False):
-                        logging.debug(f'Scanning: hold, {subscan.get("start")}:{subscan.get("range")}')
-                        if not load_registers("hold", int(subscan.get('start')), int(subscan.get('range'))):
-                            return False
+    for range in register_ranges:
+        logging.debug(f'Scraping: {range.get("type")}, {range.get("start")}:{range.get("range")}')
+        if not load_registers(range.get('type'), int(range.get('start')), int(range.get('range'))):
+            return False
+
+    client.close()
 
     # Create a registers for Power imported and exported to/from Grid
     if config['inverter'].get('level',1) >= 1:
@@ -141,7 +126,9 @@ def scrape_inverter():
         except Exception:
             pass
 
-    client.close()
+    scrape_end = datetime.now()
+    logging.info(f'Inventer: Successfully scrapped in {(scrape_end - scrape_start).seconds}.{(scrape_end - scrape_start).microseconds} secs')
+
     return True
 
 def load_registers(register_type, start, count=100):
@@ -174,8 +161,8 @@ def load_registers(register_type, start, count=100):
     for num in range(0, count):
         run = int(start) + num + 1
 
-        for register in registers['registers'][0]['read']:
-            if register_type == "read" and register['address'] == run:
+        for register in registers:
+            if register_type == register.get('type') and register['address'] == run:
                 register_name = register['name']
 
                 register_value = None
@@ -208,66 +195,15 @@ def load_registers(register_type, start, count=100):
                 if register.get('multiple'):
                     register_value = round(register_value * register.get('multiple'),2)
 
-                # Set the final register name and value after checking model, any adjustments above included 
-                if register.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
-                    if register.get('smart_meter') and config['inverter'].get('smart_meter'):
-                        inverter[register_name] = register_value
-                    elif register.get('models') and not config['inverter'].get('level',1) == 3:
-                        for supported_model in register.get('models'):
-                            if supported_model == inverter.get('device_type_code'):
-                                inverter[register_name] = register_value
-                    else:
-                        inverter[register_name] = register_value
-
-        for register in registers['registers'][1]['hold']:
-            if register_type == "hold" and register['address'] == run:
-                register_name = register['name']
-
-                register_value = None
-                # Return the 32bit value if needed
-                if register.get('datatype') == "U32" or register.get('datatype') == "S32":
-                    u32_value = rr.registers[num+1]
-                    if u32_value and register_value:
-                        register_value = (u32_value * 65535) + register_value
-
-                # We convert a system response to a human value 
-                if register.get('datarange'):
-                    for value in register.get('datarange'):
-                        if value['response'] == rr.registers[num]:
-                            register_value = value['value']
-                if not register_value:
-                    register_value = rr.registers[num]
-
-                # Adjust the value if needed
-                if register.get('indicator'):
-                    indicator_value = rr.registers[num+1]
-                    if indicator_value == 65535:
-                        register_value = -1 * (65535 - register_value)
-
-                # If xFF (U 65535 / S 32767) then change to 0, looks better when logging / graphing
-                if register.get('datatype') == 'S16' and (register_value == 32767 or register_value == 65535):
-                    register_value = 0
-                elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32' or register.get('datatype') == 'U32') and register_value == 65535:
-                    register_value = 0
-
-                if register.get('multiple'):
-                    register_value = round(register_value * register.get('multiple',0),2)
-
-                # Set the final register name and value after checking model, any adjustments above included 
-                if register.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
-                    if register.get('smart_meter') and config['inverter'].get('smart_meter'):
-                        inverter[register_name] = register_value
-                    elif register.get('models') and not config['inverter'].get('level',1) == 3:
-                        for supported_model in register.get('models'):
-                            if supported_model == inverter.get('device_type_code'):
-                                inverter[register_name] = register_value
-                    else:
-                        inverter[register_name] = register_value
+                # Set the final register value with adjustments above included 
+                inverter[register_name] = register_value
+                break
     return True
 
 def main():
     global config
     global registers
+    global register_ranges
     global inverter
     global client
 
@@ -319,7 +255,7 @@ def main():
             sys.exit(1)   
 
     try:
-        registers = yaml.safe_load(open('registers.yaml'))
+        registers_raw = yaml.safe_load(open('registers.yaml'))
         logging.info(f"Loaded registers: {os.getcwd()}/registers.yaml")
     except Exception as err:
         logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
@@ -334,18 +270,21 @@ def main():
     if config.get('exports'):
         for export in config.get('exports'):
             try:
-                if export.get('enabled', True):
+                if export.get('enabled', False):
                     export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loaded Export: exports\{export.get('name')}")
+                    logging.info(f"Loading Export: exports\{export.get('name')}")
                     exports.append(getattr(export_load, "export_" + export.get('name'))())
                     exports[-1].configure(export, config['inverter'])
-                    logging.info(f"Configured export: {export.get('name')}")
             except Exception as err:
                 logging.error(f"Failed loading export: {err}" +
                             f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
 
     client = connect_inverter()
     inverter = {}
+    registers = [[]]
+    registers.pop()
+    register_ranges = [[]]
+    register_ranges.pop()
 
     # Inverter Model Scanning
     model = 'unknown'
@@ -353,7 +292,14 @@ def main():
         model = config['inverter'].get('model')
         logging.info(f'Bypassing Model Detection, Using config: {model}')
     else:
+        # Load just the register to detect model, then we can load the rest of registers based on returned model
+        for register in registers_raw['registers'][0]['read']:
+            if register.get('name') == "device_type_code":
+                register['type'] = "read"
+                registers.append(register)
+                break
         if load_registers("read", 4999, 1):
+            registers.pop() # Remove the register, as we only needed it once
             if isinstance(inverter.get('device_type_code'),int):
                 logging.warning(f"Unknown Type Code Detected: {inverter.get('device_type_code')}")
             else:
@@ -362,8 +308,66 @@ def main():
         else:
             logging.info(f'Model detection failed, please set model in config.py')
 
+    # Load register list based om name and value after checking model
+    for register in registers_raw['registers'][0]['read']:
+        if register.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
+            register['type'] = "read"
+            register.pop('level')
+            if register.get('smart_meter') and config['inverter'].get('smart_meter'):
+                register.pop('models')
+                registers.append(register)
+            elif register.get('models') and not config['inverter'].get('level',1) == 3:
+                for supported_model in register.get('models'):
+                    if supported_model == inverter.get('device_type_code'):
+                        register.pop('models')
+                        registers.append(register)
+            else:
+                registers.append(register)
+
+    for register in registers_raw['registers'][1]['hold']:
+        if register.get('level',3) <= config['inverter'].get('level',1) or config['inverter'].get('level',1) == 3:
+            register['type'] = "hold"
+            register.pop('level')
+            if register.get('smart_meter') and config['inverter'].get('smart_meter'):
+                register.pop('models')
+                registers.append(register)
+            elif register.get('models') and not config['inverter'].get('level',1) == 3:
+                for supported_model in register.get('models'):
+                    if supported_model == inverter.get('device_type_code'):
+                        register.pop('models')
+                        registers.append(register)
+            else:
+                registers.append(register)
+
+
+    # Load register list based om name and value after checking model
+    for register_range in registers_raw['scan'][0]['read']:
+        register_range_used = False
+        register_range['type'] = "read"
+        for register in registers:
+            if register.get("type") == register_range.get("type"):
+                if register.get('address') >= register_range.get("start") and register.get('address') <= (register_range.get("start") + register_range.get("range")):
+                    register_range_used = True
+                    continue
+        if register_range_used:
+            register_ranges.append(register_range)
+
+
+    for register_range in registers_raw['scan'][1]['hold']:
+        register_range_used = False
+        register_range['type'] = "hold"
+        for register in registers:
+            if register.get("type") == register_range.get("type"):
+                if register.get('address') >= register_range.get("start") and register.get('address') <= (register_range.get("start") + register_range.get("range")):
+                    register_range_used = True
+                    continue
+        if register_range_used:
+            register_ranges.append(register_range)
+    
     # Core monitoring loop
     while True:
+
+        loop_start = datetime.now()
         # Clear previous inverter values, keep the model
         inverter = {}
         inverter['device_type_code'] = model
@@ -373,6 +377,7 @@ def main():
             time.sleep(3)       # Wait 3 secs for connection, resvoles issues with modbus not reconnecting on failure
 
         # Scrape the inverter
+        
         success = scrape_inverter()
 
         if(success):
@@ -382,13 +387,19 @@ def main():
         else:
             client.close()
             client = None
-            logging.warning(f"Data collection failed, skipped exporting data. Retying in {config['inverter'].get('scan_interval', 30)}")
+            logging.warning(f"Data collection failed, skipped exporting data. Retying in {config['inverter'].get('scan_interval', 30)} secs")
 
-        if not 'runonce' in locals():
-            # Sleep until the next scan
-            time.sleep(config['inverter'].get('scan_interval', 30))
-        else:
+
+        loop_end = datetime.now()
+        logging.debug(f'Processing Time: {(loop_end - loop_start).seconds}.{(loop_end - loop_start).microseconds} secs')
+
+        if 'runonce' in locals():
             sys.exit(0)
+        
+        # Sleep until the next scan
+        time.sleep(config['inverter'].get('scan_interval', 30))
 
 if __name__== "__main__":
     main()
+
+sys.exit()
