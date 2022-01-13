@@ -107,10 +107,10 @@ exports:
         state_class: measurement
       - name: "Power State"
         sensor_type: binary_sensor
-        register: start_stop
+        register: power_state
         dev_class: running
-        payload_on: "Start"
-        payload_off: "Stop"
+        payload_on: "ON"
+        payload_off: "OFF"
 
   # Publish Registers to PVOutput
   - name: pvoutput      
