@@ -90,11 +90,11 @@ def scrape_inverter():
     try:
         if inverter.get('start_stop'):
             if inverter.get('start_stop', False) == 'Start' and inverter.get('work_state_1', False) == 'Run':
-                inverter["power_state"] = "ON"
+                inverter["run_state"] = "ON"
             else:
-                inverter["power_state"] = "OFF"
+                inverter["run_state"] = "OFF"
         else:
-            inverter["power_state"] = "OFF"
+            inverter["run_state"] = "OFF"
     except Exception:
         pass
 
