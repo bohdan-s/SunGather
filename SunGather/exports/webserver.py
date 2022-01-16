@@ -8,17 +8,28 @@ import logging
 class export_webserver(object):
     html_body = "Pending Data Retrieval"
     def __init__(self):
+        self._isConfigured = False
         return
 
     # Configure Webserver
     def configure(self, config, config_inverter):
-        self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
-        self.t = Thread(target=self.webServer.serve_forever)
-        self.t.start()
-        self.config_inverter = config_inverter
-        logging.info(f"Webserver: Configured")
+        try:
+            self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
+            self.t = Thread(target=self.webServer.serve_forever)
+            self.t.start()
+            self.config_inverter = config_inverter
+            logging.info(f"Webserver: Configured")
+            self._isConfigured = True
+        except Exception as err:
+            logging.error(f"Webserver: Error: {err}")
+
+        return self._isConfigured
 
     def publish(self, inverter):
+        if not self._isConfigured:
+            logging.info("Webserver: Skipped, Initial Configuration Failed")
+            return False
+
         body = "<h3>Sungather v" + __version__ + "</h3></p><table><tr><th>Register</th><th>Value</th>"
         for register in inverter:
             body = body + f"<tr><td>{register}</td><td>{inverter.get(register)}</td></tr>"
@@ -29,7 +40,8 @@ class export_webserver(object):
             body = body + f"<tr><td>{config}</td><td>{self.config_inverter.get(config)}</td></tr>"
         export_webserver.html_body = export_webserver.html_body + body + f"</table></p>"
         logging.info("Webserver: Content Updated")
-        return
+            
+        return True
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):

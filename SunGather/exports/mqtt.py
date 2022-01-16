@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 
 class export_mqtt(object):
     def __init__(self):
+        self._isConfigured = False
         self.mqtt_client = None
         self.sensor_topic = None
         self.homeassistant = False
@@ -15,7 +16,7 @@ class export_mqtt(object):
 
     # Configure MQTT
     def configure(self, config, config_inverter):
-        self.mqtt_client = mqtt.Client("pv_data")
+        self.mqtt_client = mqtt.Client(client_id="SunGather")
 
         if config.get('username') and config.get('password'):
             self.mqtt_client.username_pw_set(config.get('username'), config.get('password'))
@@ -23,7 +24,13 @@ class export_mqtt(object):
         if config.get('port') == 8883:
             self.mqtt_client.tls_set()
         
-        self.mqtt_client.connect(config.get('host'), port=config.get('port', 1883))
+        try:
+            self.mqtt_client.connect(config.get('host'), port=config.get('port', 1883))
+            self._isConfigured = True
+        except Exception as err:
+            logging.error(f"MQTT: Connection {config.get('host')}:{config.get('port', 1883)}")
+            logging.error(f"MQTT: Error: {err}")
+            return False
 
         self.inverter_ip = config_inverter.get('host')
 
@@ -36,8 +43,14 @@ class export_mqtt(object):
 
         logging.info(f"MQTT: Configured {config.get('host')}:{config.get('port', 1883)}")
 
+        return self._isConfigured
+
     def publish(self, inverter):
         global mqtt_client
+
+        if not self._isConfigured:
+            logging.info("MQTT: Skipped, Initial Configuration Failed")
+            return False
 
         # After a while you'll need to reconnect, so just reconnect before each publish
         self.mqtt_client.reconnect()

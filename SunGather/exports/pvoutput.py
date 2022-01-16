@@ -41,6 +41,7 @@ class export_pvoutput(object):
             return False
 
         logging.info("PVOutput: Configured")
+        return True
 
     def publish(self, inverter):
         """
