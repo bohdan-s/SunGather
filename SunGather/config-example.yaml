@@ -9,7 +9,6 @@ inverter:
                                             # See model list here: https://github.com/bohdan-s/SunGather#supported
   # smart_meter: True                       # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
   # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
-  # zero_on_standby: False                  # [Optional] Default False, Some registers will 'stick' to the last value when inverter goes into standby mode, enabling this will have them force return 0, helps with graphing
   # manual_load: False                      # [Optional] Manually calculate load total_active_power + meter_power if the inverter does not supply it
   # logging: 30                             # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
   # level: 1                                # [Optional] Set the amount of information to gather
@@ -59,11 +58,11 @@ exports:
     enabled: False                          # [Optional] Default is False
     host: 192.168.1.200                     # [Required] IP or Hostname of MQTT Server 
     # port: 1883                            # [Optional] Default 1883
-    # topic: "tele/inverter_{model}/SENSOR" # [Optional] Default: "tele/inverter_{model}/SENSOR", Variable {model} will be replaced with model number of inverter
+    # topic: "inverter/{model}/registers"   # [Optional] Default: "inverter/{model}/registers", Variable {model} will be replaced with model number of inverter
     # username:                             # [Optional] Username is MQTT server requires it
     # password:                             # [Optional] Password is MQTT server requires it
-    ha_discovery: True                      # [Optional] Default False, Home Assistant Discovery
-    ha_topics:                              # [Optional] / [Required] ha_discovery: True, Topics to enable discovery for HA
+    homeassistant: True                     # [Optional] Default False, Publish discovery and sensors for HomeAssistant
+    ha_sensors:                             # [Optional] / [Required] ha_discovery: True, Topics to enable discovery for HA
       - name: "Daily Generation"
         sensor_type: sensor
         register: daily_power_yields
@@ -138,8 +137,6 @@ exports:
         register: phase_a_voltage           # Read voltage from first Phase
       - name: c1                            # Cumulative Flag, 
         value: 2                            # If using v2 & v4 set to 1, of using only v1 set to 2 (if daily totals)
-#      - name: "n"                          # Net Flag
-#        value: 1
 #     - name: "v7"                          # Extended Value v7 - Donation Only
 #       register:
 #     - name: "v8"                          # Extended Value v8 - Donation Only
@@ -154,4 +151,3 @@ exports:
 #       register:
 #     - name: "m1"                          # Text Message 1 - Donation Only
 #       register:
-  
