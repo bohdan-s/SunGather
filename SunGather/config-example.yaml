@@ -132,12 +132,12 @@ exports:
 #       register: 
       - name: v4                            # Power Consumption
         register: load_power                # Current Home usage (Power)
-      - name: v5                            # Temperature
-        register: internal_temperature      # Inverter internal temperature
+#     - name: v5                            # Ambient temperature see: https://forum.pvoutput.org/t/what-temperature-is-used-to-calculate-insolation/2106
+#       register: internal_temperature      # 
       - name: v6                            # Voltage
         register: phase_a_voltage           # Read voltage from first Phase
       - name: c1                            # Cumulative Flag, 
-        value: 2                            # If using v2/v4 set to 1
+        value: 2                            # If using v2 & v4 set to 1, of using only v1 set to 2 (if daily totals)
 #      - name: "n"                          # Net Flag
 #        value: 1
 #     - name: "v7"                          # Extended Value v7 - Donation Only

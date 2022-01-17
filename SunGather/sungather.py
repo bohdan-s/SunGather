@@ -204,9 +204,6 @@ def load_registers(register_type, start, count=100):
                 if register.get('multiple'):
                     register_value = round(register_value * register.get('multiple'),2)
 
-                if register.get('zero_on_standby') and inverter["run_state"] == "OFF":
-                    register_value = 0
-
                 # Set the final register value with adjustments above included 
                 inverter[register_name] = register_value
                 break

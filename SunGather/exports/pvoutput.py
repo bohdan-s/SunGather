@@ -101,7 +101,10 @@ class export_pvoutput(object):
         if int(now.strftime("%M")) % self.status_interval == 0 and not now.strftime("%H:%M") == self.latest_run.strftime("%H:%M"):
             for v in self.collected_data:
                 if v[0] == 'v' and not self.collected_data[v] == 0:
-                    self.collected_data[v] = round(self.collected_data[v] / self.collected_data['count'], 2)
+                    if v[1] == '6' or v[1] == '7':  # Round to 1 decimal place
+                        self.collected_data[v] = round(self.collected_data[v] / self.collected_data['count'], 1)
+                    else:   # Getting errors when uploading decimals for power/energy so return INT
+                        self.collected_data[v] = int(self.collected_data[v] / self.collected_data['count'])
 
             data_point = str(now.strftime("%Y%m%d")) + "," + str(now.strftime("%H:%M"))
 
@@ -111,15 +114,8 @@ class export_pvoutput(object):
                    data_point = data_point + "," + str(self.collected_data[v])
                 else:
                     data_point = data_point + ","
-
-            if self.collected_data.get('v2', False) and self.collected_data.get('v4', False):
-                net_data = 1
-            else:
-                net_data = 0
             
             self.collected_data = {}
-
-            print(data_point)
 
             if self.payload_data:
                 self.payload_data = self.payload_data + ";"
@@ -128,14 +124,12 @@ class export_pvoutput(object):
             self.payload_data = self.payload_data + data_point
 
             self.batch_count +=1
-
+            
             if self.batch_count == self.batch_points:
 
                 payload = {}
                 payload['data'] = self.payload_data
 
-                if net_data > 0:
-                    payload['n'] = net_data
                 if 'cumulative_energy' in locals():
                     payload['c1'] = cumulative_energy
 
