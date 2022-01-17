@@ -76,17 +76,20 @@ class export_pvoutput(object):
         # Add new data to old data and increase count of data points
         for parameter in self.parameters:
             if parameter.get('name')[0] == 'v':
-                if not self.collected_data.get(parameter.get('name'),False):
+                if self.collected_data.get(parameter.get('name'),False):
+                    if parameter.get('multiple'):
+                        self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + (inverter.get(parameter.get('register')) * parameter.get('multiple')),3)
+                    else:
+                        self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + inverter.get(parameter.get('register')),3)
+                else:
                     if inverter.get(parameter.get('register')):
-                        self.collected_data[parameter.get('name')] = 0
+                        if parameter.get('multiple'):
+                            self.collected_data[parameter.get('name')] = round(inverter.get(parameter.get('register')) * parameter.get('multiple'),3)
+                        else:
+                            self.collected_data[parameter.get('name')] = inverter.get(parameter.get('register'))
                     else:
                         logging.warning(f"PVOutput: {parameter.get('name')} configured to use {parameter.get('register')} but inverter is not returning this register")
-
-                if parameter.get('multiple'):
-                    self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + (inverter.get(parameter.get('register')) * parameter.get('multiple')),3)
-                else:
-                    self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + inverter.get(parameter.get('register')),3)
-            if parameter.get('name') == 'c1':
+            elif parameter.get('name') == 'c1':
                 cumulative_energy = parameter.get('value')
 
         if self.collected_data.get('count',False):
@@ -104,7 +107,7 @@ class export_pvoutput(object):
                     if v[1] == '6' or v[1] == '7':  # Round to 1 decimal place
                         self.collected_data[v] = round(self.collected_data[v] / self.collected_data['count'], 1)
                     else:   # Getting errors when uploading decimals for power/energy so return INT
-                        self.collected_data[v] = int(self.collected_data[v] / self.collected_data['count'])
+                        self.collected_data[v] = int((self.collected_data[v] / self.collected_data['count']))
 
             data_point = str(now.strftime("%Y%m%d")) + "," + str(now.strftime("%H:%M"))
 
@@ -114,13 +117,14 @@ class export_pvoutput(object):
                    data_point = data_point + "," + str(self.collected_data[v])
                 else:
                     data_point = data_point + ","
-            
+
             self.collected_data = {}
 
             if self.payload_data:
                 self.payload_data = self.payload_data + ";"
             else: 
                 self.payload_data = ""
+
             self.payload_data = self.payload_data + data_point
 
             self.batch_count +=1

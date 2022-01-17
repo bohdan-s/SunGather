@@ -41,7 +41,7 @@ class export_mqtt(object):
             for ha_sensor in config.get('ha_sensors'):
                 self.ha_sensors.append(ha_sensor)
 
-        logging.info(f"MQTT: Configured {config.get('host')}:{config.get('port', 1883)}")
+        logging.info(f"MQTT: Configured {config.get('host')}:{config.get('port', 1883)}, HA Enabled = {config.get('homeassistant', False)}")
 
         return self._isConfigured
 
@@ -97,6 +97,7 @@ class export_mqtt(object):
                     config_msg['device'] = { "name":"Solar Inverter", "mf":"Sungrow", "mdl":self.model, "connections":[["address", self.inverter_ip ]]}
 
                     try:
+                        logging.debug(f'MQTT: Topic; {ha_topic}, Message: {config_msg}')
                         result = self.mqtt_client.publish(ha_topic, json.dumps(config_msg), retain=True)
                         result.wait_for_publish()
                         if result.rc != mqtt.MQTT_ERR_SUCCESS:
