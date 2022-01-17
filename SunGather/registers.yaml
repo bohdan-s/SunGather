@@ -254,7 +254,7 @@ registers:
       address: 5017
       datatype: "S32" # Documentation says Unsigned, but seems to be returning Signed 32bit
     - name: "phase_a_voltage"
-      level: 1    
+      level: 1
       address: 5019
       datatype: "U16"
       multiple: 0.1

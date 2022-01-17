@@ -136,7 +136,7 @@ def scrape_inverter():
             pass
 
     scrape_end = datetime.now()
-    logging.info(f'Inventer: Successfully scrapped in {(scrape_end - scrape_start).seconds}.{(scrape_end - scrape_start).microseconds} secs')
+    logging.info(f'Inverter: Successfully scraped in {(scrape_end - scrape_start).seconds}.{(scrape_end - scrape_start).microseconds} secs')
 
     return True
 
