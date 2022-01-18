@@ -1,16 +1,23 @@
 import logging
 import requests
 import datetime
+import json
 
 # Configure PVOutput
 class export_pvoutput(object):
     def __init__(self):
+        self._isConfigured = False
         self.api_key = None
         self.system_id = None
-        self.statusbatch_url = "https://pvoutput.org/service/r2/addbatchstatus.jsp"
+        self.url_base = "https://pvoutput.org/service/r2/"
+        self.url_addbatchstatus = self.url_base + "addbatchstatus.jsp"
+        self.url_jointeam = self.url_base + "jointeam.jsp"
+        self.url_leaveteam = self.url_base + "leaveteam.jsp"
+        self.url_getsystem = self.url_base + "getsystem.jsp"
         self.rate_limit = None
         self.parameters = []
         self.latest_run = None
+        self.tid = '1618'
 
     @property
     def headers(self):
@@ -33,13 +40,49 @@ class export_pvoutput(object):
 
         for parameter in config.get('parameters'):
             self.parameters.append(parameter)
+        try:
+            logging.debug(f"PVOutput: Get System ; {self.url_getsystem}, {str(self.headers)}, 'teams': '1'")
+            response = requests.post(url=self.url_getsystem,headers=self.headers, params={'teams': '1'})
+            logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")
 
-        if not (self.status_interval == 5 or self.status_interval == 10 or self.status_interval == 15):
-            logging.warning("Status Invterval is invalid, valid options are 5, 10 and 15 minutes")
+            if response.status_code == 200:            
+                retload = response.content.decode()
+                system = retload.split(';')[0]
+                teams = retload.split(';')[2]
+
+                invertername = system.split(',')[0]
+                self.status_interval = int(system.split(',')[15])
+
+                team_member = False
+                for team in teams.split(','):
+                    if team == self.tid:
+                        team_member = True
+            else:
+                logging.error(f"PVOutput: System Status Failed; {str(response.status_code)} Message; {str(response.content)}")
+        
+        except Exception as err:
+            logging.error(f"PVOutput: Failed to configure with error: {err}")
             return False
 
-        logging.info("PVOutput: Configured")
-        return True
+        join_team = config.get('join_team',True)
+        try:
+            if not team_member and join_team:
+                logging.debug(f"PVOutput: Join Team; {self.url_jointeam}, {str(self.headers)}, 'tid': '{self.tid}'")
+                response = requests.post(url=self.url_jointeam,headers=self.headers, params={'tid': self.tid})
+                logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")
+            elif team_member and not join_team:
+                logging.debug(f"PVOutput: Leave Team; {self.url_leaveteam}, {str(self.headers)}, 'tid': '{self.tid}'")
+                response = requests.post(url=self.url_leaveteam,headers=self.headers, params={'tid': self.tid})
+                logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")  
+        except Exception as err:
+            logging.error(f"PVOutput: Team Membership update failed: {err}")
+        
+        if not response.status_code == 200:
+            logging.error(f"PVOutput: Team update Failed; {str(response.status_code)} Message; {str(response.content)}")
+
+        logging.info(f"PVOutput: Configured export to {invertername} every {self.status_interval} minutes")
+        self._isConfigured = True
+        return self._isConfigured
 
     def publish(self, inverter):
         """
@@ -137,9 +180,9 @@ class export_pvoutput(object):
                 if 'cumulative_energy' in locals():
                     payload['c1'] = cumulative_energy
 
-                logging.debug("PVOutput: Request; " + self.statusbatch_url + ", " + str(self.headers) + " : " + str(payload))
+                logging.debug("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
 
-                response = requests.post(url=self.statusbatch_url, headers=self.headers, params=payload)
+                response = requests.post(url=self.url_addbatchstatus, headers=self.headers, params=payload)
                 self.batch_count = 0
 
                 if response.status_code != requests.codes.ok:
@@ -151,5 +194,3 @@ class export_pvoutput(object):
                 logging.info("PVOutput: Data added to next batch upload")
 
         self.latest_run = now
-
-

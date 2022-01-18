@@ -117,8 +117,8 @@ exports:
     enabled: False                          # [Optional] Default is False
     api: "xxxxx"                            # [Required] API Key, Settings > API Key
     sid: "xxxxx"                            # [Optional] System ID, Settings > Registered Systems > System ID
+    # join_team: False                      # [Optional] Default True, This will join the SunGather team in PVOutput, Setting to False will leave the team if previously joined
     rate_limit: 60                          # [Optional] Default 60, 60 for regular accounts, 300 for donation accounts
-    status_interval: 5                      # [Optional] Default 5, In minutes, options are 5 ,10,15 minute intervals: https://pvoutput.org/help/live_data.html
     batch_points: 1                         # [Optional] Default 1, how many data points to batch upload, 
                                             # Time between uploads will be status_interval * batch_points. e.g. status_invterval of 5min, and batch_points of 12 will upload to PVOutput Hourly (5 * 12 = 60 mins)
     parameters:                             # [Required] v1 & v3 or v2 & v4 minimum. See: https://pvoutput.org/help/api_specification.html#power-and-energy-calculation
