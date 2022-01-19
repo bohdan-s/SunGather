@@ -410,7 +410,12 @@ def main():
             sys.exit(0)
         
         # Sleep until the next scan
-        time.sleep(scan_interval - process_time)
+        if scan_interval - process_time <= 1:
+            logging.warning(f"SunGather is taking {process_time} to process, which is longer than interval {scan_interval}, Please increase scan interval")
+            time.sleep(process_time)
+        else:
+            logging.info(f'Next scrape in {int(scan_interval - process_time)} secs')
+            time.sleep(scan_interval - process_time)    
 
 if __name__== "__main__":
     main()

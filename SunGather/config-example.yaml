@@ -33,8 +33,10 @@ exports:
   # Output data to InfluxDB
   - name: influxdb
     enabled: False                          # [Optional] Default is False
-    token: "xxx"                            # [Required] API Token
     url: "http://localhost:8086"            # [Optional] Default URL is http://localhost:8086
+    token: "xxx"                            # [Required] API Token OR Username / Password
+    # username:                             # [Optional] Username if not using token
+    # password:                             # [Optional] Password if not using token
     org: "Default"                          # [Required] InfluxDB Organization
     bucket: "SunGather"                     # [Required] InfluxDB Bucket
     measurements:                           # [Required] Registers to publish to bucket

@@ -17,11 +17,19 @@ class export_influxdb(object):
             logging.warning(f"InfluxDB: Please check configuration")
             return False
         try:
-            self.client = influxdb_client.InfluxDBClient(
-                url=config.get('url', 'http://localhost:8086'),
-                token=config.get('token'),
-                org=config.get('org')
-            )
+            if config.get('token', False):
+                self.client = influxdb_client.InfluxDBClient(
+                    url=config.get('url', 'http://localhost:8086'),
+                    token=config.get('token'),
+                    org=config.get('org')
+                )
+            elif config.get('username',False) and config.get('password',False):
+                self.client = influxdb_client.InfluxDBClient(
+                    url=config.get('url', 'http://localhost:8086'),
+                    token=f"{config.get('username')}:{config.get('password')}",
+                    org=config.get('org')
+                )
+
         except Exception as err:
             logging.error(f"InfluxDB: Error: {err}")
             return False
