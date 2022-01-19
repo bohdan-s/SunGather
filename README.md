@@ -44,8 +44,9 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## TO DO
-* I'm sure I'll think of something
+## Raodmap / TO DO
+* Rasberry Pi Docker support
+* Full Home Assistant integration, as HACS addon
 
 
 
