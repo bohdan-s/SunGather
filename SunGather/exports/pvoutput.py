@@ -38,6 +38,7 @@ class export_pvoutput(object):
         self.payload_data = None
         self.batch_count = 0
         self.last_run = 0
+        self.last_publish = 0
 
         for parameter in config.get('parameters'):
             self.parameters.append(parameter)
@@ -115,7 +116,7 @@ class export_pvoutput(object):
             return False
         for parameter in self.parameters:
             if parameter.get('name')[0] == 'v':
-                if not inverter.get(parameter.get('register', False)):
+                if not inverter.get(parameter.get('register', False)) and not inverter.get(parameter.get('register', False)) == 0:
                     logging.warning(f"PVOutput: Skipping, {parameter.get('name')} configured to use {parameter.get('register')} but inverter is not returning this register")
                     return False
 
@@ -145,7 +146,7 @@ class export_pvoutput(object):
         logging.debug(f'PVOutput: Data Logged: {self.collected_data}')
 
         # Process data points every status_interval
-        if((time.time() - self.last_run) > (self.status_interval * 60)):
+        if((time.time() - self.last_publish) >= (self.status_interval * 60)):
             for v in self.collected_data:
                 if v[0] == 'v' and not self.collected_data[v] == 0:
                     if v[1] == '6' or v[1] == '7':  # Round to 1 decimal place
@@ -189,11 +190,14 @@ class export_pvoutput(object):
                         logging.error(f"PVOutput: Upload Failed; {str(response.status_code)} Message; {str(response.content)}")
                     else:
                         self.payload_data = None
+                        self.last_publish = time.time()
                         logging.info("PVOutput: Data uploaded")
                 except Exception as err:
                     logging.error(f"PVOutput: Failed to Upload")
                     logging.debug(f"{err}")
             else:
                 logging.info("PVOutput: Data added to next batch upload")
+        else:
+            logging.info(f"PVOutput: Data logged, next upload in {int((self.status_interval * 60) - (time.time() - self.last_publish))} secs")
 
         self.last_run = time.time()
