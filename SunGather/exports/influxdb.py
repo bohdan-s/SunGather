@@ -50,9 +50,16 @@ class export_influxdb(object):
             logging.info("InfluxDB: Skipped, Initial Configuration Failed")
             return False
 
-        sequence = []
+        # Setting a Standard Measurement Name and Inverter as a tag for later filtering
+        # could be extended by using values from config.yaml or SerialNo or ...
+        # Maybe also better switch to p=influxdb_client.Point(xxx).Tag().Field()
+        sequence= f"measure1,inverter={inverter.get('device_type_code', 'unknown').replace('.','').replace('-','')} "
+
         for measurement in self.measurements:
-            sequence.append(f"{measurement.get('point')},inverter={inverter.get('device_type_code', 'unknown').replace('.','').replace('-','')} {measurement.get('register')}={inverter.get(measurement.get('register'))}")
+            sequence += f"{measurement.get('register')}={inverter.get(measurement.get('register'),0)},"
+
+        # remove last ","
+        sequence=sequence[:-1]
         logging.debug(f'InfluxDB: Sequence; {sequence}')
         try:
             self.write_api.write(self.bucket, self.client.org, sequence)
