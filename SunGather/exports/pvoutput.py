@@ -1,7 +1,7 @@
 import logging
 import requests
 import datetime
-import json
+import time
 
 # Configure PVOutput
 class export_pvoutput(object):
@@ -16,7 +16,7 @@ class export_pvoutput(object):
         self.url_getsystem = self.url_base + "getsystem.jsp"
         self.rate_limit = None
         self.parameters = []
-        self.latest_run = None
+        self.last_run = None
         self.tid = '1618'
 
     @property
@@ -37,18 +37,18 @@ class export_pvoutput(object):
         self.collected_data = {}
         self.payload_data = None
         self.batch_count = 0
+        self.last_run = 0
 
         for parameter in config.get('parameters'):
             self.parameters.append(parameter)
         try:
             logging.debug(f"PVOutput: Get System ; {self.url_getsystem}, {str(self.headers)}, 'teams': '1'")
-            response = requests.post(url=self.url_getsystem,headers=self.headers, params={'teams': '1'})
+            response = requests.post(url=self.url_getsystem,headers=self.headers, params={'teams': '1'}, timeout=3)
             logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")
 
-            if response.status_code == 200:            
-                retload = response.content.decode()
-                system = retload.split(';')[0]
-                teams = retload.split(';')[2]
+            if response.status_code == 200:
+                system = response.text.split(';')[0]
+                teams = response.text.split(';')[2]
 
                 invertername = system.split(',')[0]
                 self.status_interval = int(system.split(',')[15])
@@ -61,28 +61,25 @@ class export_pvoutput(object):
                 logging.error(f"PVOutput: System Status Failed; {str(response.status_code)} Message; {str(response.content)}")
         
         except Exception as err:
-            logging.error(f"PVOutput: Failed to configure with error: {err}")
+            logging.error(f"PVOutput: Failed to configure")
+            logging.debug(f"{err}")
             return False
 
-        join_team = config.get('join_team',True)
         try:
+            join_team = config.get('join_team',True)
             if not team_member and join_team:
                 logging.debug(f"PVOutput: Join Team; {self.url_jointeam}, {str(self.headers)}, 'tid': '{self.tid}'")
-                response = requests.post(url=self.url_jointeam,headers=self.headers, params={'tid': self.tid})
+                response = requests.post(url=self.url_jointeam,headers=self.headers, params={'tid': self.tid}, timeout=3)
                 logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")
             elif team_member and not join_team:
                 logging.debug(f"PVOutput: Leave Team; {self.url_leaveteam}, {str(self.headers)}, 'tid': '{self.tid}'")
-                response = requests.post(url=self.url_leaveteam,headers=self.headers, params={'tid': self.tid})
+                response = requests.post(url=self.url_leaveteam,headers=self.headers, params={'tid': self.tid}, timeout=3)
                 logging.debug(f"PVOutput: Response; {str(response.status_code)} Message; {str(response.content)}")  
         except Exception as err:
-            logging.error(f"PVOutput: Team Membership update failed: {err}")
-        
-        if not response.status_code == 200:
-            logging.error(f"PVOutput: Team update Failed; {str(response.status_code)} Message; {str(response.content)}")
+            logging.debug(f"{err}")
 
         logging.info(f"PVOutput: Configured export to {invertername} every {self.status_interval} minutes")
-        self._isConfigured = True
-        return self._isConfigured
+        return True
 
     def publish(self, inverter):
         """
@@ -112,26 +109,31 @@ class export_pvoutput(object):
         m1          Text Message 1      No          text        30 chars max    Yes
         """
 
+        # Check all required registers have been returned by the inverter
+        if not inverter.get('timestamp', False):
+            logging.warning('PVOutput: Skipping, Timestamp missing from last scrape')
+            return False
+        for parameter in self.parameters:
+            if parameter.get('name')[0] == 'v':
+                if not inverter.get(parameter.get('register', False)):
+                    logging.warning(f"PVOutput: Skipping, {parameter.get('name')} configured to use {parameter.get('register')} but inverter is not returning this register")
+                    return False
+
         now = datetime.datetime.strptime(inverter.get('timestamp'), "%Y-%m-%d %H:%M:%S")
-        if not self.latest_run:     # Set last run to 1 min ago if never run, that way we don't miss any uploads
-            self.latest_run = now - datetime.timedelta(minutes=1)
 
         # Add new data to old data and increase count of data points
         for parameter in self.parameters:
-            if parameter.get('name')[0] == 'v':
+            if parameter.get('name')[0] == 'v':                    
                 if self.collected_data.get(parameter.get('name'),False):
-                    if parameter.get('multiple'):
-                        self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + (inverter.get(parameter.get('register')) * parameter.get('multiple')),3)
-                    else:
-                        self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + inverter.get(parameter.get('register')),3)
+                        if parameter.get('multiple'):
+                            self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + (inverter.get(parameter.get('register')) * parameter.get('multiple')),3)
+                        else:
+                            self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + inverter.get(parameter.get('register')),3)
                 else:
-                    if inverter.get(parameter.get('register')):
                         if parameter.get('multiple'):
                             self.collected_data[parameter.get('name')] = round(inverter.get(parameter.get('register')) * parameter.get('multiple'),3)
                         else:
                             self.collected_data[parameter.get('name')] = inverter.get(parameter.get('register'))
-                    else:
-                        logging.warning(f"PVOutput: {parameter.get('name')} configured to use {parameter.get('register')} but inverter is not returning this register")
             elif parameter.get('name') == 'c1':
                 cumulative_energy = parameter.get('value')
 
@@ -140,11 +142,10 @@ class export_pvoutput(object):
         else:
             self.collected_data['count'] = 1
 
-        logging.info('PVOutput: Data logged')
-        logging.debug(f'PVOutput: Data: {self.collected_data}')
+        logging.debug(f'PVOutput: Data Logged: {self.collected_data}')
 
         # Process data points every status_interval
-        if int(now.strftime("%M")) % self.status_interval == 0 and not now.strftime("%H:%M") == self.latest_run.strftime("%H:%M"):
+        if((time.time() - self.last_run) > (self.status_interval * 60)):
             for v in self.collected_data:
                 if v[0] == 'v' and not self.collected_data[v] == 0:
                     if v[1] == '6' or v[1] == '7':  # Round to 1 decimal place
@@ -172,25 +173,27 @@ class export_pvoutput(object):
 
             self.batch_count +=1
             
-            if self.batch_count == self.batch_points:
-
+            if self.batch_count >= self.batch_points:
                 payload = {}
                 payload['data'] = self.payload_data
 
                 if 'cumulative_energy' in locals():
                     payload['c1'] = cumulative_energy
 
-                logging.debug("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
+                try:
+                    logging.debug("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
+                    response = requests.post(url=self.url_addbatchstatus, headers=self.headers, params=payload, timeout=3)
+                    self.batch_count = 0
 
-                response = requests.post(url=self.url_addbatchstatus, headers=self.headers, params=payload)
-                self.batch_count = 0
-
-                if response.status_code != requests.codes.ok:
-                    raise RuntimeError(response.text)
-                else:
-                    self.payload_data = None
-                    logging.info("PVOutput: Data uploaded")
+                    if response.status_code != requests.codes.ok:
+                        logging.error(f"PVOutput: Upload Failed; {str(response.status_code)} Message; {str(response.content)}")
+                    else:
+                        self.payload_data = None
+                        logging.info("PVOutput: Data uploaded")
+                except Exception as err:
+                    logging.error(f"PVOutput: Failed to Upload")
+                    logging.debug(f"{err}")
             else:
                 logging.info("PVOutput: Data added to next batch upload")
 
-        self.latest_run = now
+        self.last_run = time.time()

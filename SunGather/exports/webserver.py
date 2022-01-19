@@ -16,6 +16,7 @@ class export_webserver(object):
         try:
             self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
+            self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()
             self.config_inverter = config_inverter
             logging.info(f"Webserver: Configured")

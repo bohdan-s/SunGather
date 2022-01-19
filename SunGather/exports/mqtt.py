@@ -4,7 +4,6 @@ import paho.mqtt.client as mqtt
 
 class export_mqtt(object):
     def __init__(self):
-        self._isConfigured = False
         self.mqtt_client = None
         self.sensor_topic = None
         self.homeassistant = False
@@ -13,10 +12,14 @@ class export_mqtt(object):
         self.model = None
         self.model_clean = None
         self.inverter_ip = None
+        self.mqtt_queue = []
 
     # Configure MQTT
     def configure(self, config, config_inverter):
         self.mqtt_client = mqtt.Client(client_id="SunGather")
+        self.mqtt_client.on_connect = self.on_connect
+        self.mqtt_client.on_disconnect = self.on_disconnect
+        self.mqtt_client.on_publish = self.on_publish
 
         if config.get('username') and config.get('password'):
             self.mqtt_client.username_pw_set(config.get('username'), config.get('password'))
@@ -24,16 +27,10 @@ class export_mqtt(object):
         if config.get('port') == 8883:
             self.mqtt_client.tls_set()
         
-        try:
-            self.mqtt_client.connect(config.get('host'), port=config.get('port', 1883), keepalive=60)
-            self._isConfigured = True
-        except Exception as err:
-            logging.error(f"MQTT: Connection {config.get('host')}:{config.get('port', 1883)}")
-            logging.error(f"MQTT: Error: {err}")
-            return False
+        self.mqtt_client.connect_async(config.get('host'), port=config.get('port', 1883), keepalive=60)
+        self.mqtt_client.loop_start()
 
         self.inverter_ip = config_inverter.get('host')
-
         self.sensor_topic = config.get('topic', 'inverter/{model}/registers')
         self.homeassistant = config.get('homeassistant', False)
 
@@ -41,37 +38,32 @@ class export_mqtt(object):
             for ha_sensor in config.get('ha_sensors'):
                 self.ha_sensors.append(ha_sensor)
 
-        logging.info(f"MQTT: Configured {config.get('host')}:{config.get('port', 1883)}, HA Enabled = {config.get('homeassistant', False)}")
+        return True
 
-        return self._isConfigured
+    def on_connect(self, client, userdata, flags, rc):
+        logging.info(f"MQTT: Connected {client._host}:{client._port}")
+
+    def on_disconnect(self, client, userdata, rc):
+        logging.info(f"MQTT: Server Disconnected code:{rc}")
+    
+    def on_publish(self, client, userdata, mid):
+        self.mqtt_queue.remove(mid)
+        logging.info(f"MQTT: Message {mid} Published")
 
     def publish(self, inverter):
-        global mqtt_client
-
-        if not self._isConfigured:
-            logging.info("MQTT: Skipped, Initial Configuration Failed")
-            return False
+        if not self.mqtt_client.is_connected():
+            logging.warning(f'MQTT: Server Disconnected; {self.mqtt_queue.__len__()} messages queued')
+        elif self.mqtt_queue.__len__() > 10:
+            logging.warning(f'MQTT: {self.mqtt_queue.__len__()} messages queued, this may be due to a MQTT server issue')
 
         if not self.model:
             self.model = inverter.get('device_type_code', 'unknown')
             self.model_clean = self.model.replace('.','').replace('-','')
             self.sensor_topic = self.sensor_topic.replace('{model}', self.model_clean)
 
-            logging.debug(f'MQTT: Sensor Topic = {self.sensor_topic}')
-
+        logging.debug(f'MQTT: Sensor Topic = {self.sensor_topic}')
         logging.debug(f"MQTT: Publishing: {self.sensor_topic} : {json.dumps(inverter)}")
-        try:
-            result = self.mqtt_client.publish(self.sensor_topic, json.dumps(inverter).replace('"', '\"'))
-            result.wait_for_publish()
-            if result.rc == mqtt.MQTT_ERR_SUCCESS:
-                logging.info("MQTT: Published")
-            else:
-                logging.error(f"MQTT: Failed to publish with error code: {result.rc}")
-                if result.rc == mqtt.MQTT_ERR_NO_CONN:
-                    logging.warning(f"MQTT: Attempting to reconnect to MQTT")
-                    self.mqtt_client.reconnect()
-        except Exception as err:
-            logging.error(f"MQTT: Failed to publish with error: {err}")
+        self.mqtt_queue.append(self.mqtt_client.publish(self.sensor_topic, json.dumps(inverter).replace('"', '\"'), qos=1).mid)
 
         if self.homeassistant:
             if self.ha_discovery:
@@ -96,17 +88,8 @@ class export_mqtt(object):
                     config_msg['ic'] = "mdi:solar-power"
                     config_msg['device'] = { "name":"Solar Inverter", "mf":"Sungrow", "mdl":self.model, "connections":[["address", self.inverter_ip ]]}
 
-                    try:
-                        logging.debug(f'MQTT: Topic; {ha_topic}, Message: {config_msg}')
-                        result = self.mqtt_client.publish(ha_topic, json.dumps(config_msg), retain=True)
-                        result.wait_for_publish()
-                        if result.rc != mqtt.MQTT_ERR_SUCCESS:
-                            logging.error(f"MQTT: Failed to publish with error code: {result.rc}")
-                            if result.rc == mqtt.MQTT_ERR_NO_CONN:
-                                logging.warning(f"MQTT: Attempting to reconnect to MQTT")
-                                self.mqtt_client.reconnect()
-                    except Exception as err:
-                        logging.error(f"MQTT: Failed to publish with error: {err}")
+                    logging.debug(f'MQTT: Topic; {ha_topic}, Message: {config_msg}')
+                    self.mqtt_queue.append(self.mqtt_client.publish(ha_topic, json.dumps(config_msg), retain=True, qos=1).mid)
                 self.ha_discovery = False
                 logging.info("MQTT: Published Home Assistant Discovery messages")
 
