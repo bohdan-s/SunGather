@@ -274,7 +274,7 @@ def main():
         logging.getLogger().setLevel(loglevel)
     else:
         logging.getLogger().setLevel(config['inverter'].get('logging',30))
-
+   
     exports = []
     if config.get('exports'):
         for export in config.get('exports'):
@@ -373,6 +373,8 @@ def main():
         if register_range_used:
             register_ranges.append(register_range)
     
+    scan_interval = config['inverter'].get('scan_interval', 30)
+
     # Core monitoring loop
     while True:
 
@@ -394,22 +396,21 @@ def main():
 
         if(success):
             for export in exports:
-                t = Thread(target=export.publish, args=(inverter,))
-                t.start()
+                export.publish(inverter)
         else:
             client.close()
             client = None
-            logging.warning(f"Data collection failed, skipped exporting data. Retying in {config['inverter'].get('scan_interval', 30)} secs")
-
+            logging.warning(f"Data collection failed, skipped exporting data. Retying in {scan_interval} secs")
 
         loop_end = datetime.now()
-        logging.debug(f'Processing Time: {(loop_end - loop_start).seconds}.{(loop_end - loop_start).microseconds} secs')
+        process_time = round(float(((loop_end - loop_start).seconds) + ((loop_end - loop_start).microseconds / 1000000)),2)
+        logging.debug(f'Processing Time: {process_time} secs')
 
         if 'runonce' in locals():
             sys.exit(0)
         
         # Sleep until the next scan
-        time.sleep(config['inverter'].get('scan_interval', 30))
+        time.sleep(scan_interval - process_time)
 
 if __name__== "__main__":
     main()
