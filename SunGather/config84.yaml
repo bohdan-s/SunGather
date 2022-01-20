@@ -1,0 +1,257 @@
+inverter:
+  host: 192.168.10.7                       # [Required] IP Address of the Inverter or Dongle
+  # port: 502                               # [Optional] Default for modbus is 502, for http is 8082
+  # slave: 0x01                             # [Optional] Default is 0x01
+  # timeout: 10                             # [Optional] Default is 10
+  # scan_interval: 30                        # [Optional] Default is 30
+  connection: sungrow                       # [Required] options: modbus, sungrow, http
+  #model: "SH8.0RT"                        # [Optional] This is autodetected on startup, only needed if detection issues or for testing
+                                            # See model list here: https://github.com/bohdan-s/SunGather#supported
+  #smart_meter: False                       # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
+  # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
+  manual_load: False                      # [Optional] Manually calculate load total_active_power + meter_power if the inverter does not supply it
+  logging: 30                             # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
+  level: 2                                  # [Optional] Set the amount of information to gather
+                                            # 0 = Model and Solar Generation, 
+                                            # 1 (default) = Useful data, all required for exports, 
+                                            # 2 everything your Inverter supports, 
+                                            # 3 Everything from every register 
+
+# If you do not want to use a export, you can either remove the whole configuration block
+# or set enabled: False
+exports:
+  # Print Registers to console, good for debugging / troubleshooting
+  - name: console         
+    enabled: True                          # [Optional] Default is False
+
+  # Runs a simple Webserver showing Config and last read registers
+  # Access at http://localhost:8080 or http://[serverip]:8080
+  - name: webserver 
+    enabled: True                           # [Optional] Default is False
+    port: 8184                            # [Optional] Default is 8080
+
+
+  # Output data to InfluxDB
+  - name: influxdb
+    enabled: True                          # [Optional] Default is False
+    token: "5s3tAuNOzzYxXIOpFjbutyEB0SHrgaN5l-bggESP1Rz_M6WS__RWkU_FDdmtR9bwnYscsqKu1AVYVc2nqR--LQ=="                            # [Required] API Token
+    url: "http://192.168.2.10:8086"            # [Optional] Default URL is http://localhost:8086
+    org: "pv"                          # [Required] InfluxDB Organization
+    bucket: "PV-Converter"                     # [Required] InfluxDB Bucket
+    measurements:                           # [Required] Registers to publish to bucket
+      - point: "measure1"
+        register: nominal_active_power
+      - point: "measure1"
+        register: daily_power_yields
+      - point: "measure1"
+        register: total_power_yields
+      - point: "measure1"
+        register: internal_temperature
+      - point: "measure1"
+        register: mppt_1_voltage
+      - point: "measure1"
+        register: mppt_1_current
+      - point: "measure1"
+        register: mppt_2_voltage
+      - point: "measure1"
+        register: mppt_2_current
+      - point: "measure1"
+        register: total_dc_power
+      - point: "measure1"
+        register: phase_a_voltage
+      - point: "measure1"
+        register: phase_b_voltage
+      - point: "measure1"
+        register: phase_c_voltage
+      - point: "measure1"
+        register: total_reactive_power
+      - point: "measure1"
+        register: power_factor
+      - point: "measure1"
+        register: grid_frequency
+      - point: "measure1"
+        register: pv_power_of_today
+      - point: "measure1"
+        register: daily_pv_energy_yields
+      - point: "measure1"
+        register: monthly_pv_energy_yields
+      - point: "measure1"
+        register: yearly_pv_energy_yields
+      - point: "measure1"
+        register: direct_power_consumption_today_pv
+      - point: "measure1"
+        register: direct_power_consumption_pv
+      - point: "measure1"
+        register: direct_power_consumption_monthly_pv
+      - point: "measure1"
+        register: direct_power_consumption_yearly_pv
+      - point: "measure1"
+        register: export_power_from_pv_today
+      - point: "measure1"
+        register: export_power_from_pv
+      - point: "measure1"
+        register: export_power_from_pv_monthly
+      - point: "measure1"
+        register: export_power_from_pv_yearly
+      - point: "measure1"
+        register: battery_charge_power_from_pv_today
+      - point: "measure1"
+        register: battery_charge_power_from_pv
+      - point: "measure1"
+        register: battery_charge_power_from_pv_monthly
+      - point: "measure1"
+        register: battery_charge_power_from_pv_yearly
+      - point: "measure1"
+        register: daily_pv_generation
+      - point: "measure1"
+        register: total_pv_generation
+      - point: "measure1"
+        register: daily_export_from_pv
+      - point: "measure1"
+        register: total_export_from_pv
+      - point: "measure1"
+        register: load_power
+      - point: "measure1"
+        register: export_power
+      - point: "measure1"
+        register: daily_battery_charge_from_pv
+      - point: "measure1"
+        register: total_battery_charge_from_pv
+      - point: "measure1"
+        register: co2_reduction
+      - point: "measure1"
+        register: daily_direct_energy_consumption
+      - point: "measure1"
+        register: total_direct_energy_consumption
+      - point: "measure1"
+        register: battery_voltage
+      - point: "measure1"
+        register: battery_current
+      - point: "measure1"
+        register: battery_power
+      - point: "measure1"
+        register: battery_level
+      - point: "measure1"
+        register: battery_state_of_healthy
+      - point: "measure1"
+        register: battery_temperature
+      - point: "measure1"
+        register: daily_battery_discharge_energy
+      - point: "measure1"
+        register: total_battery_discharge_energy
+      - point: "measure1"
+        register: self_consumption_of_day
+      - point: "measure1"
+        register: total_active_power
+      - point: "measure1"
+        register: daily_import_energy
+      - point: "measure1"
+        register: total_import_energy
+      - point: "measure1"
+        register: daily_charge_energy
+      - point: "measure1"
+        register: total_charge_energy
+      - point: "measure1"
+        register: daily_export_energy 
+      - point: "measure1"
+        register: total_export_energy
+
+
+  # Publish Registers to MQTT / Home Assistant
+  - name: mqtt
+    enabled: False                          # [Optional] Default is False
+    host: 192.168.1.200                     # [Required] IP or Hostname of MQTT Server 
+    # port: 1883                            # [Optional] Default 1883
+    # topic: "inverter/{model}/registers"   # [Optional] Default: "inverter/{model}/registers", Variable {model} will be replaced with model number of inverter
+    # username:                             # [Optional] Username is MQTT server requires it
+    # password:                             # [Optional] Password is MQTT server requires it
+    homeassistant: True                     # [Optional] Default False, Publish discovery and sensors for HomeAssistant
+    ha_sensors:                             # [Optional] / [Required] ha_discovery: True, Topics to enable discovery for HA
+      - name: "Daily Generation"
+        sensor_type: sensor
+        register: daily_power_yields
+        unit: kWh
+        dev_class: energy
+        state_class: total_increasing
+      - name: "Active Power"
+        sensor_type: sensor
+        register: total_active_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Load Power"
+        sensor_type: sensor
+        register: load_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Meter Power"
+        sensor_type: sensor
+        register: meter_power
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Export to Grid"
+        sensor_type: sensor
+        register: export_to_grid
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Import from Grid"
+        sensor_type: sensor
+        register: import_from_grid
+        unit: W
+        dev_class: power
+        state_class: measurement
+      - name: "Temperature"
+        sensor_type: sensor
+        register: internal_temperature
+        unit: °C
+        dev_class: temperature
+        state_class: measurement
+      - name: "Power State"
+        sensor_type: binary_sensor
+        register: run_state
+        dev_class: running
+        payload_on: "ON"
+        payload_off: "OFF"
+
+  # Publish Registers to PVOutput
+  - name: pvoutput      
+    enabled: False                          # [Optional] Default is False
+    api: "xxxxx"                            # [Required] API Key, Settings > API Key
+    sid: "xxxxx"                            # [Optional] System ID, Settings > Registered Systems > System ID
+    # join_team: False                      # [Optional] Default True, This will join the SunGather team in PVOutput, Setting to False will leave the team if previously joined
+    rate_limit: 60                          # [Optional] Default 60, 60 for regular accounts, 300 for donation accounts
+    batch_points: 1                         # [Optional] Default 1, how many data points to batch upload, 
+                                            # Time between uploads will be status_interval * batch_points. e.g. status_invterval of 5min, and batch_points of 12 will upload to PVOutput Hourly (5 * 12 = 60 mins)
+    parameters:                             # [Required] v1 & v3 or v2 & v4 minimum. See: https://pvoutput.org/help/api_specification.html#power-and-energy-calculation
+      - name: v1                            # Energy Generation
+        register: daily_power_yields        # Solar Generated Today (Energy)
+        multiple: 1000
+      - name: v2                            # Power Generation
+        register: total_active_power        # Current Generation (Power)
+#     - name: v3                            # Energy Consumption
+#       register: 
+      - name: v4                            # Power Consumption
+        register: load_power                # Current Home usage (Power)
+#     - name: v5                            # Ambient temperature see: https://forum.pvoutput.org/t/what-temperature-is-used-to-calculate-insolation/2106
+#       register: internal_temperature      # 
+      - name: v6                            # Voltage
+        register: phase_a_voltage           # Read voltage from first Phase
+      - name: c1                            # Cumulative Flag, 
+        value: 2                            # If using v2 & v4 set to 1, of using only v1 set to 2 (if daily totals)
+#     - name: "v7"                          # Extended Value v7 - Donation Only
+#       register:
+#     - name: "v8"                          # Extended Value v8 - Donation Only
+#       register:
+#     - name: "v9"                          # Extended Value v9 - Donation Only
+#       register:
+#     - name: "v10"                         # Extended Value v10 - Donation Only
+#       register:
+#     - name: "v11"                         # Extended Value v11 - Donation Only
+#       register:
+#     - name: "v12"                         # Extended Value v12 - Donation Only
+#       register:
+#     - name: "m1"                          # Text Message 1 - Donation Only
+#       register:

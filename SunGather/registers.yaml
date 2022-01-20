@@ -1104,7 +1104,7 @@ registers:
       datatype: "U32"
       multiple: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
-    - name: "total_pv_generation"    
+    - name: "daily_export_from_pv"    
       level: 1
       address: 13005
       datatype: "U16"
@@ -1116,12 +1116,12 @@ registers:
       datatype: "U16"
       multiple: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
-    - name: "load_power_hybrid"    
+    - name: "load_power"    
       level: 1
       address: 13008
       datatype: "S32"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
-    - name: "export_power_hybrid"    
+    - name: "export_power"    
       level: 1
       address: 13010
       datatype: "S32"
@@ -1380,98 +1380,98 @@ registers:
       address: 13100
       datatype: "U16"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
-    - name: "max_charging_charging"
+    - name: "max_charging_current"
       level: 3
       address: 13101
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_discharging_current"
       level: 3
       address: 13102
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "warning"
       level: 3
       address: 13103
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "protection"
       level: 3
       address: 13104
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "fault1"
       level: 3
       address: 13105
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "fault2"
       level: 3
       address: 13106
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "soc"
       level: 2
       address: 13107
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "soh"
       level: 2
       address: 13108
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "battery_current"
       level: 2
       address: 13109
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "battery_voltage"
       level: 2
       address: 13110
       datatype: "U16"
       multiple: 0.01
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "cycle_count"
       level: 2
       address: 13111
       datatype: "U16"
       multiple: 0.01
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "average_cell_voltage"
       level: 2
       address: 13112
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_cell_voltage"
       level: 2
       address: 13113
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "min_cell_voltage"
       level: 2
       address: 13114
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "battery_pack_voltage"
       level: 2
       address: 13115
       datatype: "U16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "average_cell_temp"
       level: 2
       address: 13116
       datatype: "S16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_cell_temp"
       level: 2
       address: 13117
       datatype: "S16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "min_cell_temp"
       level: 2
       address: 13118
       datatype: "S16"
-      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
+      models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
   - hold:
     - name: "year"
       level: 0
@@ -1512,6 +1512,7 @@ registers:
           value: "Start"
         - response: 0xCE
           value: "Stop"
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV","SG125HV-20","SG80KTL","SG33CX","SG40CX","SG50CX","SG100CX、SG75CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG25CX-SA","SG225HX"]
     - name: "power_limitation_switch"
       level: 2
       address: 5007
@@ -1718,4 +1719,6 @@ scan: # these have to be 1 less than the first register
       range: 10
 
 # full Models Supported:
-#["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]
+models:
+  - grid: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+  - hybrid: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
