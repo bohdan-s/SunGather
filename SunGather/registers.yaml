@@ -1522,6 +1522,7 @@ registers:
           value: "Enable"
         - response: 0x55
           value: "Disable"
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV","SG125HV-20","SG80KTL","SG33CX","SG40CX","SG50CX","SG100CX、SG75CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG25CX-SA","SG225HX"]
     - name: "power_limitation_setting"
       level: 2
       address: 5008
@@ -1626,6 +1627,7 @@ registers:
           value: "Enable Q(P)"
         - response: 0xA4
           value: "Enable Q(U)"
+      models: ["SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG225HX","SG250HX","SG25CX-SA","SG100CX","SG75CX"]
     - name: "reactive_power_percentage_setting"
       level: 2
       address: 5037
@@ -1684,7 +1686,7 @@ registers:
 #     address: 5155-5199
 scan: # these have to be 1 less than the first register   
   - read:
-    - start: 5000
+    - start: 4949
       range: 100
     - start: 5100
       range: 100
@@ -1709,7 +1711,9 @@ scan: # these have to be 1 less than the first register
     - start: 7012
       range: 25
     - start: 12999
-      range: 125
+      range: 100
+    - start: 13099
+      range: 100
   - hold:
     - start: 4999
       range: 10
