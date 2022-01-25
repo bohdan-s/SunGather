@@ -5,7 +5,7 @@ registers:
       address: 4990
       datatype: "UTF-8"
     - name: "device_type_code"
-      level: 0
+      level: 3
       address: 5000
       datatype: "U16"
       datarange:
@@ -178,7 +178,8 @@ registers:
       level: 2
       address: 5001
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kW"
     - name: "output_type"
       level: 2
       address: 5002
@@ -194,96 +195,114 @@ registers:
       level: 0
       address: 5003
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kWh"
     - name: "total_power_yields"  
       level: 1  
       address: 5004
       datatype: "U32"
+      unit: "KWh"
     - name: "total_running_time"  
       level: 1  
       address: 5006
       datatype: "U32"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      unit: "h"
     - name: "internal_temperature"
       level: 1    
       address: 5008
       datatype: "S16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "°C"
     - name: "total_apparent_power"
       level: 1    
       address: 5009
       datatype: "U32"
       models: ["SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT", "SG33K3J", "SG36KTL-M", "SG40KTL-M", "SG50KTL", "SG50KTL-M", "SG60KTL", "SG60KTL-M", "SG60KU-M", "SG80KTL", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG33CX", "SG40CX", "SG50CX", "SG110CX", "SG250HX", "SG30CX", "SG36CX-US", "SG60CX-US", "SG250HX-US", "SG250HX-IN", "SG25CX-SA", "SG100CX", "SG75CX", "SG225HX"]
+      unit: "VA"
     - name: "mppt_1_voltage"    
       level: 2
       address: 5011
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
     - name: "mppt_1_current" 
       level: 2   
       address: 5012
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
     - name: "mppt_2_voltage" 
       level: 2   
       address: 5013
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","SG50KTL-M-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG5K-D","SG8K-D"]
     - name: "mppt_2_current"
       level: 2    
       address: 5014
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "A"
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","SG50KTL-M-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG5K-D","SG8K-D"]
     - name: "mppt_3_voltage"
       level: 2    
       address: 5015
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX"]
     - name: "mppt_3_current"
       level: 2    
       address: 5016
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG8K-D"]
     - name: "total_dc_power"
       level: 2    
       address: 5017
       datatype: "S32" # Documentation says Unsigned, but seems to be returning Signed 32bit
+      unit: "W"
     - name: "phase_a_voltage"
       level: 1
       address: 5019
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
     - name: "phase_b_voltage"
       level: 2    
       address: 5020
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
     - name: "phase_c_voltage"
       level: 2    
       address: 5021
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
     - name: "phase_a_current"
       level: 2    
       address: 5022
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "phase_b_current" 
       level: 2   
       address: 5023
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "phase_c_current"
       level: 2    
       address: 5024
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
 #   - name: "Reserved"    
 #     address: 5025
@@ -298,21 +317,24 @@ registers:
       level: 0    
       address: 5031
       datatype: "U32"
+      unit: "W"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT","SG5K-D","SG8K-D"]
     - name: "total_reactive_power"
       level: 2    
       address: 5033
       datatype: "S32"
+      unit: "Var"
     - name: "power_factor"                # >0 means leading, <0 means lagging
       level: 2
       address: 5035
       datatype: "S16"
-      multiple: 0.001
+      accuracy: 0.001
     - name: "grid_frequency"
       level: 2    
       address: 5036
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "Hz"
 #   - name: "Reserved"    
 #     address: 5037
 #     datatype: "U16"
@@ -389,7 +411,8 @@ registers:
       level: 2
       address: 5049
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kVar"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT","SG5K-D","SG8K-D"]
 #   - name: "Reserved"    
 #     address: 5050 - 5070
@@ -398,6 +421,7 @@ registers:
       level: 2   
       address: 5071
       datatype: "U16"
+      unit: "k-ohm"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
 #   - name: "Reserved"    
 #     address: 5072
@@ -408,11 +432,13 @@ registers:
       level: 2 
       address: 5077
       datatype: "U32"
+      unit: "w"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "reactive_power_regulation_setpoint"    
       level: 2
       address: 5079
       datatype: "S32"
+      unit: "Var"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "work_state_2"                # See Appendix 2
       level: 2
@@ -454,119 +480,151 @@ registers:
       datatype: "S32"
       indicator: True
       smart_meter: True
+      unit: "w"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_a_phase_power"
       level: 2
       address: 5085
       datatype: "S32"
+      unit: "w"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_b_phase_power"
       level: 2
       address: 5087
       datatype: "S32"
+      unit: "w"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_c_phase_power"
       level: 2
       address: 5089
       datatype: "S32"
+      unit: "w"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "load_power"
       level: 1
       address: 5091
       datatype: "S32"
       smart_meter: True
+      unit: "w"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "daily_export_energy"
       level: 1
       address: 5093
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
     - name: "total_export_energy"
       level: 1
       address: 5095
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
     - name: "daily_import_energy"
       level: 1
       address: 5097
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
     - name: "total_import_energy"
       level: 1
       address: 5099
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
     - name: "daily_direct_energy_consumption"
       level: 1
       address: 5101
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
     - name: "total_direct_energy_consumption"
       level: 1
       address: 5103
       datatype: "U32"
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG5K-D","SG8K-D"]
 #   - name: "Reserved"    
 #     address: 5105 - 5112
+    - name: "daily_running_time"
+      level: 1
+      address: 5113
+      datatype: "U16"
+      unit: "min"
     - name: "mppt_4_voltage"    
       level: 2
       address: 5115
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG50KTL-M","SG60KTL-M","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_4_current"    
       level: 2
       address: 5116
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG50KTL-M","SG60KTL-M","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_5_voltage" 
       level: 2   
       address: 5117
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_5_current"  
       level: 2  
       address: 5118
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "A"
       models: ["SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_6_voltage"   
       level: 2 
       address: 5119
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_6_current"   
       level: 2 
       address: 5120
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_7_voltage"    
       level: 2
       address: 5121
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_7_current"    
       level: 2
       address: 5122
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "A"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_8_voltage"    
       level: 2
       address: 5123
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_8_current"    
       level: 2
       address: 5124
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
 #   - name: "Reserved"    
 #     address: 5125
@@ -576,55 +634,64 @@ registers:
       level: 1
       address: 5128
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "mppt_9_voltage"    
       level: 2
       address: 5130
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_9_current"    
       level: 2
       address: 5131
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_10_voltage"    
       level: 2
       address: 5132
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
     - name: "mppt_10_current"    
       level: 2
       address: 5133
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "A"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
     - name: "mppt_11_voltage"    
       level: 2
       address: 5134
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
     - name: "mppt_11_current"    
       level: 2
       address: 5135
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "A"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
     - name: "mppt_12_voltage"    
       level: 2
       address: 5136
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "V"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
     - name: "mppt_12_current"    
       level: 2
       address: 5137
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "A"
       models: ["SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN"]
 #   - name: "Reserved"    
 #     address: 5138 - 5139
@@ -640,25 +707,29 @@ registers:
       level: 1
       address: 5144
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kWh"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG25CX-SA","SG100CX","SG75CX","SG225HX","SG5K-D","SG8K-D"]
     - name: "negative_voltage_to_the_ground"   
       level: 2 
       address: 5146
       datatype: "S16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "V"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "bus_voltage"    
       level: 2
       address: 5147
       datatype: "U16"
-      multiple: 0.1 
+      accuracy: 0.1
+      unit: "V"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "grid_frequency"    
       level: 2
       address: 5148
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
+      unit: "Hz"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG25CX-SA","SG100CX","SG75CX","SG225HX","SG5K-D","SG8K-D"]
 #   - name: "Reserved"    
 #     address: 5149
@@ -791,145 +862,170 @@ registers:
       level: 2
       address: 7013
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
+      unit: "A"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "string_2_current"    
       level: 2
       address: 7014
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
+      unit: "A"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "string_3_current"    
       level: 2
       address: 7015
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", ]
     - name: "string_4_current"    
       level: 2
       address: 7016
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", ]
     - name: "string_5_current"    
       level: 2
       address: 7017
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", ]
     - name: "string_6_current"    
       level: 2
       address: 7018
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", ]
     - name: "string_7_current"    
       level: 2
       address: 7019
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_8_current"    
       level: 2
       address: 7020
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_9_current"    
       level: 2
       address: 7021
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KU", "SG36KTL", "SG36KU", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG33K3J", "SG49K5J", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_10_current"    
       level: 2
       address: 7022
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG30KU", "SG36KTL", "SG36KU", "SG50KTL-M", "SG60KTL-M", "SG49K5J", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_11_current"    
       level: 2
       address: 7023
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG50KTL-M", "SG60KTL-M", "SG49K5J", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_12_current"    
       level: 2
       address: 7024
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG50KTL-M", "SG60KTL-M", "SG49K5J", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_13_current"    
       level: 2
       address: 7025
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG60KTL-M", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", ]
     - name: "string_14_current"    
       level: 2
       address: 7026
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG60KTL-M", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG30CX", "SG33CX", "SG36CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", ]
     - name: "string_15_current"    
       level: 2
       address: 7027
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG60KTL-M", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX"]
     - name: "string_16_current"    
       level: 2
       address: 7028
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG60KTL-M", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG80KTL-M", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX"]
     - name: "string_17_current"    
       level: 2
       address: 7029
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG80KTL", "SG80KTL-20", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX"]
     - name: "string_18_current"    
       level: 2
       address: 7030
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG80KTL", "SG80KTL-20", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG75CX"]
     - name: "string_19_current"    
       level: 2
       address: 7031
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "string_20_current"    
       level: 2
       address: 7032
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "string_21_current"    
       level: 2
       address: 7033
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "string_22_current"    
       level: 2
       address: 7034
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "string_23_current"    
       level: 2
       address: 7035
       datatype: "U16"
-      multiple: 0.01
-      models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "string_24_current"    
       level: 2
       address: 7036
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
+      unit: "A"
+      models: ["SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN"]
     - name: "system_state"    
       level: 2
       address: 13000
@@ -1002,30 +1098,32 @@ registers:
       level: 0
       address: 5000
       datatype: "U16"
+      unit: "YYYY"
     - name: "month"
       level: 0
       address: 5001
       datatype: "U16"
+      unit: "MM"
     - name: "day"
       level: 0
       address: 5002
       datatype: "U16"
+      unit: "DD"
     - name: "hour"
       level: 0
       address: 5003
       datatype: "U16"
-    - name: "hour"
-      level: 0
-      address: 5003
-      datatype: "U16"
+      unit: "HH"
     - name: "minute"
       level: 0
       address: 5004
       datatype: "U16"
+      unit: "MM"
     - name: "second"
       level: 0
       address: 5005
       datatype: "U16"
+      unit: "SS"
     - name: "start_stop"
       level: 1
       address: 5006
@@ -1048,6 +1146,8 @@ registers:
       level: 2
       address: 5008
       datatype: "U16"
+      accuracy: 0.1
+      unit: "%"
 #   - name: "Reserved"    
 #     address: 5009
 #     datatype: "U16"
@@ -1071,11 +1171,13 @@ registers:
       level: 2
       address: 5012
       datatype: "U16"
+      unit: "A"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "current_transformer_range"
       level: 2
       address: 5013
       datatype: "U16"
+      unit: "A"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "current_transformer"
       level: 2
@@ -1091,17 +1193,21 @@ registers:
       level: 2
       address: 5015
       datatype: "U16"
+      accuracy: 0.1
+      unit: "%"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "installed_pv_power"
       level: 2
       address: 5016
       datatype: "U16"
+      accuracy: 0.01
+      unit: "KW"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "power_factor_setting"
       level: 2
       address: 5019
       datatype: "U16"
-      multiple: 0.001
+      accuracy: 0.001
     - name: "scheduling_achieve_active_overload"
       level: 2
       address: 5020
@@ -1144,17 +1250,22 @@ registers:
       level: 2
       address: 5037
       datatype: "S16"
+      accuracy: 0.1
+      unit: "%"
 #   - name: "Reserved"    
 #     address: 5038
     - name: "power_limitation_adjustment"
       level: 2
       address: 5039
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
+      unit: "kW"
     - name: "reactive_power_adjustment"
       level: 2
       address: 5040
       datatype: "S16"
+      accuracy: 0.1
+      unit: "kVar"
     - name: "pid_recovery"
       level: 2
       address: 5041

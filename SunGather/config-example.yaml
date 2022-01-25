@@ -8,8 +8,7 @@ inverter:
   # model: "SG7.0RT"                        # [Optional] This is autodetected on startup, only needed if detection issues or for testing
                                             # See model list here: https://github.com/bohdan-s/SunGather#supported
   # smart_meter: True                       # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
-  # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if try uses PC time when updating timestamps (e.g. PVOutput)
-  # manual_load: False                      # [Optional] Manually calculate load total_active_power + meter_power if the inverter does not supply it
+  # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if true it uses PC time when updating timestamps (e.g. PVOutput)
   # logging: 30                             # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
   # level: 1                                # [Optional] Set the amount of information to gather
                                             # 0 = Model and Solar Generation, 
@@ -68,43 +67,36 @@ exports:
       - name: "Daily Generation"
         sensor_type: sensor
         register: daily_power_yields
-        unit: kWh
         dev_class: energy
         state_class: total_increasing
       - name: "Active Power"
         sensor_type: sensor
         register: total_active_power
-        unit: W
         dev_class: power
         state_class: measurement
       - name: "Load Power"
         sensor_type: sensor
         register: load_power
-        unit: W
         dev_class: power
         state_class: measurement
       - name: "Meter Power"
         sensor_type: sensor
         register: meter_power
-        unit: W
         dev_class: power
         state_class: measurement
       - name: "Export to Grid"
         sensor_type: sensor
         register: export_to_grid
-        unit: W
         dev_class: power
         state_class: measurement
       - name: "Import from Grid"
         sensor_type: sensor
         register: import_from_grid
-        unit: W
         dev_class: power
         state_class: measurement
       - name: "Temperature"
         sensor_type: sensor
         register: internal_temperature
-        unit: °C
         dev_class: temperature
         state_class: measurement
       - name: "Power State"
@@ -121,6 +113,7 @@ exports:
     sid: "xxxxx"                            # [Optional] System ID, Settings > Registered Systems > System ID
     # join_team: False                      # [Optional] Default True, This will join the SunGather team in PVOutput, Setting to False will leave the team if previously joined
     rate_limit: 60                          # [Optional] Default 60, 60 for regular accounts, 300 for donation accounts
+    cumulative_flag: 2                      # If using v2 & v4 set to 1, of using only v1 set to 2 (if daily totals)
     batch_points: 1                         # [Optional] Default 1, how many data points to batch upload, 
                                             # Time between uploads will be status_interval * batch_points. e.g. status_invterval of 5min, and batch_points of 12 will upload to PVOutput Hourly (5 * 12 = 60 mins)
     parameters:                             # [Required] v1 & v3 or v2 & v4 minimum. See: https://pvoutput.org/help/api_specification.html#power-and-energy-calculation
@@ -137,8 +130,6 @@ exports:
 #       register: internal_temperature      # 
       - name: v6                            # Voltage
         register: phase_a_voltage           # Read voltage from first Phase
-      - name: c1                            # Cumulative Flag, 
-        value: 2                            # If using v2 & v4 set to 1, of using only v1 set to 2 (if daily totals)
 #     - name: "v7"                          # Extended Value v7 - Donation Only
 #       register:
 #     - name: "v8"                          # Extended Value v8 - Donation Only

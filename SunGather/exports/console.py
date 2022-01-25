@@ -1,22 +1,29 @@
-import logging
-
 class export_console(object):
     def __init__(self):
-        return
+        pass
 
     # Configure Console
-    def configure(self, config, config_inverter):
-        logging.info("Console: Configured")
-        print("{:<20} {:<25}".format('Config','Value'))
-        for setting in config_inverter:
-            print("{:<40} {:<25}".format(setting,str(config_inverter.get(setting))))
+    def configure(self, config, inverter):
+        print("+----------------------------------------------+")
+        print("{:<46} {:<1}".format("| " + 'Inverter Configuration Settings',"|"))
+        print("+----------------------------------------------+")
+        print("{:<20} {:<25} {:<1}".format("| " + 'Config',"| " + 'Value', "|"))
+        print("+--------------------+-------------------------+")
+        for setting, value in inverter.client_config.items():
+            print("{:<20} {:<25} {:<1}".format("| " + str(setting), "| " + str(value), "|"))
+        for setting, value in inverter.inverter_config.items():
+            print("{:<20} {:<25} {:<1}".format("| " + str(setting), "| " + str(value), "|"))
+        print("+----------------------------------------------+")
+
+        return True
 
     def publish(self, inverter):
+        print("+----------------------------------------------------------------------+") 
+        print("| {:<7} | {:<35} | {:<20} |".format('Address', 'Register','Value'))
+        print("+---------+-------------------------------------+----------------------+") 
+        for register, value in inverter.latest_scrape.items():
+            print("| {:<7} | {:<35} | {:<20} |".format(str(inverter.getRegisterAddress(register)), str(register), str(value) + " " + str(inverter.getRegisterUnit(register))))
+        print("+----------------------------------------------------------------------+") 
+        print(f"Logged {len(inverter.latest_scrape)} registers to Console")
 
-        print("{:<40} {:<25}".format('Register','Value'))
-        for register in inverter:
-            print("{:<40} {:<25}".format(register,str(inverter.get(register))))
-
-        print(f"Logged {len(inverter)} registers to Console")
-
-        return
+        return True
