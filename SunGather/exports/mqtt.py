@@ -58,9 +58,11 @@ class export_mqtt(object):
         logging.info(f"MQTT: Server Disconnected code: {rc}")
     
     def on_publish(self, client, userdata, mid):
-        if mid:
+        try:
             self.mqtt_queue.remove(mid)
-            logging.info(f"MQTT: Message {mid} Published")
+        except Exception as err:
+            pass
+        logging.info(f"MQTT: Message {mid} Published")
 
     def cleanName(self, name):
         return name.lower().replace(' ','_')
