@@ -52,22 +52,22 @@ class SungrowInverter():
             else:
                 self.disconnect()
 
-        if self.config_inverter['connection'] == "http":
+        if self.inverter_config['connection'] == "http":
             self.client_config['port'] = '8082'
             self.client = SungrowModbusWebClient.SungrowModbusWebClient(**self.client_config)
-        elif self.config_inverter['connection'] == "sungrow":
+        elif self.config_inverter_configinverter['connection'] == "sungrow":
             self.client = SungrowModbusTcpClient.SungrowModbusTcpClient(**self.client_config)
-        elif self.config_inverter['connection'] == "modbus":
+        elif self.inverter_config['connection'] == "modbus":
             self.client = ModbusTcpClient(**self.client_config)
         else:
-            logging.warning(f"Inverter: Unknown connection type {self.config_inverter['connection']}, Valid options are http, sungrow or modbus")
+            logging.warning(f"Inverter: Unknown connection type {self.inverter_config['connection']}, Valid options are http, sungrow or modbus")
             return False
         logging.info("Connection: " + str(self.client))
 
         retval = self.client.connect()
         # Wait 3 seconds, fixes timing issues
         time.sleep(3)
-        if not self.config_inverter['connection'] == "http":
+        if not self.inverter_config['connection'] == "http":
             self.client.close()
         return retval
 
