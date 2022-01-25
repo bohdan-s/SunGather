@@ -1,8 +1,9 @@
 inverter:
   host: 192.168.1.100                       # [Required] IP Address of the Inverter or Dongle
   # port: 502                               # [Optional] Default for modbus is 502, for http is 8082
+  # timeout: 10                             # [Optional] Default is 10, how long to wait for a connection
+  # retries: 3                              # [Optional] Default is 3, how many times to retry if connection fails
   # slave: 0x01                             # [Optional] Default is 0x01
-  # timeout: 10                             # [Optional] Default is 10
   # scan_interval: 30                       # [Optional] Default is 30
   connection: sungrow                       # [Required] options: modbus, sungrow, http
   # model: "SG7.0RT"                        # [Optional] This is autodetected on startup, only needed if detection issues or for testing

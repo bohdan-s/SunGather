@@ -45,24 +45,40 @@ class SungrowInverter():
 
         self.latest_scrape = {}
 
-    def connect(self, connection="modbus"):
-        if connection == "http":
+    def connect(self):
+        if self.client:
+            if(self.client.connect()):
+                return True
+            else:
+                self.disconnect()
+
+        if self.config_inverter['connection'] == "http":
             self.client_config['port'] = '8082'
             self.client = SungrowModbusWebClient.SungrowModbusWebClient(**self.client_config)
-        elif connection == "sungrow":
+        elif self.config_inverter['connection'] == "sungrow":
             self.client = SungrowModbusTcpClient.SungrowModbusTcpClient(**self.client_config)
-        elif connection == "modbus":
+        elif self.config_inverter['connection'] == "modbus":
             self.client = ModbusTcpClient(**self.client_config)
         else:
-            logging.warning(f'Inverter: Unknown connection type {connection}, Valid options are http, sungrow or modbus')
+            logging.warning(f"Inverter: Unknown connection type {self.config_inverter['connection']}, Valid options are http, sungrow or modbus")
             return False
         logging.info("Connection: " + str(self.client))
 
         retval = self.client.connect()
-        if not connection == "http":
+        # Wait 3 seconds, fixes timing issues
+        time.sleep(3)
+        if not self.config_inverter['connection'] == "http":
             self.client.close()
-
         return retval
+
+    def close(self):
+        logging.debug("Closed session: " + str(self.client))
+        self.client.close()
+
+    def disconnect(self):
+        logging.info("Disconnected: " + str(self.client))
+        self.client.close()
+        self.client = None
 
     def configure_registers(self,registersfile):
         # Check model so we can load only valid registers
@@ -254,7 +270,7 @@ class SungrowInverter():
 
     def scrape(self):
         scrape_start = datetime.now()
-        self.client.connect()
+        self.connect()
 
         # Clear previous inverter values, keep the model and run state
         if self.latest_scrape.get("run_state"): run_state = self.latest_scrape.get("run_state")
@@ -272,11 +288,13 @@ class SungrowInverter():
             if not self.load_registers(range.get('type'), int(range.get('start')), int(range.get('range'))):
                 load_registers_failed +=1
         if load_registers_failed == load_registers_count:
+            # If every scrape fails, disconnect the client
+            self.disconnect()
             return False
         if load_registers_failed > 0:
             logging.info(f'Scraping: {load_registers_failed}/{load_registers_count} registers failed to scrape')
 
-        self.client.close()
+        self.close()
 
         # Create a registers for Power imported and exported to/from Grid
         if self.inverter_config['level'] >= 1:
@@ -423,8 +441,9 @@ def main():
     config_inverter = {
         "host": configfile['inverter'].get('host',None),
         "port": configfile['inverter'].get('port',502),
-        "slave": configfile['inverter'].get('slave',0x01),
         "timeout": configfile['inverter'].get('timeout',10),
+        "retries": configfile['inverter'].get('retries',3),
+        "slave": configfile['inverter'].get('slave',0x01),
         "scan_interval": configfile['inverter'].get('scan_interval',15),
         "connection": configfile['inverter'].get('connection',"modbus"),
         "model": configfile['inverter'].get('model',None),
@@ -435,8 +454,11 @@ def main():
         "level": configfile['inverter'].get('level',1)
     }
 
-    logging.getLogger().setLevel(configfile['inverter'].get('logging'))
-    logging.debug(f'Inverter Config Loaded: {config_inverter}')
+    if 'loglevel' in locals():
+        logging.getLogger().setLevel(loglevel)
+    else:
+        logging.getLogger().setLevel(config_inverter['logging'])
+    logging.debug(f'Inverter Config Loaded: {config_inverter}')    
 
     if config_inverter.get('host'):
         inverter = SungrowInverter(config_inverter)
@@ -444,7 +466,7 @@ def main():
         logging.error(f"Error: host option in config is required")
         sys.exit("Error: host option in config is required")
 
-    if not inverter.connect(config_inverter.get('connection')):
+    if not inverter.connect():
         logging.error(f"Error: Connection to inverter failed: {config_inverter.get('host')}:{config_inverter.get('port')}")
         sys.exit(f"Error: Connection to inverter failed: {config_inverter.get('host')}:{config_inverter.get('port')}")       
 
@@ -470,9 +492,7 @@ def main():
     while True:
         loop_start = datetime.now()
 
-        if not inverter.client:
-            inverter.connect()
-            time.sleep(3)       # Wait 3 secs for connection, resolves issues with modbus not reconnecting on failure
+        inverter.connect()
 
         # Scrape the inverter
         success = inverter.scrape()
@@ -481,8 +501,7 @@ def main():
             for export in exports:
                 export.publish(inverter)
         else:
-            inverter.client.close()
-            inverter.client = None
+            inverter.disconnect()
             logging.warning(f"Data collection failed, skipped exporting data. Retying in {scan_interval} secs")
 
         loop_end = datetime.now()
