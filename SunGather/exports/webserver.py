@@ -8,39 +8,33 @@ import logging
 class export_webserver(object):
     html_body = "Pending Data Retrieval"
     def __init__(self):
-        self._isConfigured = False
-        return
+        False
 
     # Configure Webserver
-    def configure(self, config, config_inverter):
+    def configure(self, config, inverter):
         try:
             self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()
-            self.config_inverter = config_inverter
             logging.info(f"Webserver: Configured")
-            self._isConfigured = True
         except Exception as err:
             logging.error(f"Webserver: Error: {err}")
-
-        return self._isConfigured
+            return False
+        return True
 
     def publish(self, inverter):
-        if not self._isConfigured:
-            logging.info("Webserver: Skipped, Initial Configuration Failed")
-            return False
+        body = "<h3>Sungather v" + __version__ + "</h3></p><table><th>Address</th><tr><th>Register</th><th>Value</th></tr>"
+        for register, value in inverter.latest_scrape.items():
+            body = body + f"<tr><td>{str(inverter.getRegisterAddress(register))}</td><td>{str(register)}</td><td>{str(value)} {str(inverter.getRegisterUnit(register))}</td></tr>"
+        export_webserver.html_body = body + f"</table><p>Total {len(inverter.latest_scrape)} registers"
 
-        body = "<h3>Sungather v" + __version__ + "</h3></p><table><tr><th>Register</th><th>Value</th>"
-        for register in inverter:
-            body = body + f"<tr><td>{register}</td><td>{inverter.get(register)}</td></tr>"
-        export_webserver.html_body = body + f"</table><p>Total {len(inverter)} registers"
-
-        body = "</p></p><table><tr><th>Configuration</th><th>Value</th>"
-        for config in self.config_inverter:
-            body = body + f"<tr><td>{config}</td><td>{self.config_inverter.get(config)}</td></tr>"
+        body = "</p></p><table><tr><th>Configuration</th><th>Value</th></tr>"
+        for setting, value in inverter.client_config.items():
+            body = body + f"<tr><td>{str(setting)}</td><td>{str(value)}</td></tr>"
+        for setting, value in inverter.inverter_config.items():
+            body = body + f"<tr><td>{str(setting)}</td><td>{str(value)}</td></tr>"
         export_webserver.html_body = export_webserver.html_body + body + f"</table></p>"
-        logging.info("Webserver: Content Updated")
             
         return True
 

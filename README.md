@@ -35,9 +35,10 @@ Has multiple export locations out of the box:
 * PVOutput - Load into PVOutput.org
 * InfluxDB - Load data directly into InfluxDB
 * Simple webserver showing collected data
+* Rasberry Pi Docker support
 * and more coming....
 
-I have borrowed HEAVILY from the following projects, THANK YOU
+I have learned a lot from the following projects, THANK YOU
 * [solariot](https://github.com/meltaxa/solariot)
 * [modbus4mqtt](https://github.com/tjhowse/modbus4mqtt)
 * [ModbusTCP2MQTT](https://github.com/TenySmart/ModbusTCP2MQTT)
@@ -45,12 +46,18 @@ I have borrowed HEAVILY from the following projects, THANK YOU
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Raodmap / TO DO
-* Rasberry Pi Docker support
 * Full Home Assistant integration, as HACS addon
 
-
-
 ## Updates
+**0.3.0** 
+**IMPORTANT: If updating from v0.1.x or v0.2.x please check config against config-example. some options for MQTT and PVOutput have changed**
+* Heaps bug fixes
+* Fixed PVOutput not working after midnight
+* MQTT now auto-reconnects
+* MQTT/PVOutput now verify values exist before trying to publish
+* Rasberry Pi Docker support
+* lots more...
+
 
 **0.2.2** 
 * Minor bug fixes
@@ -254,10 +261,18 @@ SH5K-20, SH3K6, SH4K6, SH5K-V13, SH5K-30, SH3K6-30, SH4K6-30, SH5.0RS, SH3.6RS, 
 
 
 ## Building
+Multi Arch (BuildX) Including Raspberry Pi
+```sh
+docker run --privileged --rm tonistiigi/binfmt --install all
+docker buildx create --platform linux/amd64,linux/arm64/v8 --use
+docker buildx build --push --platform linux/amd64,linux/arm64/v8 -t bohdans/sungather:latest -t bohdans/sungather:v<version> .
+```
+Current Arch (docker build)
 ```sh
 docker build --no-cache --rm -t bohdans/sungather:latest -t bohdans/sungather:v<version> .
 docker push bohdans/sungather -a
 ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- LICENSE -->
