@@ -33,7 +33,8 @@ class SungrowInverter():
             "model":            config_inverter.get('model'),
             "level":            config_inverter.get('level'),
             "use_local_time":   config_inverter.get('use_local_time'),
-            "smart_meter":      config_inverter.get('smart_meter')
+            "smart_meter":      config_inverter.get('smart_meter'),
+            "connection":       config_inverter.get('connection')
         }
         self.client = None
         
