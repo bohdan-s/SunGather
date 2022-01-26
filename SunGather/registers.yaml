@@ -452,7 +452,7 @@ registers:
       level: 2 
       address: 5077
       datatype: "U32"
-      unit: "w"
+      unit: "W"
       models: ["SG30KTL", "SG10KTL", "SG12KTL", "SG15KTL", "SG20KTL", "SG30KU", "SG36KTL", "SG36KU", "SG40KTL", "SG40KTL-M", "SG50KTL-M", "SG60KTL-M", "SG60KU", "SG30KTL-M", "SG30KTL-M-V31", "SG33KTL-M", "SG36KTL-M", "SG33K3J", "SG49K5J", "SG34KJ", "LP_P34KSG", "SG50KTL-M-20", "SG60KTL", "SG80KTL", "SG80KTL-20", "SG60KU-M", "SG5KTL-MT", "SG6KTL-MT", "SG8KTL-M", "SG10KTL-M", "SG10KTL-MT", "SG12KTL-M", "SG15KTL-M", "SG17KTL-M", "SG20KTL-M", "SG80KTL-M", "SG111HV", "SG125HV", "SG125HV-20", "SG30CX", "SG33CX", "SG36CX-US", "SG40CX", "SG50CX", "SG60CX-US", "SG110CX", "SG250HX", "SG250HX-US", "SG100CX", "SG100CX-JP", "SG250HX-IN", "SG25CX-SA", "SG75CX", "SG3.0RT", "SG4.0RT", "SG5.0RT", "SG6.0RT", "SG7.0RT", "SG8.0RT", "SG10RT", "SG12RT", "SG15RT", "SG17RT", "SG20RT"]
     - name: "reactive_power_regulation_setpoint"    
       level: 2
@@ -500,32 +500,32 @@ registers:
       datatype: "S32"
       indicator: True
       smart_meter: True
-      unit: "w"
+      unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_a_phase_power"
       level: 2
       address: 5085
       datatype: "S32"
-      unit: "w"
+      unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_b_phase_power"
       level: 2
       address: 5087
       datatype: "S32"
-      unit: "w"
+      unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_c_phase_power"
       level: 2
       address: 5089
       datatype: "S32"
-      unit: "w"
+      unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "load_power"
       level: 1
       address: 5091
       datatype: "S32"
       smart_meter: True
-      unit: "w"
+      unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "daily_export_energy"
       level: 1
@@ -802,93 +802,109 @@ registers:
       level: 1
       address: 6100
       datatype: "U16"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_pv_energy_yields"    
       level: 1
       address: 6196
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "monthly_pv_energy_yields"    
       level: 2
       address: 6227
       datatype: "U16"
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "yearly_pv_energy_yields"    
       level: 2
       address: 6250
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_today_pv"    
       level: 1
       address: 6290
       datatype: "U16"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_pv"    
       level: 1
       address: 6386
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_monthly_pv"    
       level: 2
       address: 6417
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_yearly_pv"    
       level: 2
       address: 6429
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_today"    
       level: 1
       address: 6469
       datatype: "U16"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv"    
       level: 1
       address: 6565
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_monthly"    
       level: 2
       address: 6596
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_yearly"    
       level: 2
       address: 6608
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_today"    
       level: 1
       address: 6648
       datatype: "U16"
       accuracy: 0.1
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv"    
       level: 1
       address: 6744
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_monthly"    
       level: 2
       address: 6775
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_yearly"    
       level: 2
       address: 6787
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
  ##### Residential Hybrid Inverters only END
     - name: "string_1_current"    
@@ -1097,117 +1113,137 @@ registers:
       address: 13002
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_pv_generation"    
       level: 1
       address: 13003
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_export_from_pv"    
       level: 1
       address: 13005
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_export_from_pv"    
       level: 1
       address: 13006
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "load_power"    
       level: 1
       address: 13008
       datatype: "S32"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power"    
       level: 1
       address: 13010
       datatype: "S32"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_battery_charge_from_pv"    
       level: 1
       address: 13012
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_battery_charge_from_pv"    
       level: 1
       address: 13013
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "co2_reduction"    
       level: 2
       address: 13015
       datatype: "U32"
       accuracy: 0.1
+      unit: "kg"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_direct_energy_consumption"    
       level: 1
       address: 13017
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_direct_energy_consumption"    
       level: 1
       address: 13018
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_voltage"    
       level: 2
       address: 13020
       datatype: "U16"
       accuracy: 0.1
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_current"    
       level: 2
       address: 13021
       datatype: "U16"
       accuracy: 0.1
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_power"    
       level: 1
       address: 13022
       datatype: "U16"
+      unit: "W"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_level"    
       level: 1
       address: 13023
       datatype: "U16"
       accuracy: 0.1
+      unit: "%"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_state_of_healthy"    
       level: 2
       address: 13024
       datatype: "U16"
       accuracy: 0.1
+      unit: "%"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_temperature"    
       level: 2
       address: 13025
       datatype: "S16"
       accuracy: 0.1
+      unit: "°C"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "daily_battery_discharge_energy"    
       level: 2
       address: 13026
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_battery_discharge_energy"    
       level: 2
       address: 13027
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "self_consumption_of_day"    
       level: 1
       address: 13029
       datatype: "U16"
       accuracy: 0.1
+      unit: "%"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "grid_state"    
       level: 1
@@ -1224,41 +1260,48 @@ registers:
       address: 13031
       datatype: "S16"
       accuracy: 0.1
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "phase_b_current"    
       level: 2
       address: 13032
       datatype: "S16"
       accuracy: 0.1
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "phase_c_current"    
       level: 2
       address: 13033
       datatype: "S16"
       accuracy: 0.1
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_active_power"    
       level: 0
       address: 13034
       datatype: "S32"
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "daily_import_energy"    
       level: 1
       address: 13036
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_import_energy"    
       level: 1
       address: 13037
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_capacity"    
       level: 1
       address: 13039
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
               # not for ? , "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "daily_charge_energy"    
@@ -1266,12 +1309,14 @@ registers:
       address: 13040
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_charge_energy"    
       level: 2
       address: 13041
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "drm_state"    
       level: 2
@@ -1283,12 +1328,14 @@ registers:
       address: 13045
       datatype: "U16"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_export_energy"    
       level: 2
       address: 13046
       datatype: "U32"
       accuracy: 0.1
+      unit: "kWh"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "inverter_alarm"
       level: 3
@@ -1384,11 +1431,13 @@ registers:
       level: 3
       address: 13101
       datatype: "U16"
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_discharging_current"
       level: 3
       address: 13102
       datatype: "U16"
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "warning"
       level: 3
@@ -1414,6 +1463,7 @@ registers:
       level: 2
       address: 13107
       datatype: "U16"
+      unit: "%"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "soh"
       level: 2
@@ -1424,12 +1474,14 @@ registers:
       level: 2
       address: 13109
       datatype: "U16"
+      unit: "A"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "battery_voltage"
       level: 2
       address: 13110
       datatype: "U16"
       accuracy: 0.01
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "cycle_count"
       level: 2
@@ -1441,36 +1493,43 @@ registers:
       level: 2
       address: 13112
       datatype: "U16"
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_cell_voltage"
       level: 2
       address: 13113
       datatype: "U16"
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "min_cell_voltage"
       level: 2
       address: 13114
       datatype: "U16"
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "battery_pack_voltage"
       level: 2
       address: 13115
       datatype: "U16"
+      unit: "V"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "average_cell_temp"
       level: 2
       address: 13116
       datatype: "S16"
+      unit: "°C"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "max_cell_temp"
       level: 2
       address: 13117
       datatype: "S16"
+      unit: "°C"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "min_cell_temp"
       level: 2
       address: 13118
       datatype: "S16"
+      unit: "°C"
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
   - hold:
     - name: "year"
