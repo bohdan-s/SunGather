@@ -56,7 +56,7 @@ class SungrowInverter():
         if self.inverter_config['connection'] == "http":
             self.client_config['port'] = '8082'
             self.client = SungrowModbusWebClient.SungrowModbusWebClient(**self.client_config)
-        elif self.config_inverter_configinverter['connection'] == "sungrow":
+        elif self.inverter_config['connection'] == "sungrow":
             self.client = SungrowModbusTcpClient.SungrowModbusTcpClient(**self.client_config)
         elif self.inverter_config['connection'] == "modbus":
             self.client = ModbusTcpClient(**self.client_config)
