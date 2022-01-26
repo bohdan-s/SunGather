@@ -25,7 +25,7 @@ registers:
       address: 4990
       datatype: "UTF-8"
     - name: "device_type_code"
-      level: 3
+      level: 2
       address: 5000
       datatype: "U16"
       datarange:
@@ -576,6 +576,7 @@ registers:
       address: 5113
       datatype: "U16"
       unit: "min"
+      models: ["SG50KTL-M","SG60KTL-M","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG75CX"]
     - name: "mppt_4_voltage"    
       level: 2
       address: 5115
@@ -754,7 +755,7 @@ registers:
 #   - name: "Reserved"    
 #     address: 5149
 #     datatype: "U16"
-#     multiple: 0.01
+#     accuracy: 0.01
     - name: "pid_work_state"
       level: 2
       address: 5150
@@ -806,7 +807,7 @@ registers:
       level: 1
       address: 6196
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "monthly_pv_energy_yields"    
       level: 2
@@ -817,7 +818,7 @@ registers:
       level: 2
       address: 6250
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_today_pv"    
       level: 1
@@ -828,19 +829,19 @@ registers:
       level: 1
       address: 6386
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_monthly_pv"    
       level: 2
       address: 6417
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "direct_power_consumption_yearly_pv"    
       level: 2
       address: 6429
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_today"    
       level: 1
@@ -851,43 +852,43 @@ registers:
       level: 1
       address: 6565
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_monthly"    
       level: 2
       address: 6596
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "export_power_from_pv_yearly"    
       level: 2
       address: 6608
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_today"    
       level: 1
       address: 6648
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv"    
       level: 1
       address: 6744
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_monthly"    
       level: 2
       address: 6775
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "battery_charge_power_from_pv_yearly"    
       level: 2
       address: 6787
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
  ##### Residential Hybrid Inverters only END
     - name: "string_1_current"    
@@ -1090,31 +1091,30 @@ registers:
       level: 2
       address: 13001
       datatype: "U16"
-      multiple:
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_pv_generation"    
       level: 2
       address: 13002
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_pv_generation"    
       level: 1
       address: 13003
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_export_from_pv"    
       level: 1
       address: 13005
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_export_from_pv"    
       level: 1
       address: 13006
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "load_power"    
       level: 1
@@ -1130,43 +1130,43 @@ registers:
       level: 1
       address: 13012
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_battery_charge_from_pv"    
       level: 1
       address: 13013
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "co2_reduction"    
       level: 2
       address: 13015
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "daily_direct_energy_consumption"    
       level: 1
       address: 13017
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"] 
     - name: "total_direct_energy_consumption"    
       level: 1
       address: 13018
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_voltage"    
       level: 2
       address: 13020
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_current"    
       level: 2
       address: 13021
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_power"    
       level: 1
@@ -1177,37 +1177,37 @@ registers:
       level: 1
       address: 13023
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_state_of_healthy"    
       level: 2
       address: 13024
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_temperature"    
       level: 2
       address: 13025
       datatype: "S16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "daily_battery_discharge_energy"    
       level: 2
       address: 13026
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_battery_discharge_energy"    
       level: 2
       address: 13027
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "self_consumption_of_day"    
       level: 1
       address: 13029
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "grid_state"    
       level: 1
@@ -1223,19 +1223,19 @@ registers:
       level: 2
       address: 13031
       datatype: "S16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "phase_b_current"    
       level: 2
       address: 13032
       datatype: "S16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "phase_c_current"    
       level: 2
       address: 13033
       datatype: "S16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_active_power"    
       level: 0
@@ -1246,32 +1246,32 @@ registers:
       level: 1
       address: 13036
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_import_energy"    
       level: 1
       address: 13037
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_capacity"    
       level: 1
       address: 13039
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
               # not for ? , "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "daily_charge_energy"    
       level: 2
       address: 13040
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_charge_energy"    
       level: 2
       address: 13041
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "drm_state"    
       level: 2
@@ -1282,73 +1282,73 @@ registers:
       level: 1
       address: 13045
       datatype: "U16"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "total_export_energy"    
       level: 2
       address: 13046
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "inverter_alarm"
       level: 3
       address: 13050
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "grid-side_fault"
       level: 3
       address: 13052
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "system_fault1"
       level: 3
       address: 13054
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "system_fault2"
       level: 3
       address: 13056
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "dc-side_fault"
       level: 3
       address: 13058
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "permanent_fault"
       level: 3
       address: 13060
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "bdc-side_fault"
       level: 3
       address: 13062
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "bdc-side_permanent_fault"
       level: 3
       address: 13064
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_fault"
       level: 3
       address: 13066
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "battery_alarm"
       level: 3
       address: 13068
       datatype: "U32"
-      multiple: 0.1
+      accuracy: 0.1
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30", "SH5.0RS", "SH3.6RS", "SH4.6RS", "SH6.0RS", "SH10RT", "SH8.0RT", "SH6.0RT", "SH5.0RT"]
     - name: "bms_alarm"
       level: 3
@@ -1429,13 +1429,13 @@ registers:
       level: 2
       address: 13110
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "cycle_count"
       level: 2
       address: 13111
       datatype: "U16"
-      multiple: 0.01
+      accuracy: 0.01
       models: ["SH5K-20", "SH3K6", "SH4K6", "SH5K-V13", "SH5K-30", "SH3K6-30", "SH4K6-30"]
     - name: "average_cell_voltage"
       level: 2
@@ -1529,6 +1529,7 @@ registers:
       datatype: "U16"
       accuracy: 0.1
       unit: "%"
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV","SG125HV-20","SG80KTL","SG33CX","SG40CX","SG50CX","SG100CX、SG75CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG25CX-SA","SG225HX"]
 #   - name: "Reserved"    
 #     address: 5009
 #     datatype: "U16"
@@ -1634,6 +1635,7 @@ registers:
       datatype: "S16"
       accuracy: 0.1
       unit: "%"
+      models: ["SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG225HX","SG250HX","SG25CX-SA","SG100CX","SG75CX"]
 #   - name: "Reserved"    
 #     address: 5038
     - name: "power_limitation_adjustment"
@@ -1642,12 +1644,14 @@ registers:
       datatype: "U16"
       accuracy: 0.1
       unit: "kW"
+      models: ["SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG225HX","SG250HX","SG25CX-SA","SG100CX","SG75CX"]
     - name: "reactive_power_adjustment"
       level: 2
       address: 5040
       datatype: "S16"
       accuracy: 0.1
       unit: "kVar"
+      models: ["SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG80KTL-M","SG125HV-20","SG33CX","SG40CX","SG50CX","SG110CX","SG136TX","SG250HX","SG30CX","SG36CX-US","SG60CX-US","SG250HX-US","SG250HX-IN","SG225HX","SG250HX","SG25CX-SA","SG100CX","SG75CX"]
     - name: "pid_recovery"
       level: 2
       address: 5041
@@ -1711,9 +1715,7 @@ scan: # these have to be 1 less than the first register
     - start: 7012
       range: 25
     - start: 12999
-      range: 100
-    - start: 13099
-      range: 100
+      range: 125
   - hold:
     - start: 4999
       range: 10
