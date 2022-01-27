@@ -70,8 +70,9 @@ class export_mqtt(object):
     def publish(self, inverter):
         if not self.mqtt_client.is_connected():
             logging.warning(f'MQTT: Server Disconnected; {self.mqtt_queue.__len__()} messages queued, will automatically attempt to reconnect')
-        elif self.mqtt_queue.__len__() > 10:
-            logging.warning(f'MQTT: {self.mqtt_queue.__len__()} messages queued, this may be due to a MQTT server issue')
+        # qos=0 is set, so no acknowledgment is sent, rending this check useless
+        #elif self.mqtt_queue.__len__() > 10:
+        #    logging.warning(f'MQTT: {self.mqtt_queue.__len__()} messages queued, this may be due to a MQTT server issue')
 
         logging.debug(f"MQTT: Publishing: {self.mqtt_config['topic']} : {json.dumps(inverter.latest_scrape)}")
         self.mqtt_queue.append(self.mqtt_client.publish(self.mqtt_config['topic'], json.dumps(inverter.latest_scrape).replace('"', '\"'), qos=0).mid)

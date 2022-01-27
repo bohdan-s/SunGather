@@ -41,21 +41,12 @@ class SungrowInverter():
 
         self.latest_scrape = {}
 
-    def checkConnection(self):
-        logging.debug("Checking Modbus Connection")
-        if self.client:
-            if not self.client.is_socket_open():
-                logging.warning(f'Modbus socket is not connected, attempting to reconnect')
-                self.disconnect()
-                return self.connect()
-            else:
-                logging.debug("Modbus client is still connected")
-                return True
-        else:
-            logging.warning(f'Modbus client is not connected, attempting to reconnect')
-            return self.connect()
-
     def connect(self):
+        if self.client:
+            try: self.client.connect()
+            except: return False
+            return True
+
         if self.inverter_config['connection'] == "http":
             self.client_config['port'] = '8082'
             self.client = SungrowModbusWebClient.SungrowModbusWebClient(**self.client_config)
@@ -68,18 +59,32 @@ class SungrowInverter():
             return False
         logging.info("Connection: " + str(self.client))
 
-        try: retval = self.client.connect()
+        try: self.client.connect()
         except: return False
-        # Wait 3 seconds, fixes timing issues
-        time.sleep(3)
 
-        # Remove the .close, I think this is causing more issues than solving.
-        #if not self.inverter_config['connection'] == "http":
-        #    self.client.close()
-        return retval
+        time.sleep(3)       # Wait 3 seconds, fixes timing issues
+        return True
+
+    def checkConnection(self):
+        logging.debug("Checking Modbus Connection")
+        if self.client:
+            if self.client.is_socket_open():
+                logging.debug("Modbus, Session is still connected")
+                return True
+            else:
+                logging.info(f'Modbus, Connecting new session')
+                return self.connect()
+        else:
+            logging.info(f'Modbus client is not connected, attempting to reconnect')
+            return self.connect()
+
+    def close(self):
+        logging.info("Closing Session: " + str(self.client))
+        try: self.client.close()
+        except: pass
 
     def disconnect(self):
-        logging.info("Disconnected: " + str(self.client))
+        logging.info("Disconnecting: " + str(self.client))
         try: self.client.close()
         except: pass
         self.client = None
@@ -159,6 +164,7 @@ class SungrowInverter():
                         continue
             if register_range_used:
                 self.register_ranges.append(register_range)
+        return True
 
     def load_registers(self, register_type, start, count=100):
         try:
@@ -274,11 +280,7 @@ class SungrowInverter():
         else:
             return self.inverter_config['model']
 
-    def scrape(self):
-        if not self.checkConnection():
-            logging.warning(f'Modbus not connected, Scraping Skipped')
-            return False
-        
+    def scrape(self):        
         scrape_start = datetime.now()
 
         # Clear previous inverter values, keep the model and run state
@@ -497,7 +499,8 @@ def main():
         sys.exit(f"Error: Connection to inverter failed: {config_inverter.get('host')}:{config_inverter.get('port')}")       
 
     inverter.configure_registers(registersfile)
-
+    if not inverter.inverter_config['connection'] == "http": inverter.close()
+    
     # Now we know the inverter is working, lets load the exports
     exports = []
     if configfile.get('exports'):
@@ -526,6 +529,7 @@ def main():
         if(success):
             for export in exports:
                 export.publish(inverter)
+            if not inverter.inverter_config['connection'] == "http": inverter.close()
         else:
             inverter.disconnect()
             logging.warning(f"Data collection failed, skipped exporting data. Retying in {scan_interval} secs")
