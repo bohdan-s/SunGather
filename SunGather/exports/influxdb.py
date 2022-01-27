@@ -61,7 +61,7 @@ class export_influxdb(object):
                 logging.error(f"InfluxDB: Skipped collecting data,  {measurement['register']} missing from last scrape")
                 return False
             sequence.append(f"{measurement['point']},inverter={inverter.getInverterModel(True)} {measurement['register']}={inverter.getRegisterValue(measurement['register'])}")
-            logging.debug(f'InfluxDB: Sequence; {sequence}')
+        logging.debug(f'InfluxDB: Sequence; {sequence}')
 
         try:
             self.write_api.write(self.influxdb_config['bucket'], self.client.org, sequence)

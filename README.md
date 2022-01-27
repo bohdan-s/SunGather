@@ -52,6 +52,11 @@ I have learned a lot from the following projects, THANK YOU
 * Full Home Assistant integration, as HACS addon
 
 ## Updates
+**0.3.2** 
+* Added logging to file
+* Hopefully better connection recovery
+* Bug fixes
+
 **0.3.0** 
 **IMPORTANT: If updating from v0.1.x or v0.2.x please check config against config-example. some options for MQTT and PVOutput have changed**
 * Heaps bug fixes

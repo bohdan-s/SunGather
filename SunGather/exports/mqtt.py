@@ -62,7 +62,7 @@ class export_mqtt(object):
             self.mqtt_queue.remove(mid)
         except Exception as err:
             pass
-        logging.info(f"MQTT: Message {mid} Published")
+        logging.debug(f"MQTT: Message {mid} Published")
 
     def cleanName(self, name):
         return name.lower().replace(' ','_')
@@ -75,6 +75,7 @@ class export_mqtt(object):
 
         logging.debug(f"MQTT: Publishing: {self.mqtt_config['topic']} : {json.dumps(inverter.latest_scrape)}")
         self.mqtt_queue.append(self.mqtt_client.publish(self.mqtt_config['topic'], json.dumps(inverter.latest_scrape).replace('"', '\"'), qos=0).mid)
+        logging.info(f"MQTT: Published")
 
         if self.mqtt_config['homeassistant'] and not self.ha_discovery_published:
             for ha_sensor in self.ha_sensors:
