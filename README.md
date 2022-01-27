@@ -23,6 +23,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
+<b>Join the Discord Server to discuss, suggestions or for any help: <a href="https://discord.gg/7j2MVsT5wn">SunGather Discord</a></b>
+
 Access ModBus data from almost any network connected Sungow Inverter.
 
 On first connection the tool will query your inverter, retrieve the model and return the correct registers for your device. No more searching registers or creating model files.
@@ -49,6 +52,11 @@ I have learned a lot from the following projects, THANK YOU
 * Full Home Assistant integration, as HACS addon
 
 ## Updates
+**0.3.2** 
+* Added logging to file
+* Hopefully better connection recovery
+* Bug fixes
+
 **0.3.0** 
 **IMPORTANT: If updating from v0.1.x or v0.2.x please check config against config-example. some options for MQTT and PVOutput have changed**
 * Heaps bug fixes
