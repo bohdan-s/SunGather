@@ -10,7 +10,8 @@ inverter:
                                             # See model list here: https://github.com/bohdan-s/SunGather#supported
   # smart_meter: True                       # [Optional] Default is False, Set to true if inverter supports reading grind / house consumption
   # use_local_time: False                   # [Optional] Default False, Uses Inventer time, if true it uses PC time when updating timestamps (e.g. PVOutput)
-  # logging: 30                             # [Optional] 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error
+  # log_console: INFO                       # [Optional] Default is WARNING, Options: DEBUG, INFO, WARNING, ERROR
+  # log_file: DEBUG                         # [Optional] Default is OFF, Options: OFF, DEBUG, INFO, WARNING, ERROR
   # level: 1                                # [Optional] Set the amount of information to gather
                                             # 0 = Model and Solar Generation, 
                                             # 1 (default) = Useful data, all required for exports, 
