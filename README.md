@@ -106,7 +106,7 @@ Initial build
 * [pymodbus>=2.4.0](https://pypi.org/project/pymodbus/)
 * [SungrowModbusTcpClient>=0.1.6](https://pypi.org/project/SungrowModbusTcpClient/)
 * [SungrowModbusWebClient>=0.2.6](https://pypi.org/project/SungrowModbusWebClient/)
-* [PyYAML>=6.0] (https://pypi.org/project/PyYAML/)
+* [PyYAML>=6.0](https://pypi.org/project/PyYAML/)
 * [requests>=2.26.0](https://pypi.org/project/requests/)
 * [influxdb-client>=1.24.0](https://pypi.org/project/influxdb-client/)
 
@@ -285,6 +285,7 @@ docker push bohdans/sungather -a
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- LICENSE -->
 ## License
 
@@ -292,14 +293,12 @@ Distributed under the GPL3 License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTACT -->
 ## Contact
 
 Project Link: [https://github.com/bohdan-s/SungrowModbusWebClient](https://github.com/bohdan-s/SungrowModbusWebClient)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
