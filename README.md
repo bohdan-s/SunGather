@@ -30,7 +30,7 @@ Access ModBus data from almost any network connected Sungow Inverter.
 
 On first connection the tool will query your inverter, retrieve the model and return the correct registers for your device. No more searching registers or creating model files.
 
-Register information based on official documentation: <a href="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/Communication%20Protocol%20of%20PV%20Grid-Connected%20String%20Inverters_V1.1.37_EN.pdf">Communication Protocol of PV Grid-Connected String Inverters</a> and <a hreh="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/communication-protocol-of-residential-hybrid-inverterv1.0.20-1.pdf">Communication Protocol of Residential Hybrid Inverters</a>
+Register information based on official documentation: <a href="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/Communication%20Protocol%20of%20PV%20Grid-Connected%20String%20Inverters_V1.1.37_EN.pdf">Communication Protocol of PV Grid-Connected String Inverters</a> and <a href="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/communication-protocol-of-residential-hybrid-inverterv1.0.20-1.pdf">Communication Protocol of Residential Hybrid Inverters</a>
 
 Has multiple export locations out of the box:
 * Console - Log directly to screen
@@ -219,6 +219,8 @@ sensor.inverter_meter_power
 
 ```
 
+The Inverter reports Power (W), but HA needs Energy (Wh).
+You can use a "Riemann sum integral" (called integration) to convert it.
 Put the following into your sensors.yaml
 ```
 sensor:
