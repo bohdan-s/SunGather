@@ -54,13 +54,18 @@ class export_influxdb(object):
         return True
 
     def publish(self, inverter):
-        sequence = []
+        buffervar = {}
 
         for measurement in self.influxdb_measurements:
             if not inverter.validateLatestScrape(measurement['register']):
                 logging.error(f"InfluxDB: Skipped collecting data,  {measurement['register']} missing from last scrape")
                 return False
-            sequence.append(f"{measurement['point']},inverter={inverter.getInverterModel(True)} {measurement['register']}={inverter.getRegisterValue(measurement['register'])}")
+            buffervar.setdefault(f"{measurement['point']},inverter={inverter.getInverterModel(True)}",[])
+            buffervar[f"{measurement['point']},inverter={inverter.getInverterModel(True)}"].append(f"{measurement['register']}={inverter.getRegisterValue(measurement['register'])}")
+        sequence=[]
+
+        for key in buffervar:
+            sequence.append( str(key)+" "+ ",".join(buffervar[key]) )
         logging.debug(f'InfluxDB: Sequence; {sequence}')
 
         try:
