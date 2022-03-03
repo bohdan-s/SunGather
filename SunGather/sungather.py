@@ -329,7 +329,7 @@ class SungrowInverter():
         # to help with graphing.
         try:
             if self.latest_scrape.get('start_stop'):
-                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False) == 'Run':
+                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False).contains('Run'):
                     self.latest_scrape["run_state"] = "ON"
                 else:
                     self.latest_scrape["run_state"] = "OFF"
