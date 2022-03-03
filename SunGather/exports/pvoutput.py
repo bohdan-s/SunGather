@@ -199,6 +199,7 @@ class export_pvoutput(object):
 
                         if response.status_code != requests.codes.ok:
                             logging.error(f"PVOutput: Upload Failed; {str(response.status_code)} Message; {str(response.text)}")
+                            logging.error("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
                         else:
                             self.batch_data = []
                             self.last_publish = time.time()
