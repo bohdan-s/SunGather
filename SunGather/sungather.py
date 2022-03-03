@@ -200,12 +200,16 @@ class SungrowInverter():
                 if register_type == register['type'] and register['address'] == run:
                     register_name = register['name']
 
-                    register_value = None
-                    # Return the 32bit value if needed
-                    if register.get('datatype') == "U32" or register.get('datatype') == "S32":
+                    register_value = rr.registers[num]
+
+                    # Convert unsigned to signed
+                    if register.get('datatype') == "S32":
                         u32_value = rr.registers[num+1]
-                        if u32_value and register_value:
-                            register_value = (u32_value * 65535) + register_value
+                        if u32_value == 65535:      # Flag to say value is negative for 32bit
+                            register_value = (register_value - 65535)
+                    elif register.get('datatype') == "S16":
+                        if register_value >= 32767:  # Anything greater than 32767 is a negative for 16bit
+                            register_value = (register_value - 65535)
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
@@ -215,16 +219,8 @@ class SungrowInverter():
                     if not register_value:
                         register_value = rr.registers[num]
 
-                    # Adjust the value if needed
-                    if register.get('indicator'):
-                        indicator_value = rr.registers[num+1]
-                        if indicator_value == 65535:
-                            register_value = -1 * (65535 - register_value)
-
-                    # If xFF (U 65535 / S 32767) then change to 0, looks better when logging / graphing
-                    if register.get('datatype') == 'S16' and (register_value == 32767 or register_value == 65535):
-                        register_value = 0
-                    elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32' or register.get('datatype') == 'U32') and register_value == 65535:
+                    # If xFF / xFFFF then change to 0, looks better when logging / graphing
+                    if register_value == 65535:
                         register_value = 0
 
                     if register.get('accuracy'):
