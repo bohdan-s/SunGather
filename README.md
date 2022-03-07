@@ -130,17 +130,21 @@ python3 sungather.py
 ```
 
 # Docker
+docker run options:  
+-v {path to}/config.yaml:/config/config.yaml  <- Set Config File Location  
+-v {logpath}:/logs                            <- Set Log folder Location if using log to file (also set log_file in config.yaml)  
+-e TZ=Australia/Sydney                        <- Set Timezone  
+-p 8080:8080                                  <- Set Web server port (only if using the webserver export)  
+
 ```sh
 docker pull bohdans/sungather
-docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney --name sungather bohdans/sungather
-```
-or if using the webserver export
-```sh
-docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
-```
-with webserever export and logging
-```sh
-docker run -v {path to}/config.yaml:/config/config.yaml -v{logpath}:/logs -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
+docker run -d --name sungather \
+  --restart always \
+  -v {path to}/config.yaml:/config/config.yaml \
+  -v {logpath}:/logs \
+  -e TZ=Australia/Sydney \
+  -p 8080:8080 \
+  bohdans/sungather
 ```
 Note: replace Australia/Sydney with relevant timezone
 <p align="right">(<a href="#top">back to top</a>)</p>
