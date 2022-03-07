@@ -8,6 +8,7 @@ from datetime import datetime
 
 import importlib
 import logging
+import logging.handlers
 import sys
 import getopt
 import yaml
@@ -394,9 +395,10 @@ class SungrowInverter():
 
 def main():
     configfilename = 'config.yaml'
+    logfolder = ''
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hc:v:", "runonce")
+        opts, args = getopt.getopt(sys.argv[1:],"hc:l:v:", "runonce")
     except getopt.GetoptError:
         logging.debug(f'No options passed via command line')
 
@@ -407,6 +409,7 @@ def main():
             print(f'\nCommandling arguments override any config file settings')
             print(f'Options and arguments:')
             print(f'-c config.yaml     : Specify config file.')
+            print(f'-l /logs/          : Specify folder to store logs.')
             print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
             print(f'--runonce          : Run once then exit')
             print(f'-h                 : print this help message and exit (also --help)')
@@ -414,7 +417,9 @@ def main():
             print(f'python3 sungather.py -c /full/path/config.yaml\n')
             sys.exit()
         elif opt == '-c':
-            configfilename = arg     
+            configfilename = arg
+        elif opt == '-l':
+            logfolder = arg    
         elif opt  == '-v':
             if arg.isnumeric():
                 if int(arg) >= 0 and int(arg) <= 50:
@@ -426,7 +431,7 @@ def main():
                 logging.error(f"Valid verbose options: 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error")
                 sys.exit(2) 
         elif opt == '--runonce':
-            runonce = True   
+            runonce = True
 
     logging.info(f'Starting SunGather {__version__}')
 
@@ -443,6 +448,7 @@ def main():
     try:
         registersfile = yaml.safe_load(open('registers.yaml'))
         logging.info(f"Loaded registers: {os.getcwd()}/registers.yaml")
+        logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
     except Exception as err:
         logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
         sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
@@ -470,8 +476,8 @@ def main():
 
     if not config_inverter['log_file'] == "OFF":
         if config_inverter['log_file'] == "DEBUG" or config_inverter['log_file'] == "INFO" or config_inverter['log_file'] == "WARNING" or config_inverter['log_file'] == "ERROR":
-            logfile = datetime.now().strftime("%Y%m%d_%H%M%S_SunGather.log")
-            fh = logging.FileHandler(logfile, mode='w', encoding='utf-8')
+            logfile = logfolder + "SunGather.log"
+            fh = logging.handlers.RotatingFileHandler(logfile, mode='w', encoding='utf-8', maxBytes=10485760, backupCount=10) # Log 10mb files, 10 x files = 100mb
             fh.formatter = logger.handlers[0].formatter
             fh.setLevel(config_inverter['log_file'])
             logger.addHandler(fh)

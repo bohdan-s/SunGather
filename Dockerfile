@@ -11,9 +11,10 @@ RUN pip install --no-cache-dir --upgrade pycryptodomex==3.11.0 -r requirements.t
 
 COPY SunGather/ .
 
+VOLUME /logs
 VOLUME /config
 COPY SunGather/config-example.yaml /config/config.yaml
 
 USER sungather
 
-CMD [ "python", "sungather.py", "-c", "/config/config.yaml" ]
+CMD [ "python", "sungather.py", "-c", "/config/config.yaml", "-l", "/logs/" ]

@@ -138,6 +138,10 @@ or if using the webserver export
 ```sh
 docker run -v {path to}/config.yaml:/config/config.yaml -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
 ```
+with webserever export and logging
+```sh
+docker run -v {path to}/config.yaml:/config/config.yaml -v{logpath}:/logs -e TZ=Australia/Sydney -p 8080:8080 --name sungather bohdans/sungather
+```
 Note: replace Australia/Sydney with relevant timezone
 <p align="right">(<a href="#top">back to top</a>)</p>
 
