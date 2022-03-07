@@ -51,52 +51,6 @@ I have learned a lot from the following projects, THANK YOU
 ## Raodmap / TO DO
 * Full Home Assistant integration, as HACS addon
 
-## Updates
-**0.3.2** 
-* Added logging to file
-* Hopefully better connection recovery
-* Bug fixes
-
-**0.3.0** 
-**IMPORTANT: If updating from v0.1.x or v0.2.x please check config against config-example. some options for MQTT and PVOutput have changed**
-* Heaps bug fixes
-* Fixed PVOutput not working after midnight
-* MQTT now auto-reconnects
-* MQTT/PVOutput now verify values exist before trying to publish
-* Rasberry Pi Docker support
-* lots more...
-
-
-**0.2.2** 
-* Minor bug fixes
-* Add support for some inverter scrapes to fail
-* Add support for zero_on_standby, this will 0 registers like temp that 'stick' to the last value when the inverter goes into standy. Handy if you want to graph 0 instead of the last read overnight
-
-**0.2.1** 
-* Minor bug fixes
-* Updated config-example.yaml to clearly explain each option and if it is required or optional
-* Replace is_running with run_state, was using bool which was causing errors in MQTT, run_state uses "ON" and "OFF"
-
-**0.2.0**  
-**IMPORTANT: If updating from v0.1.x please check config against config-example. some options for MQTT and PVOutput have changed**
-* Re-write to Inverter scanning code, improved performance and more resilient to failures
-* Re-write to PVOutput code, now uploads every 5 minutes as per API documentation, averages all data points over the 5 min window to reduce random high/low values
-* Re-Write to MQTT code, now supports multiple sensor types
-
-**0.1.3**
-* Improved error recovery, e.g. Inverter powers down overnight
-
-**0.1.2**
-* Added InfluxDB export
-
-**0.1.1**
-* Added docker image
-* Added simple http web server
-* Improved recovery when errors (See: SungrowModbusWebClient 0.2.6)
-
-**0.1.0**
-Initial build
-
 ### Built With
 
 * [Python3](https://www.python.org/)
