@@ -1,12 +1,4 @@
 <div id="top"></div>
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![GPL3 License][license-shield]][license-url]
-
-<br />
 <div align="center">
 
 <h2 align="center">SunGather</h2>
@@ -270,18 +262,3 @@ Project Link: [https://github.com/bohdan-s/SungrowModbusWebClient](https://githu
 * [ModbusTCP2MQTT](https://github.com/TenySmart/ModbusTCP2MQTT)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/bohdan-s/SunGather.svg?style=for-the-badge
-[contributors-url]: https://github.com/bohdan-s/SunGather/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/bohdan-s/SunGather.svg?style=for-the-badge
-[forks-url]: https://github.com/bohdan-s/SunGather/network/members
-[stars-shield]: https://img.shields.io/github/stars/bohdan-s/SunGather.svg?style=for-the-badge
-[stars-url]: https://github.com/bohdan-s/SunGather/stargazers
-[issues-shield]: https://img.shields.io/github/issues/bohdan-s/SunGather.svg?style=for-the-badge
-[issues-url]: https://github.com/bohdan-s/SunGather/issues
-[license-shield]: https://img.shields.io/github/license/bohdan-s/SunGather.svg?style=for-the-badge
-[license-url]: https://github.com/bohdan-s/SunGather/blob/main/LICENSE.txt
