@@ -1,9 +1,3 @@
----
-layout: page
-title: "SunGather"
----
-
-
 <div id="top"></div>
 
 [![Contributors][contributors-shield]][contributors-url]
