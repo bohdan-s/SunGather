@@ -73,6 +73,7 @@ class export_mqtt(object):
                 logging.warning(f'MQTT: Server Disconnected; {self.mqtt_queue.__len__()} messages queued, will automatically attempt to reconnect')
         except Exception as err:
             logging.warning(f'MQTT: Server Error; Server not configured')
+            return False
         # qos=0 is set, so no acknowledgment is sent, rending this check useless
         #elif self.mqtt_queue.__len__() > 10:
         #    logging.warning(f'MQTT: {self.mqtt_queue.__len__()} messages queued, this may be due to a MQTT server issue')
