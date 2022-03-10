@@ -161,9 +161,9 @@ class export_pvoutput(object):
                         field = 'v' + str(x)
                         if self.collected_data.get(field):
                             if x == 1  and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 2):
-                                continue # Do nothing
+                                value = int(self.collected_data[field])
                             elif x == 3 and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 3):
-                                continue # do nothing
+                                value = int(self.collected_data[field])
                             elif x == 6 or x == 7:    # Round to 1 decimal place
                                 value = round(self.collected_data[field] / self.collected_data['count'], 1)
                             else:                   # Getting errors when uploading decimals for power/energy so return INT
