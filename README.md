@@ -9,12 +9,14 @@
 <br />
 <div align="center">
 
-<h2 align="center">SunGather</h3>
+<h2 align="center">SunGather</h2>
 
   <p align="center">
     Collect data from Sungrow Inverters using ModbusTcpClient, <a href="https://github.com/rpvelloso/Sungrow-Modbus">SungrowModbusTcpClient</a> or <a href="https://github.com/bohdan-s/SungrowModbusWebClient">SungrowModbusWebClient</a> and export to various locations.
     <br />
     <br />
+    <a href="https://sungather.app">Website Sungather.app</a>
+    ·
     <a href="https://github.com/bohdan-s/SunGather/issues">Report Bug</a>
     ·
     <a href="https://github.com/bohdan-s/SunGather/issues">Request Feature</a>
@@ -51,64 +53,19 @@ I have learned a lot from the following projects, THANK YOU
 ## Raodmap / TO DO
 * Full Home Assistant integration, as HACS addon
 
-## Updates
-**0.3.2** 
-* Added logging to file
-* Hopefully better connection recovery
-* Bug fixes
-
-**0.3.0** 
-**IMPORTANT: If updating from v0.1.x or v0.2.x please check config against config-example. some options for MQTT and PVOutput have changed**
-* Heaps bug fixes
-* Fixed PVOutput not working after midnight
-* MQTT now auto-reconnects
-* MQTT/PVOutput now verify values exist before trying to publish
-* Rasberry Pi Docker support
-* lots more...
-
-
-**0.2.2** 
-* Minor bug fixes
-* Add support for some inverter scrapes to fail
-* Add support for zero_on_standby, this will 0 registers like temp that 'stick' to the last value when the inverter goes into standy. Handy if you want to graph 0 instead of the last read overnight
-
-**0.2.1** 
-* Minor bug fixes
-* Updated config-example.yaml to clearly explain each option and if it is required or optional
-* Replace is_running with run_state, was using bool which was causing errors in MQTT, run_state uses "ON" and "OFF"
-
-**0.2.0**  
-**IMPORTANT: If updating from v0.1.x please check config against config-example. some options for MQTT and PVOutput have changed**
-* Re-write to Inverter scanning code, improved performance and more resilient to failures
-* Re-write to PVOutput code, now uploads every 5 minutes as per API documentation, averages all data points over the 5 min window to reduce random high/low values
-* Re-Write to MQTT code, now supports multiple sensor types
-
-**0.1.3**
-* Improved error recovery, e.g. Inverter powers down overnight
-
-**0.1.2**
-* Added InfluxDB export
-
-**0.1.1**
-* Added docker image
-* Added simple http web server
-* Improved recovery when errors (See: SungrowModbusWebClient 0.2.6)
-
-**0.1.0**
-Initial build
 
 ### Built With
 
 * [Python3](https://www.python.org/)
 
 ### Requires
-* [paho-mqtt>=1.5.1](https://pypi.org/project/paho-mqtt/)
-* [pymodbus>=2.4.0](https://pypi.org/project/pymodbus/)
-* [SungrowModbusTcpClient>=0.1.6](https://pypi.org/project/SungrowModbusTcpClient/)
-* [SungrowModbusWebClient>=0.2.6](https://pypi.org/project/SungrowModbusWebClient/)
-* [PyYAML>=6.0](https://pypi.org/project/PyYAML/)
-* [requests>=2.26.0](https://pypi.org/project/requests/)
-* [influxdb-client>=1.24.0](https://pypi.org/project/influxdb-client/)
+* [paho-mqtt](https://pypi.org/project/paho-mqtt/)
+* [pymodbus](https://pypi.org/project/pymodbus/)
+* [SungrowModbusTcpClient](https://pypi.org/project/SungrowModbusTcpClient/)
+* [SungrowModbusWebClient](https://pypi.org/project/SungrowModbusWebClient/)
+* [PyYAML](https://pypi.org/project/PyYAML/)
+* [requests](https://pypi.org/project/requests/)
+* [influxdb-client](https://pypi.org/project/influxdb-client/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

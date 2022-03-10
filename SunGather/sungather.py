@@ -405,6 +405,7 @@ def main():
     for opt, arg in opts:
         if opt == '-h':
             print(f'\nSunGather {__version__}')
+            print(f'\nhttps://sungather.app')
             print(f'usage: python3 sungather.py [options]')
             print(f'\nCommandling arguments override any config file settings')
             print(f'Options and arguments:')

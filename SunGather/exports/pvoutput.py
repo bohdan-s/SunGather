@@ -125,10 +125,17 @@ class export_pvoutput(object):
         # Add new data to old data and increase count of data points
         for parameter in self.pvoutput_parameters:
             value = inverter.getRegisterValue(parameter.get('register'))
+
             if parameter.get('multiple'):
                 value = value * parameter.get('multiple')
 
-            if self.collected_data.get(parameter.get('name'),False):
+            # If using Cumulative Energy we just need the last data point, not the average
+            if parameter.get('name') == 'v1' and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 2):
+                self.collected_data[parameter.get('name')] = value
+            elif parameter.get('name') == 'v3' and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 3):
+                self.collected_data[parameter.get('name')] = value
+            # Add the last data point to the previous data point if exists, otherwise set as the last data point
+            elif self.collected_data.get(parameter.get('name'),False):
                 self.collected_data[parameter.get('name')] = round(self.collected_data[parameter.get('name')] + value,3)
             else:
                 self.collected_data[parameter.get('name')] = value
@@ -153,7 +160,11 @@ class export_pvoutput(object):
                     for x in range(1, 13):
                         field = 'v' + str(x)
                         if self.collected_data.get(field):
-                            if x == 6 or x == 7:    # Round to 1 decimal place
+                            if x == 1  and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 2):
+                                continue # Do nothing
+                            elif x == 3 and (self.pvoutput_config['cumulative_flag'] == 1 or self.pvoutput_config['cumulative_flag'] == 3):
+                                continue # do nothing
+                            elif x == 6 or x == 7:    # Round to 1 decimal place
                                 value = round(self.collected_data[field] / self.collected_data['count'], 1)
                             else:                   # Getting errors when uploading decimals for power/energy so return INT
                                 value = int((self.collected_data[field] / self.collected_data['count']))
