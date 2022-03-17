@@ -15,8 +15,6 @@
     Collect data from Sungrow Inverters using ModbusTcpClient, <a href="https://github.com/rpvelloso/Sungrow-Modbus">SungrowModbusTcpClient</a> or <a href="https://github.com/bohdan-s/SungrowModbusWebClient">SungrowModbusWebClient</a> and export to various locations.
     <br />
     <br />
-    <a href="https://sungather.app">Website Sungather.app</a>
-    ·
     <a href="https://github.com/bohdan-s/SunGather/issues">Report Bug</a>
     ·
     <a href="https://github.com/bohdan-s/SunGather/issues">Request Feature</a>
@@ -53,19 +51,18 @@ I have learned a lot from the following projects, THANK YOU
 ## Raodmap / TO DO
 * Full Home Assistant integration, as HACS addon
 
-
 ### Built With
 
 * [Python3](https://www.python.org/)
 
 ### Requires
-* [paho-mqtt](https://pypi.org/project/paho-mqtt/)
-* [pymodbus](https://pypi.org/project/pymodbus/)
-* [SungrowModbusTcpClient](https://pypi.org/project/SungrowModbusTcpClient/)
-* [SungrowModbusWebClient](https://pypi.org/project/SungrowModbusWebClient/)
-* [PyYAML](https://pypi.org/project/PyYAML/)
-* [requests](https://pypi.org/project/requests/)
-* [influxdb-client](https://pypi.org/project/influxdb-client/)
+* [paho-mqtt>=1.5.1](https://pypi.org/project/paho-mqtt/)
+* [pymodbus>=2.4.0](https://pypi.org/project/pymodbus/)
+* [SungrowModbusTcpClient>=0.1.6](https://pypi.org/project/SungrowModbusTcpClient/)
+* [SungrowModbusWebClient>=0.2.6](https://pypi.org/project/SungrowModbusWebClient/)
+* [PyYAML>=6.0](https://pypi.org/project/PyYAML/)
+* [requests>=2.26.0](https://pypi.org/project/requests/)
+* [influxdb-client>=1.24.0](https://pypi.org/project/influxdb-client/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

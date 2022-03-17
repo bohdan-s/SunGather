@@ -8,6 +8,7 @@ from datetime import datetime
 
 import importlib
 import logging
+import logging.handlers
 import sys
 import getopt
 import yaml
@@ -35,7 +36,7 @@ class SungrowInverter():
         
         self.registers = [[]]
         self.registers.pop() # Remove null value from list
-        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'w'}, {'name': 'import_from_grid', 'unit': 'w'}, {'name': 'run_state'}]
+        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W'}, {'name': 'import_from_grid', 'unit': 'W'}, {'name': 'run_state'}]
         self.register_ranges = [[]]
         self.register_ranges.pop() # Remove null value from list
 
@@ -200,12 +201,16 @@ class SungrowInverter():
                 if register_type == register['type'] and register['address'] == run:
                     register_name = register['name']
 
-                    register_value = None
-                    # Return the 32bit value if needed
-                    if register.get('datatype') == "U32" or register.get('datatype') == "S32":
+                    register_value = rr.registers[num]
+
+                    # Convert unsigned to signed
+                    if register.get('datatype') == "S32":
                         u32_value = rr.registers[num+1]
-                        if u32_value and register_value:
-                            register_value = (u32_value * 65535) + register_value
+                        if u32_value == 65535:      # Flag to say value is negative for 32bit
+                            register_value = (register_value - 65535)
+                    elif register.get('datatype') == "S16":
+                        if register_value >= 32767:  # Anything greater than 32767 is a negative for 16bit
+                            register_value = (register_value - 65535)
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
@@ -215,16 +220,8 @@ class SungrowInverter():
                     if not register_value:
                         register_value = rr.registers[num]
 
-                    # Adjust the value if needed
-                    if register.get('indicator'):
-                        indicator_value = rr.registers[num+1]
-                        if indicator_value == 65535:
-                            register_value = -1 * (65535 - register_value)
-
-                    # If xFF (U 65535 / S 32767) then change to 0, looks better when logging / graphing
-                    if register.get('datatype') == 'S16' and (register_value == 32767 or register_value == 65535):
-                        register_value = 0
-                    elif (register.get('datatype') == 'U16' or register.get('datatype') == 'S32' or register.get('datatype') == 'U32') and register_value == 65535:
+                    # If xFF / xFFFF then change to 0, looks better when logging / graphing
+                    if register_value == 65535:
                         register_value = 0
 
                     if register.get('accuracy'):
@@ -333,7 +330,7 @@ class SungrowInverter():
         # to help with graphing.
         try:
             if self.latest_scrape.get('start_stop'):
-                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False) == 'Run':
+                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False).contains('Run'):
                     self.latest_scrape["run_state"] = "ON"
                 else:
                     self.latest_scrape["run_state"] = "OFF"
@@ -398,19 +395,22 @@ class SungrowInverter():
 
 def main():
     configfilename = 'config.yaml'
+    logfolder = ''
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hc:v:", "runonce")
+        opts, args = getopt.getopt(sys.argv[1:],"hc:l:v:", "runonce")
     except getopt.GetoptError:
         logging.debug(f'No options passed via command line')
 
     for opt, arg in opts:
         if opt == '-h':
             print(f'\nSunGather {__version__}')
+            print(f'\nhttps://sungather.app')
             print(f'usage: python3 sungather.py [options]')
             print(f'\nCommandling arguments override any config file settings')
             print(f'Options and arguments:')
             print(f'-c config.yaml     : Specify config file.')
+            print(f'-l /logs/          : Specify folder to store logs.')
             print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
             print(f'--runonce          : Run once then exit')
             print(f'-h                 : print this help message and exit (also --help)')
@@ -418,7 +418,9 @@ def main():
             print(f'python3 sungather.py -c /full/path/config.yaml\n')
             sys.exit()
         elif opt == '-c':
-            configfilename = arg     
+            configfilename = arg
+        elif opt == '-l':
+            logfolder = arg    
         elif opt  == '-v':
             if arg.isnumeric():
                 if int(arg) >= 0 and int(arg) <= 50:
@@ -430,7 +432,7 @@ def main():
                 logging.error(f"Valid verbose options: 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error")
                 sys.exit(2) 
         elif opt == '--runonce':
-            runonce = True   
+            runonce = True
 
     logging.info(f'Starting SunGather {__version__}')
 
@@ -447,6 +449,7 @@ def main():
     try:
         registersfile = yaml.safe_load(open('registers.yaml'))
         logging.info(f"Loaded registers: {os.getcwd()}/registers.yaml")
+        logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
     except Exception as err:
         logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
         sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
@@ -474,8 +477,8 @@ def main():
 
     if not config_inverter['log_file'] == "OFF":
         if config_inverter['log_file'] == "DEBUG" or config_inverter['log_file'] == "INFO" or config_inverter['log_file'] == "WARNING" or config_inverter['log_file'] == "ERROR":
-            logfile = datetime.now().strftime("%Y%m%d_%H%M%S_SunGather.log")
-            fh = logging.FileHandler(logfile, mode='w', encoding='utf-8')
+            logfile = logfolder + "SunGather.log"
+            fh = logging.handlers.RotatingFileHandler(logfile, mode='w', encoding='utf-8', maxBytes=10485760, backupCount=10) # Log 10mb files, 10 x files = 100mb
             fh.formatter = logger.handlers[0].formatter
             fh.setLevel(config_inverter['log_file'])
             logger.addHandler(fh)
