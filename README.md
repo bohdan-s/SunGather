@@ -77,9 +77,10 @@ git clone https://github.com/bohdan-s/SunGather.git
 cd SunGather
 pip3 install --upgrade -r requirements.txt
 ```
-Copy config-example.py to config.py, change values as required (see comments in file)
+Copy config-example.yaml to config.yaml, change values as required (see comments in file)
 ```sh
-copy config-example.py config.py
+cd SunGather
+copy config-example.yaml config.yaml
 ```
 Run SunGather:
 ```sh
@@ -110,7 +111,7 @@ Note: replace Australia/Sydney with relevant timezone
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-See config-example.py it contains default options and comments.
+See config-example.yaml it contains default options and comments.
 
 If you want to use the new Energy section in Home Assistant, follow the Home Assistant setup below.
 <p align="right">(<a href="#top">back to top</a>)</p>
