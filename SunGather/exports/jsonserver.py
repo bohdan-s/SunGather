@@ -1,12 +1,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import JSON
+import json
 from threading import Thread
 from version import __version__
 
 
 import logging
 
-class export_webserver(object):
+class export_jsonserver(object):
     html_body = "Pending Data Retrieval"
     def __init__(self):
         False
@@ -14,7 +14,7 @@ class export_webserver(object):
     # Configure Webserver
     def configure(self, config, inverter):
         try:
-            self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
+            self.webServer = HTTPServer(('', config.get('port',8082)), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()
@@ -28,7 +28,7 @@ class export_webserver(object):
         json_cache={"registers":{}, "client_config":{}, "inverter_config":{}}
 
         for register, value in inverter.latest_scrape.items():
-            json_cache["registers"][str(inverter.getRegisterAddress(register))]={"register": str(register), "value":str(value), unit: str(inverter.getRegisterUnit(register))}
+            json_cache["registers"][str(inverter.getRegisterAddress(register))]={"register": str(register), "value":str(value), "unit": str(inverter.getRegisterUnit(register))}
 
         # Client Config
         for setting, value in inverter.client_config.items():
@@ -38,7 +38,7 @@ class export_webserver(object):
         for setting, value in inverter.inverter_config.items():
             json_cache["inverter_config"][str(setting)]=str(value)
             
-        export_webserver.html_body = json.dump(json_cache)
+        export_jsonserver.html_body = json.dumps(json_cache)
         return True
 
 class MyServer(BaseHTTPRequestHandler):
@@ -46,6 +46,6 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write(bytes(export_webserver.html_body, "utf-8"))
+        self.wfile.write(bytes(export_jsonserver.html_body, "utf-8"))
     def log_message(self, format, *args):
         pass
