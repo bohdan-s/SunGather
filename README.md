@@ -28,7 +28,7 @@
 
 <b>Join the Discord Server to discuss, suggestions or for any help: <a href="https://discord.gg/7j2MVsT5wn">SunGather Discord</a></b>
 
-Access ModBus data from almost any network connected Sungow Inverter.
+Access ModBus data from almost any network connected Sungrow Inverter.
 
 On first connection the tool will query your inverter, retrieve the model and return the correct registers for your device. No more searching registers or creating model files.
 
