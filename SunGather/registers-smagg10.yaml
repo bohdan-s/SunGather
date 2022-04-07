@@ -1,5 +1,5 @@
-version:  0.2.0
-vendor: Sungrow
+version:  0.0.1
+vendor: "SMA GridGuard 10"
 registers:
   - read:
     - name: "protocol_number"

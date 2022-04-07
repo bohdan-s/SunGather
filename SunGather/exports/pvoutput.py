@@ -166,7 +166,9 @@ class export_pvoutput(object):
                                 value = int(self.collected_data[field])
                             elif x == 6 or x == 7:    # Round to 1 decimal place
                                 value = round(self.collected_data[field] / self.collected_data['count'], 1)
-                            else:                   # Getting errors when uploading decimals for power/energy so return INT
+                                if not (value >= (self.collected_data[field] * 0.9) and value <= (self.collected_data[field] * 1.1)): # Trim outlier (i.e. inverter does not report every time during interval)
+                                    value = int(self.collected_data[field])
+                            else:                     # Getting errors when uploading decimals for power/energy so return INT
                                 value = int((self.collected_data[field] / self.collected_data['count']))
                             data_point = data_point + "," + str(value)
                             any_data = True

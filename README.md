@@ -262,7 +262,7 @@ Distributed under the GPL3 License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/bohdan-s/SungrowModbusWebClient](https://github.com/bohdan-s/SungrowModbusWebClient)
+Project Link: [https://github.com/bohdan-s/SunGather](https://github.com/bohdan-s/SunGather)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
