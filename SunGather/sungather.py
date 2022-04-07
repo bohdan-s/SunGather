@@ -447,12 +447,12 @@ def main():
         sys.exit(f"Failed Loading config, missing Inverter settings")   
 
     try:
-        registersfile = yaml.safe_load(open('registers.yaml'))
-        logging.info(f"Loaded registers: {os.getcwd()}/registers.yaml")
+        registersfile = yaml.safe_load(open('registers-sungrow.yaml'))
+        logging.info(f"Loaded registers: {os.getcwd()}/registers-sungrow.yaml")
         logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
     except Exception as err:
-        logging.error(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
-        sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers.yaml {err}")
+        logging.error(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
+        sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
    
     config_inverter = {
         "host": configfile['inverter'].get('host',None),
