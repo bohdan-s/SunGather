@@ -204,25 +204,33 @@ class SungrowInverter():
                     register_value = rr.registers[num]
 
                     # Convert unsigned to signed
-                    if register.get('datatype') == "S32":
-                        u32_value = rr.registers[num+1]
-                        if u32_value == 65535:      # Flag to say value is negative for 32bit
-                            register_value = (register_value - 65535)
+                    # If xFF / xFFFF then change to 0, looks better when logging / graphing
+                    if register.get('datatype') == "U16":
+                        if register_value == 0xFFFF:
+                            register_value = 0
                     elif register.get('datatype') == "S16":
+                        if register_value == 0xFFFF or register_value == 0x7FFF:
+                            register_value = 0
                         if register_value >= 32767:  # Anything greater than 32767 is a negative for 16bit
                             register_value = (register_value - 65535)
+                    elif register.get('datatype') == "U32":
+                        u32_value = rr.registers[num+1]
+                        if register_value == 0xFFFF and u32_value == 0xFFFF:
+                            register_value = 0
+                        else:
+                            register_value = (register_value + u32_value * 0x10000)
+                    elif register.get('datatype') == "S32":
+                        u32_value = rr.registers[num+1]
+                        if register_value == 0xFFFF and (u32_value == 0xFFFF or u32_value == 0x7FFF):
+                            register_value = 0
+                        else:
+                            register_value = (register_value + u32_value * 0x10000 - 0xffffffff)
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
                         for value in register.get('datarange'):
                             if value['response'] == rr.registers[num]:
                                 register_value = value['value']
-                    if not register_value:
-                        register_value = rr.registers[num]
-
-                    # If xFF / xFFFF then change to 0, looks better when logging / graphing
-                    if register_value == 65535:
-                        register_value = 0
 
                     if register.get('accuracy'):
                         register_value = round(register_value * register.get('accuracy'),2)
