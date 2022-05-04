@@ -35,11 +35,11 @@ exports:
   - name: influxdb
     enabled: False                          # [Optional] Default is False
     url: "http://localhost:8086"            # [Optional] Default URL is http://localhost:8086
-    token: "xxx"                            # [Required] API Token OR Username / Password
+    token: "xxx"                            # [Required] API Token OR Username:Password (for influxdb v1.8x comment it out and use username + password)
     # username:                             # [Optional] Username if not using token
     # password:                             # [Optional] Password if not using token
-    org: "Default"                          # [Required] InfluxDB Organization
-    bucket: "SunGather"                     # [Required] InfluxDB Bucket
+    org: "Default"                          # [Required] InfluxDB Organization (for influxdb v1.8x this will be ignored)
+    bucket: "SunGather"                     # [Required] InfluxDB Bucket (for influxdb v1.8x this is the database name)
     measurements:                           # [Required] Registers to publish to bucket
       - point: "power"
         register: daily_power_yields
