@@ -38,7 +38,7 @@ Has multiple export locations out of the box:
 * Console - Log directly to screen
 * MQTT - Load into MQTT, and optionally Home Assistance including Discovery
 * PVOutput - Load into PVOutput.org
-* InfluxDB - Load data directly into InfluxDB
+* InfluxDB - Load data directly into InfluxDB (v1.8 or v2.x)
 * Simple webserver showing collected data
 * Rasberry Pi Docker support
 * and more coming....
