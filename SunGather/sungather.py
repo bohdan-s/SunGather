@@ -447,7 +447,7 @@ def main():
     logging.info(f'Starting SunGather {__version__}')
 
     try:
-        configfile = yaml.safe_load(open(configfilename))
+        configfile = yaml.safe_load(open(configfilename, encoding="utf-8"))
         logging.info(f"Loaded config: {configfilename}")
     except Exception as err:
         logging.error(f"Failed: Loading config: {configfilename} \n\t\t\t     {err}")
@@ -457,7 +457,7 @@ def main():
         sys.exit(f"Failed Loading config, missing Inverter settings")   
 
     try:
-        registersfile = yaml.safe_load(open('registers-sungrow.yaml'))
+        registersfile = yaml.safe_load(open('registers-sungrow.yaml', encoding="utf-8"))
         logging.info(f"Loaded registers: {os.getcwd()}/registers-sungrow.yaml")
         logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
     except Exception as err:
