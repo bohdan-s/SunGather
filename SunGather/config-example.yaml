@@ -64,6 +64,7 @@ exports:
     # topic: "inverter/{model}/registers"   # [Optional] Default: "inverter/{model}/registers", Variable {model} will be replaced with model number of inverter
     # username:                             # [Optional] Username is MQTT server requires it
     # password:                             # [Optional] Password is MQTT server requires it
+    # client_id:                            # [Optional] Client id for mqtt connection. Defaults to "SunGather", need to be set to different values if you want to run multiple instances of sungather.
     homeassistant: True                     # [Optional] Default False, Publish discovery and sensors for HomeAssistant
     ha_sensors:                             # [Optional] / [Required] ha_discovery: True, Topics to enable discovery for HA
       - name: "Daily Generation"
