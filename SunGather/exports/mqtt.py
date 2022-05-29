@@ -92,7 +92,8 @@ class export_mqtt(object):
                     config_msg['unique_id'] = "inverter_" + self.cleanName(ha_sensor.get('name'))
                 config_msg['state_topic'] = self.mqtt_config['topic']
                 config_msg['value_template'] = "{{ value_json." + ha_sensor.get('register') + " }}"
-                config_msg['unit_of_measurement'] = inverter.getRegisterUnit(ha_sensor.get('register'))
+                if inverter.getRegisterUnit(ha_sensor.get('register')):
+                    config_msg['unit_of_measurement'] = inverter.getRegisterUnit(ha_sensor.get('register'))
                 if ha_sensor.get('dev_class'):
                     config_msg['device_class'] = ha_sensor.get('dev_class')
                 if ha_sensor.get('state_class'):
