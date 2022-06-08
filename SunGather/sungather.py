@@ -208,6 +208,9 @@ class SungrowInverter():
                     if register.get('datatype') == "U16":
                         if register_value == 0xFFFF:
                             register_value = 0
+                        if register.get('mask'):
+                            # Filter the value through the mask.
+                            register_value = 1 if register_value & register.get('mask') != 0 else 0
                     elif register.get('datatype') == "S16":
                         if register_value == 0xFFFF or register_value == 0x7FFF:
                             register_value = 0
@@ -234,12 +237,13 @@ class SungrowInverter():
                             if value['response'] == rr.registers[num]:
                                 register_value = value['value']
 
+
+
                     if register.get('accuracy'):
                         register_value = round(register_value * register.get('accuracy'),2)
 
                     # Set the final register value with adjustments above included 
                     self.latest_scrape[register_name] = register_value
-                    break
         return True
 
     def validateRegister(self, check_register):
