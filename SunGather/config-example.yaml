@@ -33,7 +33,7 @@ exports:
 
   # Runs a simple Webserver exporting config and last read registers as JSON
   # Access at http://localhost:8080 or http://[serverip]:8080
-  - name: jsonserver 
+  - name: jsonserver
     enabled: False                          # [Optional] Default is False
     # port: 8082                            # [Optional] Default is 8080
 
@@ -71,7 +71,7 @@ exports:
     # topic: "inverter/{model}/registers"   # [Optional] Default: "inverter/{model}/registers", Variable {model} will be replaced with model number of inverter
     # username:                             # [Optional] Username is MQTT server requires it
     # password:                             # [Optional] Password is MQTT server requires it
-    # client_id:                            # [Optional] Client id for mqtt connection. Defaults to "SunGather", need to be set to different values if you want to run multiple instances of sungather.
+    # client_id: "SunGather"                # [Optional] Default "SunGather", client id for mqtt connection
     homeassistant: True                     # [Optional] Default False, Publish discovery and sensors for HomeAssistant
     ha_sensors:                             # [Optional] / [Required] ha_discovery: True, Topics to enable discovery for HA
       - name: "Daily Generation"
@@ -115,6 +115,23 @@ exports:
         dev_class: running
         payload_on: "ON"
         payload_off: "OFF"
+    topics:
+      - topic: solar/power/load_power_hybrid
+        register: load_power_hybrid
+      - topic: solar/power/total_dc_power
+        register: total_dc_power
+      - topic: solar/power/export_power_hybrid
+        register: export_power_hybrid
+      - topic: solar/power/current/phase_a
+        register: phase_a_current
+      - topic: solar/power/current/phase_b
+        register: phase_b_current
+      - topic: solar/power/current/phase_c
+        register: phase_c_current
+      - topic: solar/battery/battery_power
+        register: battery_power
+      - topic: solar/battery/battery_level
+        register: battery_level
 
   # Publish Registers to PVOutput
   - name: pvoutput      
