@@ -234,7 +234,7 @@ class SungrowInverter():
                     # We convert a system response to a human value 
                     if register.get('datarange'):
                         for value in register.get('datarange'):
-                            if value['response'] == rr.registers[num]:
+                            if value['response'] == rr.registers[num] or value['response'] == register_value:
                                 register_value = value['value']
 
 
