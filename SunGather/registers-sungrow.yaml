@@ -1164,9 +1164,9 @@ registers:
       mask: 2
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "state_battery_discharging"
       level: 2
@@ -1175,9 +1175,9 @@ registers:
       mask: 4
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "state_load_active"
       level: 2
@@ -1186,9 +1186,9 @@ registers:
       mask: 8
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "state_feed_into_grid"
       level: 2
@@ -1197,9 +1197,9 @@ registers:
       mask: 16
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "state_import_from_grid"
       level: 2
@@ -1208,9 +1208,9 @@ registers:
       mask: 32
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "state_power_generated_from_load"
       level: 2
@@ -1219,9 +1219,9 @@ registers:
       mask: 128
       datarange:
         - response: 1
-          value: "1"
+          value: 1
         - response: 0
-          value: "-1"
+          value: -1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "daily_pv_generation"
       level: 2
