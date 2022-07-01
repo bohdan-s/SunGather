@@ -1285,7 +1285,7 @@ registers:
       level: 0
       address: 13034
       datatype: "S32"
-      unit: "kWh"
+      unit: "W"
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "daily_import_energy"    
       level: 1
