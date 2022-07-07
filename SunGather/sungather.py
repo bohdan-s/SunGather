@@ -36,8 +36,7 @@ class SungrowInverter():
         
         self.registers = [[]]
         self.registers.pop() # Remove null value from list
-        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W', 'address': 'vr001'}, {'name': 'import_from_grid', 'unit': 'W', 'address': 'vr002'}, {'name': 'run_state', 'address': 'vr003'}, {'name': 'timestamp', 'address': 'vr004'}]
-        self.register_ranges = [[]]
+        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W'}, {'name': 'import_from_grid', 'unit': 'W'}, {'name': 'run_state'}]        self.register_ranges = [[]]
         self.register_ranges.pop() # Remove null value from list
 
         self.latest_scrape = {}
@@ -108,7 +107,7 @@ class SungrowInverter():
                             logging.info(f"Detected Model: {self.inverter_config.get('model')}")
                     else:
                         logging.info(f'Model detection failed, please set model in config.py')
-                        self.registers.pop()
+                    self.registers.pop()
                     break
 
         # Load register list based on name and value after checking model
