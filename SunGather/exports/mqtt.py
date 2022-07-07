@@ -11,10 +11,12 @@ class export_mqtt(object):
 
     # Configure MQTT
     def configure(self, config, inverter):
+        model = inverter.getInverterModel(True)
         self.mqtt_config = {
             'host': config.get('host', None),
             'port': config.get('port', 1883),
-            'topic': config.get('topic', "inverter/{model}/registers").replace('{model}', inverter.getInverterModel(True)),
+            'client_id': config.get('client_id', f'SunGather-{model}'),
+            'topic': config.get('topic', f"inverter/{model}/registers"),
             'username': config.get('username', None),
             'password': config.get('password',None),
             'homeassistant': config.get('homeassistant',False)
@@ -26,8 +28,8 @@ class export_mqtt(object):
         if not self.mqtt_config['host']:
             logging.info(f"MQTT: Host config is required")
             return False
-
-        self.mqtt_client = mqtt.Client(client_id="SunGather")
+        client_id = self.mqtt_config['client_id']
+        self.mqtt_client = mqtt.Client(client_id)
         self.mqtt_client.on_connect = self.on_connect
         self.mqtt_client.on_disconnect = self.on_disconnect
         self.mqtt_client.on_publish = self.on_publish
