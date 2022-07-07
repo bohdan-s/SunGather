@@ -36,7 +36,8 @@ class SungrowInverter():
         
         self.registers = [[]]
         self.registers.pop() # Remove null value from list
-        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W'}, {'name': 'import_from_grid', 'unit': 'W'}, {'name': 'run_state'}]        self.register_ranges = [[]]
+        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W'}, {'name': 'import_from_grid', 'unit': 'W'}, {'name': 'run_state'}]
+        self.register_ranges = [[]]
         self.register_ranges.pop() # Remove null value from list
 
         self.latest_scrape = {}
