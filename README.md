@@ -39,6 +39,7 @@ Has multiple export locations out of the box:
 * MQTT - Load into MQTT, and optionally Home Assistance including Discovery
 * PVOutput - Load into PVOutput.org
 * InfluxDB - Load data directly into InfluxDB (v1.8 or v2.x)
+* Prometheus - Scrape from /metrics endpoint
 * Simple webserver showing collected data
 * Rasberry Pi Docker support
 * and more coming....
