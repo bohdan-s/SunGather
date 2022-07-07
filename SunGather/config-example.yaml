@@ -34,7 +34,7 @@ exports:
   # Runs a simple Webserver exporting config and last read registers as JSON
   # Access at http://localhost:8080 or http://[serverip]:8080
   - name: jsonserver 
-    enabled: True                           # [Optional] Default is False
+    enabled: False                          # [Optional] Default is False
     # port: 8082                            # [Optional] Default is 8080
 
 
