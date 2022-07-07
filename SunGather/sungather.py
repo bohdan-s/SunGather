@@ -259,6 +259,9 @@ class SungrowInverter():
         for register in self.registers:
             if check_register == register['name']:
                 return register['address']
+        for register in self.registers_custom:
+            if check_register == register['name']:
+                return register['address']
         return '----'
 
     def getRegisterUnit(self, check_register):
