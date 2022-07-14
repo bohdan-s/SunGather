@@ -802,7 +802,40 @@ registers:
 #   - name: "Reserved"    
 #     address: 5153-7012
 ##### Residential Hybrid Inverters only START
-    - name: "pv_power_of_today"    
+    - name: "export_limit_min"
+      level: 2
+      address: 5622
+      datatype: "U16"
+      accuracy: 10
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "export_limit_max"
+      level: 2
+      address: 5623
+      datatype: "U16"
+      accuracy: 10
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "bdc_rated_power"
+      level: 2
+      address: 5628
+      datatype: "U16"
+      accuracy: 100
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "bms_max_charging_current"
+      level: 2
+      address: 5635
+      datatype: "U16"
+      unit: "A"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "bms_max_discharging_current"
+      level: 2
+      address: 5636
+      datatype: "U16"
+      unit: "A"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "pv_power_of_today"
       level: 1
       address: 6100
       datatype: "U16"
@@ -1787,7 +1820,47 @@ registers:
 #     address: 5048-5154
 #   - name: "Reserved"    
 #     address: 5155-5199
-scan: # these have to be 1 less than the first register   
+    - name: "start_charging_power"
+      address: 13084
+      level: 2
+      accuracy: 10
+      datatype: "U16"
+      unit: "W"
+      models: ["SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "start_discharging_power"
+      address: 13085
+      level: 2
+      accuracy: 10
+      datatype: "U16"
+      unit: "W"
+      models: ["SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "energy_meter_comm"
+      address: 13086
+      level: 2
+      datatype: "U16"
+      datarange:
+        - response: 0xAA
+          value: "Enabled"
+        - response: 0x55
+          value: "Disabled"
+      models: ["SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "export_power_limitation"
+      address: 13087
+      level: 2
+      datatype: "U16"
+      datarange:
+        - response: 0xAA
+          value: "Enabled"
+        - response: 0x55
+          value: "Disabled"
+      models: ["SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "soc_reserve"
+      address: 13100
+      level: 2
+      datatype: "U16"
+      unit: "%"
+      models: ["SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
+scan: # these have to be 1 less than the first register
   - read:
     - start: 4949
       range: 50
@@ -1796,6 +1869,8 @@ scan: # these have to be 1 less than the first register
     - start: 5100
       range: 100
     - start: 5200
+      range: 100
+    - start: 5600
       range: 100
     - start: 6099
       range: 100
@@ -1824,7 +1899,8 @@ scan: # these have to be 1 less than the first register
       range: 10
     - start: 5034
       range: 10
-
+    - start: 13000
+      range: 100
 # Models Supported:
 # PV      ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]
-# Hybrid  ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"] 
+# Hybrid  ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
