@@ -541,22 +541,38 @@ def main():
     if not inverter.inverter_config['connection'] == "http": inverter.close()
     
     # Now we know the inverter is working, lets load the exports
-    exports = []
-    if configfile.get('exports'):
-        for export in configfile.get('exports'):
-            try:
-                if export.get('enabled', False):
-                    export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loading Export: exports\{export.get('name')}")
-                    exports.append(getattr(export_load, "export_" + export.get('name'))())
-                    retval = exports[-1].configure(export, inverter)
-            except Exception as err:
-                logging.error(f"Failed loading export: {err}" +
-                            f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
 
+    # used to store the enabled exporters in env or config (helper)
+    enabled_exports = {}
+    # exports is used to store the 'exporter' instance used for exporting the values after scraping.
+    exports = []
+
+    # check env for enabled exports 
+    for export in constants.EXPORTS:
+        exportEnv='SUNGATHER_EXPORT_' + export
+        if os.getenv(exportEnv, False):
+            enabled_exports.update({export.lower(): ''})
+    
+    # check config file for enabled exports (this won't disable an export enabled by env)
+    for export in configfile.get('exports'):
+        if export.get('name') in enabled_exports or export.get('enabled', False):
+            enabled_exports.update({export.get('name'): export})
+
+    # now lets load the "exporters"
+    for export in enabled_exports:
+        try:
+            export_load = importlib.import_module("exports." + export)
+            logging.info(f"Loading Export: exports\{export}")
+            exports.append(getattr(export_load, "export_" + export)())
+            exports[-1].configure(enabled_exports.get(export), inverter)
+        except Exception as err:
+            logging.error(f"Failed loading export: {err}" +
+            f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
+                
     scan_interval = config_inverter.get('scan_interval')
 
     # Core polling loop
+    sys.exit(0)
     while True:
         loop_start = datetime.now()
 
