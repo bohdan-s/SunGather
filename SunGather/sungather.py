@@ -432,7 +432,7 @@ def initConfig(configfile):
         "port": int(os.getenv(constants.ENV_INVERTER_PORT, config.get('port', 502))),
         "timeout": int(os.getenv(constants.ENV_CLIENT_TIMEOUT, config.get('timeout', 10))),
         "retries": int(os.getenv(constants.ENV_CLIENT_RETRIES, config.get('retries', 3))),
-        "slave": hex(int(os.getenv(constants.ENV_INVERTER_SLAVE, config.get('slave', '0x01')), base=16)),
+        "slave": os.getenv(constants.ENV_INVERTER_SLAVE, config.get('slave', 0x01)),
         "scan_interval": int(os.getenv(constants.ENV_CLIENT_SCAN_INTERVAL, config.get('scan_interval', 30))),
         "connection": os.getenv(constants.ENV_CLIENT_CONNECTION, config.get('connection',"modbus")),
         "model": os.getenv(constants.ENV_INVERTER_MODEL, config.get('model', None)),
@@ -572,7 +572,6 @@ def main():
     scan_interval = config_inverter.get('scan_interval')
 
     # Core polling loop
-    sys.exit(0)
     while True:
         loop_start = datetime.now()
 
