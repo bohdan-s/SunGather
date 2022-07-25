@@ -2,6 +2,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from threading import Thread
 from version import __version__
+import os
+import exports.configuration_constants as constants
 
 
 import logging
@@ -14,7 +16,8 @@ class export_jsonserver(object):
     # Configure Webserver
     def configure(self, config, inverter):
         try:
-            self.webServer = HTTPServer(('', config.get('port',8082)), MyServer)
+            webserverPort = os.getenv(constants.ENV_JSONSERVER_PORT, config.get('port',8080))
+            self.webServer = HTTPServer(('', webserverPort), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()

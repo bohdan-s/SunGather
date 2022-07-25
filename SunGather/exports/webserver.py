@@ -1,6 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 from version import __version__
+import os
+import exports.configuration_constants as constants
 
 
 import logging
@@ -14,7 +16,8 @@ class export_webserver(object):
     # Configure Webserver
     def configure(self, config, inverter):
         try:
-            self.webServer = HTTPServer(('', config.get('port',8080)), MyServer)
+            webserverPort = os.getenv(constants.ENV_WEBSERVER_PORT, config.get('port',8080))
+            self.webServer = HTTPServer(('', webserverPort), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()
