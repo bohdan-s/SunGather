@@ -1,6 +1,8 @@
 import logging
 import json
 import paho.mqtt.client as mqtt
+import os
+import exports.configuration_constants as constants
 
 class export_mqtt(object):
     def __init__(self):
@@ -13,13 +15,13 @@ class export_mqtt(object):
     def configure(self, config, inverter):
         model = inverter.getInverterModel(True)
         self.mqtt_config = {
-            'host': config.get('host', None),
-            'port': config.get('port', 1883),
-            'client_id': config.get('client_id', f'SunGather-{model}'),
-            'topic': config.get('topic', f"inverter/{model}/registers"),
-            'username': config.get('username', None),
-            'password': config.get('password',None),
-            'homeassistant': config.get('homeassistant',False)
+            'host': os.getenv(constants.ENV_MQTT_HOST, config.get('host', None)),
+            'port': os.getenv(constants.ENV_MQTT_PORT , config.get('port', 1883)),
+            'client_id': os.getenv(constants.ENV_MQTT_CLIENTID, config.get('client_id', f'SunGather-{model}')),
+            'topic': os.getenv(constants.ENV_MQTT_TOPIC, config.get('topic', f"inverter/{model}/registers")),
+            'username': os.getenv(constants.ENV_MQTT_USERNAME, config.get('username', None)),
+            'password': os.getenv(constants.ENV_MQTT_PASSWORD, config.get('password',None)),
+            'homeassistant': os.getenv(constants.ENV_MQTT_HA, config.get('homeassistant',False))
         }
 
         self.ha_sensors = [{}]
