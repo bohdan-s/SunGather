@@ -16,7 +16,7 @@ class export_jsonserver(object):
     # Configure Webserver
     def configure(self, config, inverter):
         try:
-            webserverPort = os.getenv(constants.ENV_JSONSERVER_PORT, config.get('port',8080))
+            webserverPort = int(os.getenv(constants.ENV_JSONSERVER_PORT, config.get('port', 8080))) 
             self.webServer = HTTPServer(('', webserverPort), MyServer)
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies

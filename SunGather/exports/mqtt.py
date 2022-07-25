@@ -16,7 +16,7 @@ class export_mqtt(object):
         model = inverter.getInverterModel(True)
         self.mqtt_config = {
             'host': os.getenv(constants.ENV_MQTT_HOST, config.get('host', None)),
-            'port': os.getenv(constants.ENV_MQTT_PORT , config.get('port', 1883)),
+            'port': int(os.getenv(constants.ENV_MQTT_PORT , config.get('port', 1883))),
             'client_id': os.getenv(constants.ENV_MQTT_CLIENTID, config.get('client_id', f'SunGather-{model}')),
             'topic': os.getenv(constants.ENV_MQTT_TOPIC, config.get('topic', f"inverter/{model}/registers")),
             'username': os.getenv(constants.ENV_MQTT_USERNAME, config.get('username', None)),

@@ -14,6 +14,7 @@ import getopt
 import yaml
 import time
 import os
+import exports.configuration_constants as constants
 
 class SungrowInverter():
     def __init__(self, config_inverter):
@@ -424,6 +425,24 @@ class SungrowInverter():
 
         return True
 
+def initConfig(configfile):
+    config = configfile['inverter']
+    return {
+        "host": os.getenv(constants.ENV_INVERTER_HOST, config.get('host', None)),
+        "port": int(os.getenv(constants.ENV_INVERTER_PORT, config.get('port', 502))),
+        "timeout": int(os.getenv(constants.ENV_CLIENT_TIMEOUT, config.get('timeout', 10))),
+        "retries": int(os.getenv(constants.ENV_CLIENT_RETRIES, config.get('retries', 3))),
+        "slave": hex(int(os.getenv(constants.ENV_INVERTER_SLAVE, config.get('slave', '0x01')), base=16)),
+        "scan_interval": int(os.getenv(constants.ENV_CLIENT_SCAN_INTERVAL, config.get('scan_interval', 30))),
+        "connection": os.getenv(constants.ENV_CLIENT_CONNECTION, config.get('connection',"modbus")),
+        "model": os.getenv(constants.ENV_INVERTER_MODEL, config.get('model', None)),
+        "smart_meter": os.getenv(constants.ENV_INVERTER_SMART_METER, config.get('smart_meter', False)),
+        "use_local_time": os.getenv(constants.ENV_INVERTER_USE_LOCAL_TIME, config.get('use_local_time', False)),
+        "log_console": os.getenv(constants.ENV_CLIENT_LOG_CONSOLE, config.get('log_console', 'WARNING')),
+        "log_file": os.getenv(constants.ENV_CLIENT_LOG_FILE, config.get('log_file', 'OFF')),
+        "level": int(os.getenv(constants.ENV_CLIENT_SCAN_LEVEL, config.get('level', 1)))
+    }
+
 def main():
     configfilename = 'config.yaml'
     logfolder = ''
@@ -485,21 +504,7 @@ def main():
         logging.error(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
         sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
    
-    config_inverter = {
-        "host": configfile['inverter'].get('host',None),
-        "port": configfile['inverter'].get('port',502),
-        "timeout": configfile['inverter'].get('timeout',10),
-        "retries": configfile['inverter'].get('retries',3),
-        "slave": configfile['inverter'].get('slave',0x01),
-        "scan_interval": configfile['inverter'].get('scan_interval',30),
-        "connection": configfile['inverter'].get('connection',"modbus"),
-        "model": configfile['inverter'].get('model',None),
-        "smart_meter": configfile['inverter'].get('smart_meter',False),
-        "use_local_time": configfile['inverter'].get('use_local_time',False),
-        "log_console": configfile['inverter'].get('log_console','WARNING'),
-        "log_file": configfile['inverter'].get('log_file','OFF'),
-        "level": configfile['inverter'].get('level',1)
-    }
+    config_inverter = initConfig(configfile)
 
     if 'loglevel' in locals():
         logger.handlers[0].setLevel(loglevel)

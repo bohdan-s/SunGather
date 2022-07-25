@@ -55,9 +55,9 @@ class export_pvoutput(object):
             'api': os.getenv(constants.ENV_PVOUTPUT_API ,config.get('api', None)),
             'sid': os.getenv(constants.ENV_PVOUTPUT_SID ,config.get('sid', None)),
             'join_team': os.getenv(constants.ENV_PVOUTPUT_JOIN_TEAM, config.get('join_team', True)),
-            'rate_limit': os.getenv(constants.ENV_PVOUTPUT_RATE_LIMIT, config.get('rate_limit', 60)),
-            'cumulative_flag': os.getenv(constants.ENV_PVOUTPUT_CUMULATIVE_FLAG, config.get('cumulative_flag',0)),
-            'batch_points': os.getenv(constants.ENV_PVOUTPUT_BATCH_POINTS, config.get('batch_points',1))
+            'rate_limit': int(os.getenv(constants.ENV_PVOUTPUT_RATE_LIMIT, config.get('rate_limit', 60))),
+            'cumulative_flag': int(os.getenv(constants.ENV_PVOUTPUT_CUMULATIVE_FLAG, config.get('cumulative_flag',0))),
+            'batch_points': int(os.getenv(constants.ENV_PVOUTPUT_BATCH_POINTS, config.get('batch_points',1)))
         }
         self.pvoutput_parameters = [{}]
         self.pvoutput_parameters.pop() # Remove null value from list

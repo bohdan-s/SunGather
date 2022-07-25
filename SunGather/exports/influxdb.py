@@ -16,8 +16,8 @@ class export_influxdb(object):
             'token': os.getenv(constants.ENV_INFLUX_TOKEN, config.get('token', None)),
             'username': os.getenv(constants.ENV_INFLUX_USERNAME ,config.get('username', None)),
             'password': os.getenv(constants.ENV_INFLUX_PASSWORD, config.get('password', None)),
-            'org': os.getenv(constants.ENV_INFLUX_ORG, config.get('org',None)),
-            'bucket': os.getenv(constants.ENV_INFLUX_BUCKET, config.get('bucket',None))
+            'org': os.getenv(constants.ENV_INFLUX_ORG, config.get('org', None)),
+            'bucket': os.getenv(constants.ENV_INFLUX_BUCKET, config.get('bucket', None))
         }
         self.influxdb_measurements = [{}]
         self.influxdb_measurements.pop() # Remove null value from list
