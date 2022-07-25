@@ -1,6 +1,8 @@
 import influxdb_client
 import logging
 from influxdb_client.client.write_api import SYNCHRONOUS
+import exports.configuration_constants as constants
+import os
 
 class export_influxdb(object):
     def __init__(self):
@@ -10,12 +12,12 @@ class export_influxdb(object):
     # Configure InfluxDB
     def configure(self, config, inverter):
         self.influxdb_config = {
-            'url': config.get('url', "http://localhost:8086"),
-            'token': config.get('token', None),
-            'username': config.get('username', None),
-            'password': config.get('password', None),
-            'org': config.get('org',None),
-            'bucket': config.get('bucket',None)
+            'url': os.getenv(constants.ENV_INFLUX_URL, config.get('url', "http://localhost:8086")),
+            'token': os.getenv(constants.ENV_INFLUX_TOKEN, config.get('token', None)),
+            'username': os.getenv(constants.ENV_INFLUX_USERNAME ,config.get('username', None)),
+            'password': os.getenv(constants.ENV_INFLUX_PASSWORD, config.get('password', None)),
+            'org': os.getenv(constants.ENV_INFLUX_ORG, config.get('org',None)),
+            'bucket': os.getenv(constants.ENV_INFLUX_BUCKET, config.get('bucket',None))
         }
         self.influxdb_measurements = [{}]
         self.influxdb_measurements.pop() # Remove null value from list
