@@ -1113,49 +1113,49 @@ registers:
       address: 13001
       datatype: "U16"
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "power_generated_from_pv"
+    - name: "state_power_generated_from_pv"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 1
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "battery_charging"
+    - name: "state_battery_charging"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 2
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "battery_discharging"
+    - name: "state_battery_discharging"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 4
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "load_active"
+    - name: "state_load_active"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 8
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "feed_into_grid"
+    - name: "state_feed_into_grid"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 16
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "import_from_grid"
+    - name: "state_import_from_grid"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 32
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "power_generated_from_load"
+    - name: "state_power_generated_from_load"
       level: 2
       address: 13001
       datatype: "U16"
       mask: 128
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "daily_pv_generation"
+    - name: "state_daily_pv_generation"
       level: 2
       address: 13002
       datatype: "U16"
