@@ -325,16 +325,30 @@ class SungrowInverter():
 
         # Create a registers for Power imported and exported to/from Grid
         if self.inverter_config['level'] >= 1:
-            try:
-                self.latest_scrape["export_to_grid"] = 0
-                self.latest_scrape["import_from_grid"] = 0
-                power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
-                if power < 0:
-                    self.latest_scrape["export_to_grid"] = abs(power)
-                elif power >= 0:
-                    self.latest_scrape["import_from_grid"] = power
-            except Exception:
-                pass
+            if self.validateRegister('meter_power'):
+                try:
+                    self.latest_scrape["export_to_grid"] = 0
+                    self.latest_scrape["import_from_grid"] = 0
+                    power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
+                    if power < 0:
+                        self.latest_scrape["export_to_grid"] = abs(power)
+                    elif power >= 0:
+                        self.latest_scrape["import_from_grid"] = power
+                except Exception:
+                    pass
+            # in this case we connected to a hybrid inverter and need to calculate the import differently
+            elif self.validateRegister('export_power_hybrid'):
+                try:
+                    self.latest_scrape['export_to_grid'] = self.latest_scrape.get('export_power_hybrid', 0)
+                    self.latest_scrape['import_from_grid'] = 0
+
+                    # take AC output of the inverter into account as could have a battery attached.
+                    # once the load is higher then the AC output, we import energy from the grid
+                    power = self.latest_scrape.get('load_power_hybrid') - self.latest_scrape('total_active_power')
+                    if power > 0:
+                        self.latest_scrape['import_from_grid'] = power
+                except Exception:
+                    pass
         
         try: # If inverter is returning no data for load_power, we can calculate it manually
             if not self.latest_scrape["load_power"]:
