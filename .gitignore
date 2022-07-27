@@ -115,3 +115,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Intellij IDEA
+.idea
+*.iml
