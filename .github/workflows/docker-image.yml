@@ -6,18 +6,17 @@ on:
       - main
 jobs:
   docker:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
       -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        run: echo "::set-output name=tag::v$(python setup.py --version)"
+        id: version
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
@@ -31,4 +30,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sungather:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sungather:${{ steps.version.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/sungather:latest
