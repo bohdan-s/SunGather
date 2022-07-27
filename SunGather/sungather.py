@@ -3,6 +3,8 @@
 from SungrowModbusTcpClient import SungrowModbusTcpClient
 from SungrowModbusWebClient import SungrowModbusWebClient
 from pymodbus.client.sync import ModbusTcpClient
+
+from SunGather.configreader import Configreader
 from version import __version__
 from datetime import datetime
 
@@ -15,7 +17,9 @@ import yaml
 import time
 import os
 
-class SungrowInverter():
+
+class Sungather:
+
     def __init__(self, config_inverter):
         self.client_config = {
             "host":     config_inverter.get('host'),
@@ -113,7 +117,7 @@ class SungrowInverter():
 
         # Load register list based on name and value after checking model
         for register in registersfile['registers'][0]['read']:
-            if register.get('level',3) <= self.inverter_config.get('level') or self.inverter_config.get('level') == 3:
+            if register.get('level', 3) <= self.inverter_config.get('level') or self.inverter_config.get('level') == 3:
                 register['type'] = "read"
                 register.pop('level')
                 if register.get('smart_meter') and self.inverter_config.get('smart_meter'):
@@ -128,7 +132,7 @@ class SungrowInverter():
                     self.registers.append(register)
 
         for register in registersfile['registers'][1]['hold']:
-            if register.get('level',3) <= self.inverter_config.get('level') or self.inverter_config.get('level') == 3:
+            if register.get('level', 3) <= self.inverter_config.get('level') or self.inverter_config.get('level') == 3:
                 register['type'] = "hold"
                 register.pop('level')
                 if register.get('smart_meter') and self.inverter_config.get('smart_meter'):
@@ -171,9 +175,9 @@ class SungrowInverter():
         try:
             logging.debug(f'load_registers: {register_type}, {start}:{count}')
             if register_type == "read":
-                rr = self.client.read_input_registers(start,count=count, unit=self.inverter_config['slave'])
+                rr = self.client.read_input_registers(start, count=count, unit=self.inverter_config['slave'])
             elif register_type == "hold":
-                rr = self.client.read_holding_registers(start,count=count, unit=self.inverter_config['slave'])
+                rr = self.client.read_holding_registers(start, count=count, unit=self.inverter_config['slave'])
             else:
                 raise RuntimeError(f"Unsupported register type: {type}")
         except Exception as err:
@@ -484,21 +488,22 @@ def main():
     except Exception as err:
         logging.error(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
         sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
-   
+
+    config = Configreader(configfile['inverter'], 'INVERTER')
     config_inverter = {
-        "host": configfile['inverter'].get('host',None),
-        "port": configfile['inverter'].get('port',502),
-        "timeout": configfile['inverter'].get('timeout',10),
-        "retries": configfile['inverter'].get('retries',3),
-        "slave": configfile['inverter'].get('slave',0x01),
-        "scan_interval": configfile['inverter'].get('scan_interval',30),
-        "connection": configfile['inverter'].get('connection',"modbus"),
-        "model": configfile['inverter'].get('model',None),
-        "smart_meter": configfile['inverter'].get('smart_meter',False),
-        "use_local_time": configfile['inverter'].get('use_local_time',False),
-        "log_console": configfile['inverter'].get('log_console','WARNING'),
-        "log_file": configfile['inverter'].get('log_file','OFF'),
-        "level": configfile['inverter'].get('level',1)
+        "host": config.get('host', None),
+        "port": config.get('port', 502),
+        "timeout": config.get('timeout', 10),
+        "retries": config.get('retries', 3),
+        "slave": config.get('slave', 0x01),
+        "scan_interval": config.get('scan_interval', 30),
+        "connection": config.get('connection', "modbus"),
+        "model": config.get('model', None),
+        "smart_meter": config.get('smart_meter', False),
+        "use_local_time": config.get('use_local_time', False),
+        "log_console": config.get('log_console', 'WARNING'),
+        "log_file": config.get('log_file', 'OFF'),
+        "level": config.get('level', 1)
     }
 
     if 'loglevel' in locals():
@@ -506,12 +511,13 @@ def main():
     else:
         logger.handlers[0].setLevel(config_inverter['log_console'])
 
-    if not config_inverter['log_file'] == "OFF":
-        if config_inverter['log_file'] == "DEBUG" or config_inverter['log_file'] == "INFO" or config_inverter['log_file'] == "WARNING" or config_inverter['log_file'] == "ERROR":
+    config_log_file = config_inverter['log_file']
+    if not config_log_file == "OFF":
+        if config_log_file == "DEBUG" or config_log_file == "INFO" or config_log_file == "WARNING" or config_log_file == "ERROR":
             logfile = logfolder + "SunGather.log"
             fh = logging.handlers.RotatingFileHandler(logfile, mode='w', encoding='utf-8', maxBytes=10485760, backupCount=10) # Log 10mb files, 10 x files = 100mb
             fh.formatter = logger.handlers[0].formatter
-            fh.setLevel(config_inverter['log_file'])
+            fh.setLevel(config_log_file)
             logger.addHandler(fh)
         else:
             logging.warning(f"log_file: Valid options are: DEBUG, INFO, WARNING, ERROR and OFF")
@@ -523,7 +529,7 @@ def main():
     logging.debug(f'Inverter Config Loaded: {config_inverter}')    
 
     if config_inverter.get('host'):
-        inverter = SungrowInverter(config_inverter)
+        inverter = Sungather(config_inverter)
     else:
         logging.error(f"Error: host option in config is required")
         sys.exit("Error: host option in config is required")
@@ -539,15 +545,17 @@ def main():
     exports = []
     if configfile.get('exports'):
         for export in configfile.get('exports'):
+            exportname = export.get('name')
             try:
                 if export.get('enabled', False):
-                    export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loading Export: exports\{export.get('name')}")
-                    exports.append(getattr(export_load, "export_" + export.get('name'))())
-                    retval = exports[-1].configure(export, inverter)
+                    export_load = importlib.import_module("exports." + exportname)
+                    logging.info(f"Loading Export: {exportname}")
+                    instance = getattr(export_load, "export_" + exportname)()
+                    retval = instance.configure(Configreader(export, exportname), inverter)
+                    exports.append(instance)
             except Exception as err:
                 logging.error(f"Failed loading export: {err}" +
-                            f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
+                              f"\n\t\t\t     Please make sure {exportname}.py exists in the exports folder")
 
     scan_interval = config_inverter.get('scan_interval')
 
