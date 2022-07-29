@@ -491,18 +491,18 @@ def main():
     config = Configreader(configfile['inverter'], 'INVERTER')
     config_inverter = {
         "host": config.get('host', None),
-        "port": config.get('port', 502),
-        "timeout": config.get('timeout', 10),
-        "retries": config.get('retries', 3),
-        "slave": config.get('slave', 0x01),
-        "scan_interval": config.get('scan_interval', 30),
+        "port": int(config.get('port', 502)),
+        "timeout": int(config.get('timeout', 10)),
+        "retries": int(config.get('retries', 3)),
+        "slave": int(config.get('slave', 0x01)),
+        "scan_interval": int(config.get('scan_interval', 30)),
         "connection": config.get('connection', "modbus"),
         "model": config.get('model', None),
-        "smart_meter": config.get('smart_meter', False),
-        "use_local_time": config.get('use_local_time', False),
+        "smart_meter": bool(config.get('smart_meter', False)),
+        "use_local_time": bool(config.get('use_local_time', False)),
         "log_console": config.get('log_console', 'WARNING'),
         "log_file": config.get('log_file', 'OFF'),
-        "level": config.get('level', 1)
+        "level": int(config.get('level', 1))
     }
 
     if 'loglevel' in locals():
