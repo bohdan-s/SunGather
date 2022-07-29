@@ -14,12 +14,12 @@ class export_mqtt(object):
         model = inverter.getInverterModel(True)
         self.mqtt_config = {
             'host': config.get('host', None),
-            'port': config.get('port', 1883),
+            'port': int(config.get('port', 1883)),
             'client_id': config.get('client_id', f'SunGather-{model}'),
             'topic': config.get('topic', f"inverter/{model}/registers"),
             'username': config.get('username', None),
-            'password': config.get('password',None),
-            'homeassistant': config.get('homeassistant',False)
+            'password': config.get('password', None),
+            'homeassistant': bool(config.get('homeassistant', False))
         }
 
         self.ha_sensors = [{}]

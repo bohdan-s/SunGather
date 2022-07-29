@@ -14,8 +14,8 @@ class export_influxdb(object):
             'token': config.get('token', None),
             'username': config.get('username', None),
             'password': config.get('password', None),
-            'org': config.get('org',None),
-            'bucket': config.get('bucket',None)
+            'org': config.get('org', None),
+            'bucket': config.get('bucket', None)
         }
         self.influxdb_measurements = [{}]
         self.influxdb_measurements.pop() # Remove null value from list
@@ -31,7 +31,7 @@ class export_influxdb(object):
                     token=self.influxdb_config['token'],
                     org=self.influxdb_config['org']
                 )
-            elif config.get('username',False) and config.get('password',False):
+            elif config.get('username', False) and config.get('password', False):
                 self.client = influxdb_client.InfluxDBClient(
                     url=self.influxdb_config['url'],
                     token=f"{self.influxdb_config['username']}:{self.influxdb_config['password']}",

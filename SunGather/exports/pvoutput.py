@@ -53,9 +53,9 @@ class export_pvoutput(object):
             'api': config.get('api', None),
             'sid': config.get('sid', None),
             'join_team': config.get('join_team', True),
-            'rate_limit': config.get('rate_limit', 60),
-            'cumulative_flag': config.get('cumulative_flag',0),
-            'batch_points': config.get('batch_points',1)
+            'rate_limit': int(config.get('rate_limit', 60)),
+            'cumulative_flag': int(config.get('cumulative_flag', 0)),
+            'batch_points': int(config.get('batch_points', 1))
         }
         self.pvoutput_parameters = [{}]
         self.pvoutput_parameters.pop() # Remove null value from list
