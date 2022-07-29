@@ -323,37 +323,19 @@ class SungrowInverter():
         # Leave connection open, see if helps resolve the connection issues
         #self.close()
 
-        # Create a registers for Power imported and exported to/from Grid
+        # Create registers for Power imported and exported to/from Grid
+        power = 0
         if self.inverter_config['level'] >= 1:
             self.latest_scrape["export_to_grid"] = 0
             self.latest_scrape["import_from_grid"] = 0
-
-            if self.validateRegister('meter_power'):
-                try:
-                    power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
-                    if power < 0:
-                        self.latest_scrape["export_to_grid"] = abs(power)
-                    elif power >= 0:
-                        self.latest_scrape["import_from_grid"] = power
-                except Exception:
-                    pass
-            # in this case we connected to a hybrid inverter and need to use export_power_hybrid
-            # export_power_hybrid is negative in case of importing from the grid
-            elif self.validateRegister('export_power_hybrid'):
-                try:
-                    power = self.latest_scrape.get('export_power_hybrid', 0)
-                    if power < 0:
-                        self.latest_scrape["import_from_grid"] = abs(power)
-                    elif power >= 0:
-                        self.latest_scrape["export_to_grid"] = power
-                except Exception:
-                    pass
-        
-        try: # If inverter is returning no data for load_power, we can calculate it manually
-            if not self.latest_scrape["load_power"]:
-                self.latest_scrape["load_power"] = int(self.latest_scrape.get('total_active_power')) + int(self.latest_scrape.get('meter_power'))
-        except Exception:
-            pass  
+            power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
+            if power < 0:
+                self.latest_scrape["export_to_grid"] = abs(power)
+            elif power >= 0:
+                self.latest_scrape["import_from_grid"] = power
+        # If inverter is returning no data for load_power, we can calculate it manually
+        if not self.latest_scrape.get("load_power"):
+            self.latest_scrape["load_power"] = self.latest_scrape.get('total_active_power', 0) + power
 
         # See if the inverter is running, This is added to inverters so can be read via MQTT etc...
         # It is also used below, as some registers hold the last value on 'stop' so we need to set to 0
