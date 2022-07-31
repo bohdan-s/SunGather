@@ -154,3 +154,7 @@ exports:
 #       register:
 #     - name: "m1"                          # Text Message 1 - Donation Only
 #       register:
+
+  - name: prometheus
+    enabled: True                          # [Optional] Default is False
+    # port: 8000                           # [Optional] Default 8000
