@@ -28,8 +28,13 @@ class export_prometheus(object):
                 'metric': Enum(metric_name, metric['description'], states=metric['states']),
                 'register': metric['register']
             }
-        # elif metric_type == 'Gauge'::
-        #     print("a and b are equal")
+        elif metric_type == 'Gauge':
+            self.metrics_config[metric_name] =  {
+                'metric_type': metric_type,
+                'metric': Gauge(metric_name, metric['description']),
+                'register': metric['register'],
+                'multiple': metric.get('multiple', 1)
+            }
         # else:
         #     print("a is greater than b")
 
@@ -57,6 +62,8 @@ class export_prometheus(object):
                 self.metrics_config[metric_name]['metric'].info(publish)
             elif config['metric_type'] == 'Enum':
                 self.metrics_config[metric_name]['metric'].state(latest_scrape[config['register']])
+            elif config['metric_type'] == 'Gauge':
+                self.metrics_config[metric_name]['metric'].set(latest_scrape[config['register']] * config['multiple'])
 
         # try:
         #     latest_scrape = inverter.latest_scrape
