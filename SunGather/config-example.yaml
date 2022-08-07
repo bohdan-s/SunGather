@@ -45,28 +45,28 @@ exports:
       - metric_name: inverter_daily_power_yield
         description: "Daily Power Yields"
         type: Gauge
-        unit: "Wh"
+        unit: watt_hours
         register: daily_power_yields
         multiple: 1000
       - metric_name: inverter_total_power_yield
         description: "Total Power Yields"
-        unit: "Wh"
+        unit: watt_hours
         type: Gauge
         register: total_power_yields
         multiple: 1000
       - metric_name: inverter_internal_temperature
         description: "Internal Temperature"
-        unit: "C"
+        unit: celsius
         type: Gauge
         register: internal_temperature
       - metric_name: inverter_phase_a_voltage
         description: "Phase A Voltage"
-        unit: "V"
+        unit: volts
         type: Gauge
         register: phase_a_voltage
       - metric_name: inverter_total_active_power
         description: "Total Active Power"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: total_active_power
       - metric_name: inverter_work_state
@@ -77,53 +77,53 @@ exports:
             register: work_state_1
       - metric_name: inverter_meter_power
         description: "Meter Power"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: meter_power
       - metric_name: inverter_load_power
         description: "Load Power"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: load_power
       - metric_name: inverter_daily_export_energy
         description: "Daily Export Energy"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: daily_export_energy
         multiple: 1000
       - metric_name: inverter_total_export_energy
         description: "Total Export Energy"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: total_export_energy
         multiple: 1000
       - metric_name: inverter_daily_import_energy
         description: "Daily Import Energy"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: daily_import_energy
         multiple: 1000
       - metric_name: inverter_total_import_energy
         description: "Total Import Energy"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: total_import_energy
         multiple: 1000
       - metric_name: inverter_daily_direct_energy_consumption
         description: "Daily Direct Energy Consumption"
-        unit: "Wh"
+        unit: watt_hours
         type: Gauge
         register: daily_direct_energy_consumption
         multiple: 1000
       - metric_name: inverter_total_direct_energy_consumption
         description: "Total Direct Energy Consumption"
-        unit: "Wh"
+        unit: watt_hours
         type: Gauge
         register: total_direct_energy_consumption
         multiple: 1000
       - metric_name: inverter_daily_running_time
         description: "Daily Running Time"
-        unit: "minutes"
+        unit: minutes
         type: Gauge
         register: daily_running_time
       - metric_name: inverter_start_stop
@@ -133,12 +133,12 @@ exports:
         register: start_stop
       - metric_name: inverter_export_to_grid
         description: "Export to Grid"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: export_to_grid
       - metric_name: inverter_import_from_grid
         description: "Import from Grid"
-        unit: "W"
+        unit: watts
         type: Gauge
         register: import_from_grid
 
