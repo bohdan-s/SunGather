@@ -6,46 +6,65 @@ REGISTRY.unregister(PROCESS_COLLECTOR)
 REGISTRY.unregister(PLATFORM_COLLECTOR)
 REGISTRY.unregister(REGISTRY._names_to_collectors['python_gc_objects_collected_total'])
 
+
 class PrometheusMetricsCollector(object):
     def __init__(self):
         self.metrics_config = {}
 
-    def init_metric(self, metric):
-        metric_name = metric['metric_name']
-        metric_type = metric['type']
-
-        logging.info(f"Prometheus: Initialising metric {metric_name} as type {metric_type}")
-
-        if metric_type == 'Info':
-            self.metrics_config[metric_name] =  {
-                'metric_type': metric_type,
-                'metric': Info(metric_name, metric['description']),
-                'publish_info': metric['publish_info']
-            }
-        elif metric_type == 'Enum':
-            self.metrics_config[metric_name] =  {
-                'metric_type': metric_type,
-                'metric': Enum(metric_name, metric['description'], states=metric['states']),
-                'register': metric['register']
-            }
-        elif metric_type == 'Gauge':
-            self.metrics_config[metric_name] =  {
-                'metric_type': metric_type,
-                'metric': Gauge(metric_name, metric['description'], unit=metric['unit']),
-                'register': metric['register'],
-                'multiple': metric.get('multiple', 1)
-            }
-        else:
-            logging.warn(f"Unsupported metric type {metric_type}. Ignoring")
-
     def configure(self, config):
         try:
-            for metric in config['metrics']:
-                self.init_metric(metric)
+            for metric_config in config['metrics']:
+                self.setup_metric_collectors(metric_config)
         except Exception as err:
             logging.error(f"Prometheus-Export: Error: {err}")
             return False
         return True
+
+    def setup_metric_collectors(self, metric_config):
+        metric_name = metric_config['metric_name']
+        metric_type = metric_config['type']
+
+        logging.info(f"Prometheus: Initialising metric {metric_name} as type {metric_type}")
+
+        if metric_type == 'Info':
+            self.setup_info_collector(metric_config)
+        elif metric_type == 'Enum':
+            self.setup_enum_collector(metric_config)
+        elif metric_type == 'Gauge':
+            self.setup_gauge_collector(metric_config)
+        else:
+            logging.warning(f"Unsupported metric type {metric_type}. Ignoring")
+
+    def setup_gauge_collector(self, metric_config):
+        metric_name = metric_config['metric_name']
+        metric_type = metric_config['type']
+
+        self.metrics_config[metric_name] = {
+            'metric_type': metric_type,
+            'metric': Gauge(metric_name, metric_config['description'], unit=metric_config['unit']),
+            'register': metric_config['register'],
+            'multiple': metric_config.get('multiple', 1)
+        }
+
+    def setup_enum_collector(self, metric_config):
+        metric_name = metric_config['metric_name']
+        metric_type = metric_config['type']
+
+        self.metrics_config[metric_name] = {
+            'metric_type': metric_type,
+            'metric': Enum(metric_name, metric_config['description'], states=metric_config['states']),
+            'register': metric_config['register']
+        }
+
+    def setup_info_collector(self, metric_config):
+        metric_name = metric_config['metric_name']
+        metric_type = metric_config['type']
+
+        self.metrics_config[metric_name] = {
+            'metric_type': metric_type,
+            'metric': Info(metric_name, metric_config['description']),
+            'publish_info': metric_config['publish_info']
+        }
 
     def publish(self, latest_scrape):
         try:
@@ -60,10 +79,11 @@ class PrometheusMetricsCollector(object):
                 elif config['metric_type'] == 'Enum':
                     self.metrics_config[metric_name]['metric'].state(latest_scrape[config['register']])
                 elif config['metric_type'] == 'Gauge':
-                    self.metrics_config[metric_name]['metric'].set(latest_scrape[config['register']] * config['multiple'])
+                    self.metrics_config[metric_name]['metric'].set(
+                        latest_scrape[config['register']] * config['multiple'])
 
+            logging.debug("Prometheus-Published")
             return True
-            logging.debug(f"Prometheus-Published")
         except Exception as err:
             logging.error(f"Prometheus-Publishing: Error: {err}")
             return False
