@@ -1,4 +1,4 @@
-from prometheus_client import start_http_server, Gauge, Enum, Info, REGISTRY, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
+from prometheus_client import generate_latest, Gauge, Enum, Info, REGISTRY, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
 import logging
 
 # Ignore Python related metrics
@@ -6,7 +6,7 @@ REGISTRY.unregister(PROCESS_COLLECTOR)
 REGISTRY.unregister(PLATFORM_COLLECTOR)
 REGISTRY.unregister(REGISTRY._names_to_collectors['python_gc_objects_collected_total'])
 
-class export_prometheus(object):
+class PrometheusMetricsCollector(object):
     def __init__(self):
         self.metrics_config = {}
 
@@ -38,21 +38,17 @@ class export_prometheus(object):
         else:
             logging.warn(f"Unsupported metric type {metric_type}. Ignoring")
 
-    def configure(self, config, inverter):
+    def configure(self, config):
         try:
             for metric in config['metrics']:
                 self.init_metric(metric)
-
-            start_http_server(config.get('port', 8000))
         except Exception as err:
             logging.error(f"Prometheus-Export: Error: {err}")
             return False
         return True
 
-    def publish(self, inverter):
+    def publish(self, latest_scrape):
         try:
-            latest_scrape = inverter.latest_scrape
-
             for metric_name, config in self.metrics_config.items():
                 if config['metric_type'] == 'Info':
                     publish = {}
@@ -71,3 +67,6 @@ class export_prometheus(object):
         except Exception as err:
             logging.error(f"Prometheus-Publishing: Error: {err}")
             return False
+
+    def metrics(self):
+        return generate_latest()
