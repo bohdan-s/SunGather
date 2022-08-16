@@ -51,7 +51,7 @@ I have learned a lot from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Raodmap / TO DO
+## Roadmap / TO DO
 * Full Home Assistant integration, as HACS addon
 
 
@@ -130,6 +130,11 @@ Example:
 ```sh
 python3 sungather.py -c /full/path/config.yaml
 ```
+
+### Environment variables
+
+All simple config values can be exposed as environment variable with the prefix `SUNGATHER_`, e.g. `SUNGATHER_INVERTER_HOST`. 
+For exports the variable name is `SUNGATHER_[EXPORT]_[CONFIG]`, e.g. `SUNGATHER_WEBSERVER_PORT`.
 
 ## Exports
 
