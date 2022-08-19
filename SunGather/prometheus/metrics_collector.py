@@ -24,7 +24,7 @@ class PrometheusMetricsCollector(object):
         metric_name = metric_config['metric_name']
         metric_type = metric_config['type']
 
-        logging.info(f"Prometheus: Initialising metric {metric_name} as type {metric_type}")
+        logging.debug(f"Prometheus: Initialising metric {metric_name} as type {metric_type}")
 
         if metric_type == 'Info':
             self.setup_info_collector(metric_config)
