@@ -233,14 +233,17 @@ class SungrowInverter():
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
+                        register_value = None
                         for value in register.get('datarange'):
                             if value['response'] == rr.registers[num] or value['response'] == register_value:
                                 register_value = value['value']
 
-
+                    if register_value is None:
+                        register_value = register.get('default')
+                        logging.warning(f"No value for {register_name}, using default {register_value}")
 
                     if register.get('accuracy'):
-                        register_value = round(register_value * register.get('accuracy'),2)
+                        register_value = round(register_value * register.get('accuracy'), 2)
 
                     # Set the final register value with adjustments above included 
                     self.latest_scrape[register_name] = register_value
