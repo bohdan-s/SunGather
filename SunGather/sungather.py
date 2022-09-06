@@ -240,7 +240,7 @@ class SungrowInverter():
                                 match = True
                         if not match:
                             default = register.get('default')
-                            logging.warning(f"No matching value for {register_value} in datarange of {register_name}, using default {default}")
+                            logging.debug(f"No matching value for {register_value} in datarange of {register_name}, using default {default}")
                             register_value = default
 
                     if register.get('accuracy'):
