@@ -325,10 +325,11 @@ class SungrowInverter():
 
         # Create a registers for Power imported and exported to/from Grid
         if self.inverter_config['level'] >= 1:
+            self.latest_scrape["export_to_grid"] = 0
+            self.latest_scrape["import_from_grid"] = 0
+
             if self.validateRegister('meter_power'):
                 try:
-                    self.latest_scrape["export_to_grid"] = 0
-                    self.latest_scrape["import_from_grid"] = 0
                     power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
                     if power < 0:
                         self.latest_scrape["export_to_grid"] = abs(power)
@@ -336,17 +337,15 @@ class SungrowInverter():
                         self.latest_scrape["import_from_grid"] = power
                 except Exception:
                     pass
-            # in this case we connected to a hybrid inverter and need to calculate the import differently
+            # in this case we connected to a hybrid inverter and need to use export_power_hybrid
+            # export_power_hybrid is negative in case of importing from the grid
             elif self.validateRegister('export_power_hybrid'):
                 try:
-                    self.latest_scrape['export_to_grid'] = self.latest_scrape.get('export_power_hybrid', 0)
-                    self.latest_scrape['import_from_grid'] = 0
-
-                    # take AC output of the inverter into account as could have a battery attached.
-                    # once the load is higher then the AC output, we import energy from the grid
-                    power = self.latest_scrape.get('load_power_hybrid') - self.latest_scrape('total_active_power')
-                    if power > 0:
-                        self.latest_scrape['import_from_grid'] = power
+                    power = self.latest_scrape.get('export_power_hybrid', 0)
+                    if power < 0:
+                        self.latest_scrape["import_from_grid"] = abs(power)
+                    elif power >= 0:
+                        self.latest_scrape["export_to_grid"] = power
                 except Exception:
                     pass
         
