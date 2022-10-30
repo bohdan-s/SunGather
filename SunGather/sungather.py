@@ -552,7 +552,7 @@ def main():
 
     # Core polling loop
     while True:
-        loop_start = datetime.now()
+        loop_start = time.perf_counter()
 
         inverter.checkConnection()
 
@@ -567,8 +567,8 @@ def main():
             inverter.disconnect()
             logging.warning(f"Data collection failed, skipped exporting data. Retying in {scan_interval} secs")
 
-        loop_end = datetime.now()
-        process_time = round(float(((loop_end - loop_start).seconds) + ((loop_end - loop_start).microseconds / 1000000)),2)
+        loop_end = time.perf_counter()
+        process_time = round(loop_end - loop_start, 2)
         logging.debug(f'Processing Time: {process_time} secs')
 
         if 'runonce' in locals():
