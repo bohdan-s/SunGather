@@ -226,6 +226,7 @@ registers:
       level: 1  
       address: 5004
       datatype: "U32"
+      accuracy: 0.1
       unit: "kWh"
     - name: "total_running_time"  
       level: 1  
