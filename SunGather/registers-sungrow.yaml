@@ -1124,7 +1124,7 @@ registers:
       datarange:
         - response: 0x0002
           value: "Stop"
-        - response: 0x0002
+        - response: 0x0008
           value: "Standby"
         - response: 0x0010
           value: "Initial Standby"
