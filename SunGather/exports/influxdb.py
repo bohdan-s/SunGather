@@ -60,9 +60,10 @@ class export_influxdb(object):
             if not inverter.validateLatestScrape(measurement['register']):
                 logging.error(f"InfluxDB: Skipped collecting data,  {measurement['register']} missing from last scrape")
                 return False
-            sequence.append(f"{measurement['point']},inverter={inverter.getInverterModel(True)} {measurement['register']}={inverter.getRegisterValue(measurement['register'])}")
-        logging.debug(f'InfluxDB: Sequence; {sequence}')
-
+            if type(inverter.getRegisterValue(measurement['register'])) is str:
+                sequence.append(influxdb_client.Point(measurement['point']).tag("inverter", inverter.getInverterModel(True)).field(measurement['register'], inverter.getRegisterValue(measurement['register'])))
+            else:
+                sequence.append(influxdb_client.Point(measurement['point']).tag("inverter", inverter.getInverterModel(True)).field(measurement['register'], float(inverter.getRegisterValue(measurement['register']))))
         try:
             self.write_api.write(self.influxdb_config['bucket'], self.client.org, sequence)
         except Exception as err:
