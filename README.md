@@ -51,11 +51,11 @@ I have learned a lot from the following projects, THANK YOU
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Raodmap / TO DO
+## Roadmap / TO DO
 * Full Home Assistant integration, as HACS addon
 
 
-### Built With
+## Built With
 
 * [Python3](https://www.python.org/)
 
@@ -72,7 +72,7 @@ I have learned a lot from the following projects, THANK YOU
 
 <!-- GETTING STARTED -->
 ## Getting Started
-# Local
+### Local
 ```sh
 git clone https://github.com/bohdan-s/SunGather.git
 cd SunGather
@@ -88,7 +88,7 @@ Run SunGather:
 python3 sungather.py
 ```
 
-# Docker
+### Docker
 docker run options:  
 -v {path to}/config.yaml:/config/config.yaml  <- Set Config File Location  
 -v {logpath}:/logs                            <- Set Log folder Location if using log to file (also set log_file in config.yaml)  
@@ -131,7 +131,7 @@ Example:
 python3 sungather.py -c /full/path/config.yaml
 ```
 
-## Exports
+### Exports
 
 A collection of exports are available:
 
@@ -141,7 +141,7 @@ A collection of exports are available:
 * pvoutput:   Output to PVOutput.org, requires account and solar is set up on website first. 
 * InfluxDB:   Output directly to InfluxDB, can then be used by Grafana, etc..
 
-## Registers
+### Registers
 
 This tool should be able to access most registers exposed.
 Set the following in config.yaml under inverters section.
@@ -149,7 +149,7 @@ Set the following in config.yaml under inverters section.
 * Level: 2 - This should be everything your inverter supports
 * Level: 3 - This will try every register, you will get lots of 0/65535 responses for registers not supported.
 
-* smart_meter: True - (_Only needed for SG* Models_) Set to true if you have a smart meter installed, this will return power usage at the meter box, without it you can not calculate house power usage. Hybrid inverters will provide this by default (load_power_hybrid)
+* smart_meter: True - (_Only needed for SG* Models_) Set to true if you have a smart meter installed, this will return power usage at the meter box, without it you cannot calculate house power usage. Hybrid inverters will provide this by default (load_power_hybrid)
 
 ### Useful Registers:
 This is just a brief list of registers I have found useful
@@ -169,7 +169,7 @@ For SG* Models this is calculated from meter_power if -ve value, returned as a p
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Home Assistant setup
+### Home Assistant setup
 
 In the SunGather config.yaml you need to set the smart_meter if you have one  
 _For Hybrid Models smart_meter doesn't need to get enabled_
@@ -179,7 +179,7 @@ _For Hybrid Models smart_meter doesn't need to get enabled_
 smart_meter: True
 ```
 
-HA sensors created by the MQTT auto-discovery;
+HA sensors created by the MQTT auto-discovery:
 ```
 sensor.inverter_active_power
 sensor.inverter_daily_generation
@@ -222,15 +222,15 @@ Solar Panels > Solar Production -> Solar Production (Sungather)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Tested
+## Tested Devices
 * SG7.0RT with WiNet-S Dongle
 * SG10RT with WiNet-S Dongle and Ethernet (Credit: @rark-ha)
 * SH6.0RT with WiNet-S Dongle
-* SH10RT with WiNet-S Dongle
+* SH10RT(-V112) with WiNet-S Dongle and Ethernet
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Supported
+## Supported Devices
 ### PV Grid-Connected String Inverters
 SG30KTL, SG10KTL, SG12KTL, SG15KTL, SG20KTL, SG30KU, SG36KTL, SG36KU, SG40KTL, SG40KTL-M, SG50KTL-M, SG60KTL-M, SG60KU, SG30KTL-M, SG30KTL-M-V31, SG33KTL-M, SG36KTL-M, SG33K3J, SG49K5J, SG34KJ, LP_P34KSG, SG50KTL-M-20, SG60KTL, SG80KTL, SG80KTL-20, SG60KU-M, SG5KTL-MT, SG6KTL-MT, SG8KTL-M, SG10KTL-M, SG10KTL-MT, SG12KTL-M, SG15KTL-M, SG17KTL-M, SG20KTL-M, SG80KTL-M, SG111HV, SG125HV, SG125HV-20, SG30CX, SG33CX, SG36CX-US, SG40CX, SG50CX, SG60CX-US, SG110CX, SG250HX, SG250HX-US, SG100CX, SG100CX-JP, SG250HX-IN, SG25CX-SA, SG75CX, SG3.0RT, SG4.0RT, SG5.0RT, SG6.0RT, SG7.0RT, SG8.0RT, SG10RT, SG12RT, SG15RT, SG17RT, SG20RT
 
@@ -238,7 +238,7 @@ SG30KTL, SG10KTL, SG12KTL, SG15KTL, SG20KTL, SG30KU, SG36KTL, SG36KU, SG40KTL, S
 SG5K-D, SG8K-D
 
 ### Residential Hybrid Inverters
-SH5K-20, SH3K6, SH4K6, SH5K-V13, SH5K-30, SH3K6-30, SH4K6-30, SH5.0RS, SH3.6RS, SH4.6RS, SH6.0RS, SH10RT, SH8.0RT, SH6.0RT, SH5.0RT
+SH5K-20, SH3K6, SH4K6, SH5K-V13, SH5K-30, SH3K6-30, SH4K6-30, SH5.0RS, SH3.6RS, SH4.6RS, SH6.0RS, SH10RT(-V112), SH8.0RT, SH6.0RT, SH5.0RT
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
