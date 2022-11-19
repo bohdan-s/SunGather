@@ -122,6 +122,7 @@ usage: python3 sungather.py [options]
 
 Commandline arguments override any config file settings  
 **-c config.yaml** - Specify config file.  
+**-r registersfile.yaml** - Specify registersfile.
 **-v 30** - Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error  
 **--runonce** - Run once then exit  
 **-h** - print this help message and exit (also --help)  
