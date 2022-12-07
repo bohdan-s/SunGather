@@ -233,14 +233,18 @@ class SungrowInverter():
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
+                        match = False
                         for value in register.get('datarange'):
                             if value['response'] == rr.registers[num]:
                                 register_value = value['value']
-
-
+                                match = True
+                        if not match:
+                            default = register.get('default')
+                            logging.debug(f"No matching value for {register_value} in datarange of {register_name}, using default {default}")
+                            register_value = default
 
                     if register.get('accuracy'):
-                        register_value = round(register_value * register.get('accuracy'),2)
+                        register_value = round(register_value * register.get('accuracy'), 2)
 
                     # Set the final register value with adjustments above included 
                     self.latest_scrape[register_name] = register_value
@@ -425,10 +429,11 @@ class SungrowInverter():
 
 def main():
     configfilename = 'config.yaml'
+    registersfilename = 'registers-sungrow.yaml'
     logfolder = ''
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hc:l:v:", "runonce")
+        opts, args = getopt.getopt(sys.argv[1:],"hc:r:l:v:", "runonce")
     except getopt.GetoptError:
         logging.debug(f'No options passed via command line')
 
@@ -439,16 +444,19 @@ def main():
             print(f'usage: python3 sungather.py [options]')
             print(f'\nCommandling arguments override any config file settings')
             print(f'Options and arguments:')
-            print(f'-c config.yaml     : Specify config file.')
-            print(f'-l /logs/          : Specify folder to store logs.')
-            print(f'-v 30              : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
-            print(f'--runonce          : Run once then exit')
-            print(f'-h                 : print this help message and exit (also --help)')
+            print(f'-c config.yaml             : Specify config file.')
+            print(f'-r registers-file.yaml     : Specify registers file.')
+            print(f'-l /logs/                  : Specify folder to store logs.')
+            print(f'-v 30                      : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
+            print(f'--runonce                  : Run once then exit')
+            print(f'-h                         : print this help message and exit (also --help)')
             print(f'\nExample:')
             print(f'python3 sungather.py -c /full/path/config.yaml\n')
             sys.exit()
         elif opt == '-c':
             configfilename = arg
+        elif opt == '-r':
+            registersfilename = arg
         elif opt == '-l':
             logfolder = arg    
         elif opt  == '-v':
@@ -477,12 +485,12 @@ def main():
         sys.exit(f"Failed Loading config, missing Inverter settings")   
 
     try:
-        registersfile = yaml.safe_load(open('registers-sungrow.yaml', encoding="utf-8"))
-        logging.info(f"Loaded registers: {os.getcwd()}/registers-sungrow.yaml")
+        registersfile = yaml.safe_load(open(registersfilename, encoding="utf-8"))
+        logging.info(f"Loaded registers: {registersfilename}")
         logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
     except Exception as err:
-        logging.error(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
-        sys.exit(f"Failed: Loading registers: {os.getcwd()}/registers-sungrow.yaml {err}")
+        logging.error(f"Failed: Loading registers: {registersfilename}  {err}")
+        sys.exit(f"Failed: Loading registers: {registersfilename} {err}")
    
     config_inverter = {
         "host": configfile['inverter'].get('host',None),
@@ -552,7 +560,7 @@ def main():
 
     # Core polling loop
     while True:
-        loop_start = datetime.now()
+        loop_start = time.perf_counter()
 
         inverter.checkConnection()
 
@@ -567,8 +575,8 @@ def main():
             inverter.disconnect()
             logging.warning(f"Data collection failed, skipped exporting data. Retying in {scan_interval} secs")
 
-        loop_end = datetime.now()
-        process_time = round(float(((loop_end - loop_start).seconds) + ((loop_end - loop_start).microseconds / 1000000)),2)
+        loop_end = time.perf_counter()
+        process_time = round(loop_end - loop_start, 2)
         logging.debug(f'Processing Time: {process_time} secs')
 
         if 'runonce' in locals():
