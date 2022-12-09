@@ -20,10 +20,3 @@ COPY SunGather/config-example.yaml /config/config.yaml
 USER sungather
 
 CMD [ "python", "sungather.py", "-c", "/config/config.yaml", "-l", "/logs/" ]
-
-LABEL \ 
-    io.hass.name="SunGather" \
-    io.hass.description="Extract Sungrow data from local Inverter" \
-    io.hass.version=${BUILD_VERSION} \
-    io.hass.type="addon" \
-    io.hass.arch=${BUILD_ARCH}

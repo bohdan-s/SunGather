@@ -1,39 +1,55 @@
-name: SunGather
+name: "SunGather"
 version: "0.3.9"
-slug: modbus_inverter
-description: Extract Sungrow data from local Inverter
-url: "https://github.com/bohdan-s/SunGather"
+slug: sungather
+description: "Extract Sungrow data from local Inverter"
 arch: 
   - armhf
   - armv7
   - aarch64
   - amd64
   - i386
-init: false
+url: "https://github.com/bohdan-s/SunGather"
 startup: application
+webui: "http://[HOST]:[PORT:8080]/""
 boot: auto
-webui: http://[HOST]:[PORT:8080]/
-services:
-  - "mqtt:need"
 ports:
   8080/tcp: 8080
+ports_description:
+  8080/tcp: "WebUI"
+network:
+  8080/tcp: "The WebUI Port"
 options: 
   host: 192.168.1.100
   timeout: 10
   scan_interval: 30
-  connection: 'modbus'
+  connection: "modbus"
   smart_meter: True
-  use_local_time: False
-  log_console: 'INFO'
-  log_file: 'OFF'
-  level: 'STANDARD'
+  log_console: "INFO"
+  level: "STANDARD"
 schema:
   host: str
   timeout: int(3,60)?
   scan_interval: int(5,600)?
   connection: "list(sungrow|modbus|HTTP)"
   smart_meter: bool?
-  use_local_time: bool?
   log_console: "list(OFF|INFO|WARNING|ERROR|DEBUG)"?
-  log_file: "list(OFF|INFO|WARNING|ERROR|DEBUG)"?
   level: "list(BASIC|STANDARD|DETAIL|ALL)"?
+configuration:
+  host:
+    name: "IP Address"
+    description: "[Required] IP Address of the Inverter or Dongle"
+  connection:
+    name: "Connection Type"
+    description: "[Required] Usually modbus, HTTP for WiNet-S Dongles, sungrow for some legacy models"
+  smart_meter:
+    name: "Smart Meter Install"
+    description: "Set to true if inverter supports reading grind / house consumption (may not be needed for Hybrid models)"
+discovery: mqtt
+services: mqtt:need
+panel_icon: mdi:SolarPowerVariant
+init: false
+
+
+
+
+
