@@ -12,25 +12,28 @@ arch:
 init: false
 startup: application
 boot: auto
+webui: http://[HOST]:[PORT:8080]/
 services:
   - "mqtt:need"
+ports:
+  8080/tcp: 8080
 options: 
-  Inverter_host: ""
-  Inverter_port: 502
-  Inverter_model: ""
-  Smart_meter: false
-  Connection: "Modbus"
-  Scan_level: "STANDARD"
-  Scan_interval: 30
-  Scan_timeout: 5
-  Log_level: "INFO"
+  host: 192.168.1.100
+  timeout: 10
+  scan_interval: 30
+  connection: 'modbus'
+  smart_meter: True
+  use_local_time: False
+  log_console: 'INFO'
+  log_file: 'OFF'
+  level: 'STANDARD'
 schema:
-  Inverter_host: str
-  Inverter_port: port
-  Inverter_model: str
-  Smart_meter: bool
-  Connection: "list(Sungrow|Modbus|HTTP)"
-  Scan_level: "list(BASIC|STANDARD|DETAIL|ALL)"
-  Scan_interval: int(10,600)
-  Scan_timeout: int(3,60)
-  Log_level: "list(INFO|WARNING|ERROR|DEBUG)"
+  host: str
+  timeout: int(3,60)?
+  scan_interval: int(5,600)?
+  connection: "list(sungrow|modbus|HTTP)"
+  smart_meter: bool?
+  use_local_time: bool?
+  log_console: "list(OFF|INFO|WARNING|ERROR|DEBUG)"?
+  log_file: "list(OFF|INFO|WARNING|ERROR|DEBUG)"?
+  level: "list(BASIC|STANDARD|DETAIL|ALL)"?
