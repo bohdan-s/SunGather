@@ -1,0 +1,36 @@
+name: SunGather
+version: "0.3.9"
+slug: modbus_inverter
+description: Extract Sungrow data from local Inverter
+url: "https://github.com/bohdan-s/SunGather"
+arch: 
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+startup: application
+boot: auto
+services:
+  - "mqtt:need"
+options: 
+  Inverter_host: ""
+  Inverter_port: 502
+  Inverter_model: ""
+  Smart_meter: false
+  Connection: "Modbus"
+  Scan_level: "STANDARD"
+  Scan_interval: 30
+  Scan_timeout: 5
+  Log_level: "INFO"
+schema:
+  Inverter_host: str
+  Inverter_port: port
+  Inverter_model: str
+  Smart_meter: bool
+  Connection: "list(Sungrow|Modbus|HTTP)"
+  Scan_level: "list(BASIC|STANDARD|DETAIL|ALL)"
+  Scan_interval: int(10,600)
+  Scan_timeout: int(3,60)
+  Log_level: "list(INFO|WARNING|ERROR|DEBUG)"
