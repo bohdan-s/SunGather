@@ -230,6 +230,12 @@ class SungrowInverter():
                             register_value = (register_value + u32_value * 0x10000 - 0xffffffff -1)
                         else:
                             register_value = register_value + u32_value * 0x10000
+                    elif register.get('datatype') == "UTF-8": # This seems to be Serial only, 10 bytes
+                        utf_value = register_value.to_bytes(2, 'big')
+                        for x in range(1,5):
+                            utf_value += rr.registers[num+x].to_bytes(2, 'big')
+                        register_value = utf_value.decode()
+
 
                     # We convert a system response to a human value 
                     if register.get('datarange'):
