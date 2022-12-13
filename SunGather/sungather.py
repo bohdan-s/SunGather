@@ -324,6 +324,9 @@ class SungrowInverter():
         else:
             return self.inverter_config['model']
 
+    def getSerialNumber(self):
+        return self.inverter_config['serial_number']
+
     def scrape(self):        
         scrape_start = datetime.now()
 
