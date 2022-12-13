@@ -27,6 +27,7 @@ class SungrowInverter():
         self.inverter_config = {
             "slave":            config_inverter.get('slave'),
             "model":            config_inverter.get('model'),
+            "serial":            config_inverter.get('serial'),
             "level":            config_inverter.get('level'),
             "use_local_time":   config_inverter.get('use_local_time'),
             "smart_meter":      config_inverter.get('smart_meter'),
@@ -108,6 +109,25 @@ class SungrowInverter():
                             logging.info(f"Detected Model: {self.inverter_config.get('model')}")
                     else:
                         logging.info(f'Model detection failed, please set model in config.py')
+                    self.registers.pop()
+                    break
+
+        if self.inverter_config.get('serial'):
+            logging.info(f"Bypassing Serial Detection, Using config: {self.inverter_config.get('serial')}")
+        else:
+            # Load just the register to detect model, then we can load the rest of registers based on returned model
+            for register in registersfile['registers'][0]['read']:
+                if register.get('name') == "serial":
+                    register['type'] = "read"
+                    self.registers.append(register)
+                    if self.load_registers(register['type'], register['address'] -1, 5): # Needs to be address -1
+                        if isinstance(self.latest_scrape.get('serial'),int):
+                            logging.warning(f"Unknown Type Code Detected: {self.latest_scrape.get('serial')}")
+                        else:
+                            self.inverter_config['model'] = self.latest_scrape.get('serial')
+                            logging.info(f"Detected Serial: {self.inverter_config.get('serial')}")
+                    else:
+                        logging.info(f'Serial detection failed, please set model in config.py')
                     self.registers.pop()
                     break
 
