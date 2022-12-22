@@ -5,7 +5,7 @@ inverter:
   # retries: 3                              # [Optional] Default is 3, how many times to retry if connection fails
   # slave: 0x01                             # [Optional] Default is 0x01
   # scan_interval: 30                       # [Optional] Default is 30
-  connection: modbus                       # [Required] options: modbus, sungrow, http
+  connection: modbus                        # [Required] options: modbus, sungrow, http
   # model: "SG7.0RT"                        # [Optional] This is autodetected on startup, only needed if detection issues or for testing
                                             # See model list here: https://github.com/bohdan-s/SunGather#supported
   # serial: xxxxxxxxxx                      # [Optional] This is autodetected on startup, only needed if detection issues or for testing, used as a unique ID
@@ -24,7 +24,7 @@ inverter:
 exports:
   # Print Registers to console, good for debugging / troubleshooting
   - name: console         
-    enabled: False                          # [Optional] Default is False
+    enabled: True                          # [Optional] Default is False
 
   # Runs a simple Webserver showing Config and last read registers
   # Access at http://localhost:8080 or http://[serverip]:8080
@@ -37,7 +37,6 @@ exports:
   - name: jsonserver 
     enabled: False                          # [Optional] Default is False
     # port: 8082                            # [Optional] Default is 8080
-
 
   # Output data to InfluxDB
   - name: influxdb
@@ -69,53 +68,60 @@ exports:
     enabled: False                          # [Optional] Default is False
     host: 192.168.1.200                     # [Required] IP or Hostname of MQTT Server 
     # port: 1883                            # [Optional] Default 1883
-    # topic: "inverter/{model}/registers"   # [Optional] Default: "inverter/{model}/registers", Variable {model} will be replaced with model number of inverter
+    # topic: "SunGather/{serial_number}"    # [Optional] Default: "SunGather/{serial_number}"
     # username:                             # [Optional] Username is MQTT server requires it
     # password:                             # [Optional] Password is MQTT server requires it
-    # client_id:                            # [Optional] Client id for mqtt connection. Defaults to "SunGather", need to be set to different values if you want to run multiple instances of sungather.
-    homeassistant: False                     # [Optional] Default False, Publish discovery and sensors for HomeAssistant
-    ha_sensors:                             # [Optional] / [Required] homeassistant: True, Topics to enable discovery for HA
+    # client_id:                            # [Optional] Client id for mqtt connection. Defaults to Serial Number.
+    homeassistant: True
+    ha_sensors:
       - name: "Daily Generation"
         sensor_type: sensor
         register: daily_power_yields
-        dev_class: energy
+        device_class: energy
         state_class: total_increasing
-      - name: "Active Power"
+        icon: "mdi:solar-power"
+      - name: "Daily Export to Grid"
         sensor_type: sensor
-        register: total_active_power
-        dev_class: power
-        state_class: measurement
-      - name: "Load Power"
+        register: daily_export_to_grid
+        device_class: energy
+        state_class: total_increasing
+        icon: "mdi:transmission-tower-export"
+        value_template: "{{ value_json.daily_export_to_grid | round(2) }}"
+        last_reset_value_template: "{{ value_json.last_reset }}"
+      - name: "Daily Import from Grid"
         sensor_type: sensor
-        register: load_power
-        dev_class: power
-        state_class: measurement
-      - name: "Meter Power"
-        sensor_type: sensor
-        register: meter_power
-        dev_class: power
-        state_class: measurement
-      - name: "Export to Grid"
-        sensor_type: sensor
-        register: export_to_grid
-        dev_class: power
-        state_class: measurement
-      - name: "Import from Grid"
-        sensor_type: sensor
-        register: import_from_grid
-        dev_class: power
-        state_class: measurement
+        register: daily_import_from_grid
+        device_class: energy
+        state_class: total_increasing
+        icon: "mdi:transmission-tower-import"
+        value_template: "{{ value_json.daily_import_from_grid | round(2) }}"
+        last_reset_value_template: "{{ value_json.last_reset }}"
       - name: "Temperature"
         sensor_type: sensor
         register: internal_temperature
-        dev_class: temperature
+        device_class: temperature
         state_class: measurement
       - name: "Power State"
         sensor_type: binary_sensor
         register: run_state
-        dev_class: running
+        device_class: running
         payload_on: "ON"
         payload_off: "OFF"
+      - name: "Active Generation"
+        sensor_type: sensor
+        register: total_active_power
+        dev_class: power
+        state_class: measurement
+      - name: "Active Export to Grid"
+        sensor_type: sensor
+        register: export_to_grid
+        dev_class: power
+        state_class: measurement
+      - name: "Active Import from Grid"
+        sensor_type: sensor
+        register: import_from_grid
+        dev_class: power
+        state_class: measurement
 
   # Publish Registers to PVOutput
   - name: pvoutput      

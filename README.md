@@ -37,6 +37,7 @@ On first connection the tool will query your inverter, retrieve the model and re
 Register information based on official documentation: <a href="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/Communication%20Protocol%20of%20PV%20Grid-Connected%20String%20Inverters_V1.1.37_EN.pdf">Communication Protocol of PV Grid-Connected String Inverters</a> and <a href="https://github.com/bohdan-s/Sungrow-Inverter/blob/main/Modbus%20Information/communication-protocol-of-residential-hybrid-inverterv1.0.20-1.pdf">Communication Protocol of Residential Hybrid Inverters</a>
 
 Has multiple export locations out of the box:
+* Full Home Assistant Support, as HassIO add-on
 * Console - Log directly to screen
 * MQTT - Load into MQTT, and optionally Home Assistance including Discovery
 * PVOutput - Load into PVOutput.org
@@ -52,9 +53,6 @@ I have learned a lot from the following projects, THANK YOU
 * [ModbusTCP2MQTT](https://github.com/TenySmart/ModbusTCP2MQTT)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-## Roadmap / TO DO
-* Full Home Assistant integration, as HACS addon
 
 
 ## Built With
@@ -174,6 +172,10 @@ For SG* Models this is calculated from meter_power if -ve value, returned as a p
 
 ### Home Assistant setup
 
+#### The following are manual steps if you are running SunGather separate,
+#### For the easy way see: <a href="https://github.com/bohdan-s/hassio-repository">Hassio Repository</a></b>
+
+
 In the SunGather config.yaml you need to set the smart_meter if you have one  
 _For Hybrid Models smart_meter doesn't need to get enabled_
 
@@ -182,46 +184,20 @@ _For Hybrid Models smart_meter doesn't need to get enabled_
 smart_meter: True
 ```
 
-HA sensors created by the MQTT auto-discovery:
+Enable MQTT, configure the server and HA AutoDiscovery
 ```
-sensor.inverter_active_power
-sensor.inverter_daily_generation
-sensor.inverter_export_to_grid
-sensor.inverter_import_from_grid
-sensor.inverter_load_power
-sensor.inverter_meter_power
-
+  - name: mqtt
+    enabled: True
+    host: 192.168.1.200
+    homeassistant: True
 ```
 
-The Inverter reports Power (W), but HA needs Energy (Wh).
-You can use a "Riemann sum integral" (called integration) to convert it.
-Put the following into your sensors.yaml
-```
-sensor:
-  - platform: integration
-    source: sensor.inverter_active_power
-    name: Solar Production (Sungather)
-  - platform: integration
-    source: sensor.inverter_export_to_grid
-    name: Return to Grid (Sungather)
-  - platform: integration
-    source: sensor.inverter_import_from_grid
-    name: Grid Consumption (Sungather)
-```
+Electricity Grid > Grid Consumption -> Daily Import from Grid 
+Electricity Grid > Return to Grid -> Daily Export to Grid
+Solar Panels > Solar Production -> Daily Generation 
 
-The additional sensors then setup in HA are the following with Wh unit of measurement for the Energy platform.
+<img src="img/HomeAssistant-SunGrow_Device.png"/>
 
-Solar Production (Sungather)  
-Return to Grid (Sungather)  
-Grid Consumption (Sungather)  
-
-Restart Home Assistant for the sensors.yaml to be loaded.
-Make sure SunGather is running, wait 5 minutes for initial data to populate.
-Navigate to the Energy platform (Configuration > Energy). Add these sensors to the following areas:
-
-Electricity Grid > Grid Consumption -> Grid Consumption (Sungather)  
-Electricity Grid > Return to Grid -> Return to Grid (Sungather)  
-Solar Panels > Solar Production -> Solar Production (Sungather)  
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

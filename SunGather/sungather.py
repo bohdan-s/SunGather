@@ -25,19 +25,29 @@ class SungrowInverter():
             "RetryOnEmpty": False,
         }
         self.inverter_config = {
-            "slave":            config_inverter.get('slave'),
             "model":            config_inverter.get('model'),
-            "serial":           config_inverter.get('serial'),
+            "serial_number":    config_inverter.get('serial_number'),
             "level":            config_inverter.get('level'),
+            "scan_interval":    config_inverter.get('scan_interval'),
             "use_local_time":   config_inverter.get('use_local_time'),
             "smart_meter":      config_inverter.get('smart_meter'),
-            "connection":       config_inverter.get('connection')
+            "connection":       config_inverter.get('connection'),
+            "slave":            config_inverter.get('slave'),
+            "start_time":       ""
         }
         self.client = None
         
         self.registers = [[]]
         self.registers.pop() # Remove null value from list
-        self.registers_custom = [{'name': 'export_to_grid', 'unit': 'W', 'address': 'vr001'}, {'name': 'import_from_grid', 'unit': 'W', 'address': 'vr002'}, {'name': 'run_state', 'address': 'vr003'}, {'name': 'timestamp', 'address': 'vr004'}]
+        self.registers_custom = [   {'name': 'run_state', 'address': 'vr001'},
+                                    {'name': 'timestamp', 'address': 'vr002'},
+                                    {'name': 'last_reset', 'address': 'vr003'},
+                                    {'name': 'export_to_grid', 'unit': 'W', 'address': 'vr004'}, 
+                                    {'name': 'import_from_grid', 'unit': 'W', 'address': 'vr005'}, 
+                                    {'name': 'daily_export_to_grid', 'unit': 'kWh', 'address': 'vr006'}, 
+                                    {'name': 'daily_import_from_grid', 'unit': 'kWh', 'address': 'vr007'}
+                                ]
+
         self.register_ranges = [[]]
         self.register_ranges.pop() # Remove null value from list
 
@@ -330,12 +340,19 @@ class SungrowInverter():
     def scrape(self):        
         scrape_start = datetime.now()
 
-        # Clear previous inverter values, keep the model and run state
-        if self.latest_scrape.get("run_state"): run_state = self.latest_scrape.get("run_state")
-        else: run_state = "ON"
+        # Clear previous inverter values, persist some values
+        persist_registers = {
+            "run_state":                self.latest_scrape.get("run_state","ON"),
+            "last_reset":               self.latest_scrape.get("last_reset",""),
+            "daily_export_to_grid":     self.latest_scrape.get("daily_export_to_grid",0),
+            "daily_import_from_grid":   self.latest_scrape.get("daily_import_from_grid",0),
+        }
+
         self.latest_scrape = {}
         self.latest_scrape['device_type_code'] = self.inverter_config['model']
-        self.latest_scrape["run_state"] = run_state
+
+        for register, value in persist_registers.items():
+            self.latest_scrape[register] = value
 
         load_registers_count = 0
         load_registers_failed = 0
@@ -347,7 +364,7 @@ class SungrowInverter():
                 load_registers_failed +=1
         if load_registers_failed == load_registers_count:
             # If every scrape fails, disconnect the client
-            logging.warning
+            #logging.warning
             self.disconnect()
             return False
         if load_registers_failed > 0:
@@ -356,52 +373,7 @@ class SungrowInverter():
         # Leave connection open, see if helps resolve the connection issues
         #self.close()
 
-        # Create a registers for Power imported and exported to/from Grid
-        if self.inverter_config['level'] >= 1:
-            self.latest_scrape["export_to_grid"] = 0
-            self.latest_scrape["import_from_grid"] = 0
-
-            if self.validateRegister('meter_power'):
-                try:
-                    power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
-                    if power < 0:
-                        self.latest_scrape["export_to_grid"] = abs(power)
-                    elif power >= 0:
-                        self.latest_scrape["import_from_grid"] = power
-                except Exception:
-                    pass
-            # in this case we connected to a hybrid inverter and need to use export_power_hybrid
-            # export_power_hybrid is negative in case of importing from the grid
-            elif self.validateRegister('export_power_hybrid'):
-                try:
-                    power = self.latest_scrape.get('export_power_hybrid', 0)
-                    if power < 0:
-                        self.latest_scrape["import_from_grid"] = abs(power)
-                    elif power >= 0:
-                        self.latest_scrape["export_to_grid"] = power
-                except Exception:
-                    pass
-        
-        try: # If inverter is returning no data for load_power, we can calculate it manually
-            if not self.latest_scrape["load_power"]:
-                self.latest_scrape["load_power"] = int(self.latest_scrape.get('total_active_power')) + int(self.latest_scrape.get('meter_power'))
-        except Exception:
-            pass  
-
-        # See if the inverter is running, This is added to inverters so can be read via MQTT etc...
-        # It is also used below, as some registers hold the last value on 'stop' so we need to set to 0
-        # to help with graphing.
-        try:
-            if self.latest_scrape.get('start_stop'):
-                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False).contains('Run'):
-                    self.latest_scrape["run_state"] = "ON"
-                else:
-                    self.latest_scrape["run_state"] = "OFF"
-            else:
-                self.latest_scrape["run_state"] = "OFF"
-        except Exception:
-            pass
-
+        ## vr002
         if self.inverter_config.get('use_local_time',False):
             self.latest_scrape["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             logging.debug(f'Using Local Computer Time: {self.latest_scrape.get("timestamp")}')       
@@ -450,6 +422,85 @@ class SungrowInverter():
             del self.latest_scrape["alarm_time_second"]
         except Exception:
             pass
+
+        ### Custom Registers
+        ######################
+
+        ## vr001 - run_state
+        # See if the inverter is running, This is added to inverters so can be read via MQTT etc...
+        # It is also used below, as some registers hold the last value on 'stop' so we need to set to 0
+        # to help with graphing.
+        try:
+            if self.latest_scrape.get('start_stop'):
+                logging.info(f"DEBUG: start_stop:{self.latest_scrape.get('start_stop', 'null')} work_state_1:{self.latest_scrape.get('work_state_1', 'null')}")    
+                if self.latest_scrape.get('start_stop', False) == 'Start' and self.latest_scrape.get('work_state_1', False).contains('Run'):
+                    self.latest_scrape["run_state"] = "ON"
+                else:
+                    self.latest_scrape["run_state"] = "OFF"
+            else:
+                logging.info(f"DEBUG: Couldn't read start_stop so run_state is OFF")    
+                self.latest_scrape["run_state"] = "OFF"
+        except Exception:
+            pass
+
+        ## vr003 - last_reset
+        date_format = "%Y-%m-%d %H:%M:%S"
+        if not self.latest_scrape.get('last_reset', False):
+            logging.info('Setting Initial Daily registers; daily_export_to_grid, daily_import_from_grid, last_reset')
+            self.latest_scrape["daily_export_to_grid"] = 0
+            self.latest_scrape["daily_import_from_grid"] = 0
+            self.latest_scrape['last_reset'] = self.latest_scrape["timestamp"]
+        elif datetime.strptime(self.latest_scrape['last_reset'], date_format).date() < datetime.strptime(self.latest_scrape['timestamp'], date_format).date():
+            logging.info('last_reset: ' + self.latest_scrape['last_reset'] + ', timestamp: ' + self.latest_scrape['timestamp'])
+            logging.info('Resetting Daily registers; daily_export_to_grid, daily_import_from_grid, last_reset')
+            self.latest_scrape["daily_export_to_grid"] = 0
+            self.latest_scrape["daily_import_from_grid"] = 0
+            self.latest_scrape['last_reset'] = self.latest_scrape["timestamp"]
+
+        ## vr004 - import_from_grid, vr005 - export_to_grid
+        # Create a registers for Power imported and exported to/from Grid
+        if self.inverter_config['level'] >= 1:
+            self.latest_scrape["export_to_grid"] = 0
+            self.latest_scrape["import_from_grid"] = 0
+
+            if self.validateRegister('meter_power'):
+                try:
+                    power = self.latest_scrape.get('meter_power', self.latest_scrape.get('export_power', 0))
+                    if power < 0:
+                        self.latest_scrape["export_to_grid"] = abs(power)
+                    elif power >= 0:
+                        self.latest_scrape["import_from_grid"] = power
+                except Exception:
+                    pass
+            # in this case we connected to a hybrid inverter and need to use export_power_hybrid
+            # export_power_hybrid is negative in case of importing from the grid
+            elif self.validateRegister('export_power_hybrid'):
+                try:
+                    power = self.latest_scrape.get('export_power_hybrid', 0)
+                    if power < 0:
+                        self.latest_scrape["import_from_grid"] = abs(power)
+                    elif power >= 0:
+                        self.latest_scrape["export_to_grid"] = power
+                except Exception:
+                    pass
+        
+        try: # If inverter is returning no data for load_power, we can calculate it manually
+            if not self.latest_scrape["load_power"]:
+                self.latest_scrape["load_power"] = int(self.latest_scrape.get('total_active_power')) + int(self.latest_scrape.get('meter_power'))
+        except Exception:
+            pass  
+
+        ## vr004, vr005
+        if not self.latest_scrape.get('daily_export_to_grid', False):
+            self.latest_scrape["daily_export_to_grid"] = 0
+
+        self.latest_scrape["daily_export_to_grid"] += ((self.latest_scrape["export_to_grid"] / 1000) * (self.inverter_config['scan_interval'] / 60 / 60) )
+
+        ## vr005
+        if not self.latest_scrape.get('daily_import_from_grid', False):
+            self.latest_scrape["daily_import_from_grid"] = 0       
+
+        self.latest_scrape["daily_import_from_grid"] += ((self.latest_scrape["import_from_grid"] / 1000) * (self.inverter_config['scan_interval'] / 60 / 60) )
 
         scrape_end = datetime.now()
         logging.info(f'Inverter: Successfully scraped in {(scrape_end - scrape_start).seconds}.{(scrape_end - scrape_start).microseconds} secs')
@@ -502,6 +553,8 @@ def main():
             runonce = True
 
     logging.info(f'Starting SunGather {__version__}')
+    logging.info(f'Need Help? https://github.com/bohdan-s/SunGather')
+    logging.info(f'NEW HomeAssistant Add-on: https://github.com/bohdan-s/hassio-repository')
 
     try:
         configfile = yaml.safe_load(open(configfilename, encoding="utf-8"))

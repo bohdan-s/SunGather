@@ -25,7 +25,10 @@ class export_webserver(object):
         return True
 
     def publish(self, inverter):
-        body = "<h3>Sungather v" + __version__ + "</h3></p><table><th>Address</th><tr><th>Register</th><th>Value</th></tr>"
+        body = "<h3>SunGather v" + __version__ + "</h3></p>"
+        body += "<h4>Need Help? <href a='https://github.com/bohdan-s/SunGather'>https://github.com/bohdan-s/SunGather</a></h4></p>"
+        body += "<h4>NEW HomeAssistant Add-on: <href a='https://github.com/bohdan-s/hassio-repository'>https://github.com/bohdan-s/SunGather</a></h4></p>"
+        body += "<table><th>Address</th><tr><th>Register</th><th>Value</th></tr>"
         metrics = ""
         for register, value in inverter.latest_scrape.items():
             body += f"<tr><td>{str(inverter.getRegisterAddress(register))}</td><td>{str(register)}</td><td>{str(value)} {str(inverter.getRegisterUnit(register))}</td></tr>"
@@ -53,7 +56,10 @@ class MyServer(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(bytes("<html><head><title>SunGather</title><meta charset='UTF-8'><meta http-equiv='refresh' content='15'></head>", "utf-8"))
+            self.wfile.write(bytes("<html><head><title>SunGather</title>", "utf-8"))
+            self.wfile.write(bytes("<meta charset='UTF-8'><meta http-equiv='refresh' content='15'>", "utf-8"))
+            self.wfile.write(bytes('<style media = "all"> body { background-color: black; color: white; } @media screen and (prefers-color-scheme: light) { body { background-color: white; color: black; } } </style>', "utf-8"))
+            self.wfile.write(bytes("</head>", "utf-8"))
             self.wfile.write(bytes("<body>", "utf-8"))
             self.wfile.write(bytes(export_webserver.html_body, "utf-8"))
             self.wfile.write(bytes("</table>", "utf-8"))
