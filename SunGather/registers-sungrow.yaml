@@ -1,4 +1,4 @@
-version:  0.2.1
+version:  0.2.2
 vendor: Sungrow
 registers:
   - read:
@@ -1870,7 +1870,9 @@ scan: # these have to be 1 less than the first register
     - start: 4949
       range: 50
     - start: 5000 # We don't start at 4999 because we read register 5000 once manually, not every scan
-      range: 100
+      range: 38   # we do 38/61 instead of 100 to work around an issue with SH5.0RS, WiNet-S. This will make no noticeable difference to scan times.
+    - start: 5039
+      range: 61
     - start: 5100
       range: 100
     - start: 5200
