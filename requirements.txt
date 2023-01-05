@@ -1,7 +1,5 @@
 PyYAML>=6.0 
 requests>=2.26.0 
 paho-mqtt>=1.5.1
-pymodbus~=2.5.3
-SungrowModbusTcpClient>=0.1.5
-SungrowModbusWebClient>=0.3.2
+SungrowClient>=0.1.0
 influxdb-client>=1.24.0
