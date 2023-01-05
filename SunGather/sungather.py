@@ -116,7 +116,7 @@ def main():
     logging.debug(f'Inverter Config Loaded: {config_inverter}')    
 
     if config_inverter.get('host'):
-        inverter = SungrowInverter(config_inverter)
+        inverter = SungrowClient(config_inverter)
     else:
         logging.error(f"Error: host option in config is required")
         sys.exit("Error: host option in config is required")
