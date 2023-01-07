@@ -191,12 +191,17 @@ Enable MQTT, configure the server and HA AutoDiscovery
     host: 192.168.1.200
     homeassistant: True
 ```
-
-Electricity Grid > Grid Consumption -> Daily Import from Grid 
-Electricity Grid > Return to Grid -> Daily Export to Grid
-Solar Panels > Solar Production -> Daily Generation 
-
+You will get a device automatically configured for your inverter:
 <img src="img/HomeAssistant-SunGrow_Device.png"/>
+
+To configure the HomeAssistant Energy Dashboard:
+
+Go to : **Settings** > **Dashboards** > **Engergy**
+* Electricity Grid > Grid Consumption -> Daily Import from Grid 
+* Electricity Grid > Return to Grid -> Daily Export to Grid
+* Solar Panels > Solar Production -> Daily Generation 
+
+<img src="img/HomeAssistant-EnergyDashboardConfiguration.png"/>
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
