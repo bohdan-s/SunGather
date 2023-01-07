@@ -195,7 +195,8 @@ You will get a divice automaticly configured for your inverter:
 <img src="img/HomeAssistant-SunGrow_Device.png"/>
 
 To configure the HomeAssistant Energy Dashboard:
-Go to : Settings > Dashboards > Engergy
+
+Go to : **Settings** > **Dashboards** > **Engergy**
 * Electricity Grid > Grid Consumption -> Daily Import from Grid 
 * Electricity Grid > Return to Grid -> Daily Export to Grid
 * Solar Panels > Solar Production -> Daily Generation 
