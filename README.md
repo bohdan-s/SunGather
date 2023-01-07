@@ -191,7 +191,7 @@ Enable MQTT, configure the server and HA AutoDiscovery
     host: 192.168.1.200
     homeassistant: True
 ```
-You will get a divice automaticly configured for your inverter:
+You will get a device automatically configured for your inverter:
 <img src="img/HomeAssistant-SunGrow_Device.png"/>
 
 To configure the HomeAssistant Energy Dashboard:
