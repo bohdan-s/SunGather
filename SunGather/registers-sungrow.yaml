@@ -841,6 +841,30 @@ registers:
       datatype: "U16"
       unit: "A"
       models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "backup_phase_a_power"
+      level: 2
+      address: 5723
+      datatype: "S16"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "backup_phase_b_power"
+      level: 2
+      address: 5724
+      datatype: "S16"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "backup_phase_c_power"
+      level: 2
+      address: 5725
+      datatype: "S16"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "total_backup_power"
+      level: 2
+      address: 5726
+      datatype: "S16"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "pv_power_of_today"
       level: 1
       address: 6100
@@ -1881,6 +1905,8 @@ scan: # these have to be 1 less than the first register
       range: 100
     - start: 5600
       range: 100
+    - start: 5720
+      range: 10
     - start: 6099
       range: 100
     - start: 6199
