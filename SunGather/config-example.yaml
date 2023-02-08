@@ -32,12 +32,6 @@ exports:
     enabled: True                           # [Optional] Default is False
     # port: 8080                            # [Optional] Default is 8080
 
-  # Runs a simple Webserver exporting config and last read registers as JSON
-  # Access at http://localhost:8080 or http://[serverip]:8080
-  - name: jsonserver 
-    enabled: False                          # [Optional] Default is False
-    # port: 8082                            # [Optional] Default is 8080
-
   # Output data to InfluxDB
   - name: influxdb
     enabled: False                          # [Optional] Default is False

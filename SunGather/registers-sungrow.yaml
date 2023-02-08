@@ -201,10 +201,20 @@ registers:
         - response: 0x2403
           value: "SG8K-D"
       # RS Series
-        - response: 0x2606
-          value: "SG5.0RS"
+        - response: 0x2603
+          value: "SG3.0RS"
+        - response: 0x2604
+          value: "SG3.6RS"
         - response: 0x2605
           value: "SG4.0RS"
+        - response: 0x2606
+          value: "SG5.0RS"
+        - response: 0x2607
+          value: "SG6.0RS"
+        - response: 0x260E
+          value: "SG9.0RS"
+        - response: 0x2609
+          value: "SG10RS"
     - name: "nominal_active_power"   
       level: 2
       address: 5001
