@@ -1868,14 +1868,14 @@ registers:
       unit: "%"
       models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "battery_max_charge_power"
-      address: 33046
+      address: 33047
       level: 2
       accuracy: 10
       datatype: "U16"
       unit: "W"
       models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "battery_max_discharge_power"
-      address: 33047
+      address: 33048
       level: 2
       accuracy: 10
       datatype: "U16"
