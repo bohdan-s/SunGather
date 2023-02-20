@@ -808,6 +808,30 @@ registers:
 #   - name: "Reserved"    
 #     address: 5153-7012
 ##### Residential Hybrid Inverters only START
+    - name: "meter_total_power"
+      level: 2
+      address: 5601
+      datatype: "S32"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "meter_phase_a_power"
+      level: 2
+      address: 5603
+      datatype: "S32"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "meter_phase_b_power"
+      level: 2
+      address: 5605
+      datatype: "S32"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "meter_phase_c_power"
+      level: 2
+      address: 5607
+      datatype: "S32"
+      unit: "W"
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
     - name: "export_limit_min"
       level: 2
       address: 5622
