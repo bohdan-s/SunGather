@@ -1877,19 +1877,19 @@ registers:
       datatype: "U16"
       unit: "%"
       models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "max_charging_power"
-      address: 33046
-      level: 2
-      datatype: "U16"
-      accuracy: 0.01
-      unit: "kW"
-      models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
-    - name: "max_discharging_power"
+    - name: "battery_max_charge_power"
       address: 33047
       level: 2
       datatype: "U16"
-      accuracy: 0.01
-      unit: "kW"
+      accuracy: 10
+      unit: "W"
+      models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
+    - name: "battery_max_discharge_power"
+      address: 33048
+      level: 2
+      datatype: "U16"
+      accuracy: 10
+      unit: "W"
       models: ["SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT"]
 scan: # these have to be 1 less than the first register
   - read:
