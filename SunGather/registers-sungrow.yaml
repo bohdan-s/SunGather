@@ -193,6 +193,8 @@ registers:
           value: "SH6.0RT"
         - response: 0xE00
           value: "SH5.0RT"
+        - response: 0xE0C
+          value: "SH5.0RT"
       # G2 Inverters
         - response: 0x122
           value: "SG3K-D"
