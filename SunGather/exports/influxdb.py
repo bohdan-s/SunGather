@@ -45,7 +45,7 @@ class export_influxdb(object):
         for measurement in config.get('measurements'):
             if not inverter.validateRegister(measurement['register']):
                 logging.error(f"InfluxDB: Configured to use {measurement['register']} but not configured to scrape this register")
-                return False
+                continue
             self.influxdb_measurements.append(measurement)
 
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
