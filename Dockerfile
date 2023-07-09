@@ -1,15 +1,20 @@
-FROM python:3-slim
+FROM python:3-alpine as builder
 
-RUN apt-get update && apt-get install -y build-essential python3-dev && rm -rf /var/lib/apt/lists/*
-
-RUN useradd sungather
-
-WORKDIR /usr/src/sungather
+RUN python3 -m venv /opt/virtualenv \
+ && apk --no-cache add \
+  build-base
 
 COPY requirements.txt ./
 # pycryptodomex 3.14 currently fails to compile for arm64
-#RUN pip install --no-cache-dir --upgrade -r requirements.txt
-RUN pip install --no-cache-dir --upgrade pycryptodomex==3.11.0 -r requirements.txt
+RUN /opt/virtualenv/bin/pip3 install --no-cache-dir --upgrade pycryptodomex==3.11.0 -r requirements.txt
+
+FROM python:3-alpine
+
+RUN adduser -S -H sungather
+
+COPY --from=builder /opt/virtualenv /opt/virtualenv
+
+WORKDIR /opt/sungather
 
 COPY SunGather/ .
 
@@ -19,4 +24,4 @@ COPY SunGather/config-example.yaml /config/config.yaml
 
 USER sungather
 
-CMD [ "python", "sungather.py", "-c", "/config/config.yaml", "-l", "/logs/" ]
+CMD [ "/opt/virtualenv/bin/python", "sungather.py", "-c", "/config/config.yaml", "-l", "/logs/" ]
