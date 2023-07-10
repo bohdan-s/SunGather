@@ -1,16 +1,16 @@
-FROM python:3-alpine as builder
+FROM python:3 as builder
 
 RUN python3 -m venv /opt/virtualenv \
- && apk --no-cache add \
-  build-base
+ && apt-get update \
+ && apt-get install build-essential
 
 COPY requirements.txt ./
 # pycryptodomex 3.14 currently fails to compile for arm64
 RUN /opt/virtualenv/bin/pip3 install --no-cache-dir --upgrade pycryptodomex==3.11.0 -r requirements.txt
 
-FROM python:3-alpine
+FROM python:3-slim
 
-RUN adduser -S -H sungather
+RUN useradd -r -m sungather
 
 COPY --from=builder /opt/virtualenv /opt/virtualenv
 
