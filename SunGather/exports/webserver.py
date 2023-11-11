@@ -20,6 +20,7 @@ class export_webserver(object):
             self.t = Thread(target=self.webServer.serve_forever)
             self.t.daemon = True    # Make it a deamon, so if main loop ends the webserver dies
             self.t.start()
+            self.metrics_prefix = config.get("prefix", "")
             logging.info(f"Webserver: Configured")
         except Exception as err:
             logging.error(f"Webserver: Error: {err}")
@@ -48,6 +49,15 @@ class export_webserver(object):
 
     def publish(self, inverter):
         json_array={"registers":{}, "client_config":{}, "inverter_config":{}}
+        metrics_common = ""
+        model = inverter.inverter_config.get("model", None)
+        if model is not None:
+            metrics_common += f"model=\"{model}\""
+        serial = inverter.inverter_config.get("serial_number", None)
+        if serial is not None:
+            if model is not None:
+                metrics_common += ", "
+            metrics_common += f"serial=\"{serial}\""
         metrics_body = ""
         main_body = f"""
             <h3>SunGather v{__version__}</h3></p>
@@ -57,7 +67,14 @@ class export_webserver(object):
         main_body += "<table><th>Address</th><tr><th>Register</th><th>Value</th></tr>"
         for register, value in inverter.latest_scrape.items():
             main_body += f"<tr><td>{str(inverter.getRegisterAddress(register))}</td><td>{str(register)}</td><td>{str(value)} {str(inverter.getRegisterUnit(register))}</td></tr>"
-            metrics_body += f"{str(register)}{{address=\"{str(inverter.getRegisterAddress(register))}\", unit=\"{str(inverter.getRegisterUnit(register))}\"}} {str(value)}\n"
+            if isinstance(value, int) or isinstance(value, float):
+                desc = inverter.getRegisterDescription(register)
+                if desc != "":
+                    metrics_body += f"# HELP {str(desc)}\n"
+                metrics_body += f"# TYPE {self.metrics_prefix}{str(register)} {str(inverter.getRegisterType(register))}\n"
+                metrics_body += f"{self.metrics_prefix}{str(register)}{{{metrics_common}}} {str(value)}\n"
+            else:
+                logging.debug(f"metrics: register {str(register)} of type {type(value)} ignored -> {value}")
             json_array["registers"][str(inverter.getRegisterAddress(register))]={"register": str(register), "value":str(value), "unit": str(inverter.getRegisterUnit(register))}
         main_body += f"</table><p>Total {len(inverter.latest_scrape)} registers"
 
@@ -79,19 +96,19 @@ class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith('/metrics'):
             self.send_response(200)
-            self.send_header("Content-type", "text/plain")
+            self.send_header("Content-type", "text/plain; charset=utf-8")
             self.end_headers()
             self.wfile.write(bytes(export_webserver.metrics, "utf-8"))
         elif self.path.startswith('/config'):
             self.send_response(200)
-            self.send_header("Content-type", "text/html")
+            self.send_header("Content-type", "text/html; charset=utf-8")
             self.end_headers()
             self.wfile.write(bytes(export_webserver.config, "utf-8"))
             parsed_data = parse_qs(urlparse(self.path).query)
             logging.info(f"{parsed_data}")
         elif self.path.startswith('/json'):
             self.send_response(200)
-            self.send_header("Content-type", "application/json")
+            self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
             self.wfile.write(bytes(export_webserver.json, "utf-8"))
         else:

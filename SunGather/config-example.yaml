@@ -31,7 +31,8 @@ exports:
   - name: webserver 
     enabled: True                           # [Optional] Default is False
     # port: 8080                            # [Optional] Default is 8080
-
+    # prefix: "sungrow_"                    # [Optional] Default is ""
+ 
   # Output data to InfluxDB
   - name: influxdb
     enabled: False                          # [Optional] Default is False
