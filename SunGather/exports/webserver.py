@@ -55,7 +55,7 @@ class export_webserver(object):
             metrics_common += f"model=\"{model}\""
         serial = inverter.inverter_config.get("serial_number", None)
         if serial is not None:
-            if model is None:
+            if model is not None:
                 metrics_common += ", "
             metrics_common += f"serial=\"{serial}\""
         metrics_body = ""
@@ -67,11 +67,11 @@ class export_webserver(object):
         main_body += "<table><th>Address</th><tr><th>Register</th><th>Value</th></tr>"
         for register, value in inverter.latest_scrape.items():
             main_body += f"<tr><td>{str(inverter.getRegisterAddress(register))}</td><td>{str(register)}</td><td>{str(value)} {str(inverter.getRegisterUnit(register))}</td></tr>"
-            # desc = inverter.getRegisterDescription(register)
-            # if desc != "":
-            #     metrics_body += f"# HELP {str(help)}\n"
-            # metrics_body += f"# TYPE {self.metrics_prefix}{str(register)} {str(inverter.getRegisterType(register))}\n"
             if isinstance(value, int) or isinstance(value, float):
+                desc = inverter.getRegisterDescription(register)
+                if desc != "":
+                    metrics_body += f"# HELP {str(desc)}\n"
+                metrics_body += f"# TYPE {self.metrics_prefix}{str(register)} {str(inverter.getRegisterType(register))}\n"
                 metrics_body += f"{self.metrics_prefix}{str(register)}{{{metrics_common}}} {str(value)}\n"
             else:
                 logging.debug(f"metrics: register {str(register)} of type {type(value)} ignored -> {value}")

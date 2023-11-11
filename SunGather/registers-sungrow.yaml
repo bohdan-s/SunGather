@@ -3,28 +3,28 @@ vendor: Sungrow
 registers:
   - read:
     - name: "protocol_number"
-      type: gauge
+      metric_type: gauge
       description: "Protocol Number"
       level: 2
       address: 4950
       datatype: "U32"
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "protocol_version"
-      type: gauge
+      metric_type: gauge
       description: "Protocol Version"
       level: 2
       address: 4952
       datatype: "U32"
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "arm_software_version"
-      type: gauge
+      metric_type: gauge
       description: "ARM Sorfware Version"
       level: 2
       address: 4954
       datatype: "U16"
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "dsp_software_version"
-      type: gauge
+      metric_type: gauge
       description: "DSP Sorfware Version"
       level: 2
       address: 4969
@@ -226,7 +226,7 @@ registers:
         - response: 0x2609
           value: "SG10RS"
     - name: "nominal_active_power"  
-      type: gauge
+      metric_type: gauge
       description: "Nominal Active Power in kWh"
       level: 2
       address: 5001
@@ -246,7 +246,7 @@ registers:
         - response: 2
           value: "3PSL"
     - name: "daily_power_yields"   
-      type: counter
+      metric_type: counter
       description: "Daily Power Yields in kWh"
       level: 0
       address: 5003
@@ -254,7 +254,7 @@ registers:
       accuracy: 0.1
       unit: "kWh"
     - name: "total_power_yields" 
-      type: counter
+      metric_type: counter
       description: "Total Power Yields in kWh"
       level: 1 
       address: 5004
@@ -267,7 +267,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]
       unit: "h"
     - name: "internal_temperature"
-      type: gauge
+      metric_type: gauge
       description: "Internal Temperature of the in Inverter in °C"
       level: 1   
       address: 5008
@@ -276,7 +276,7 @@ registers:
       unit: "°C"
     - name: "total_apparent_power"
       level: 1   
-      type: gauge
+      metric_type: gauge
       description: "Total Apparent Power in VA"
       address: 5009
       datatype: "U32"
@@ -284,18 +284,21 @@ registers:
       unit: "VA"
     - name: "mppt_1_voltage"   
       level: 2
+      metric_type: gauge
       address: 5011
       datatype: "U16"
       accuracy: 0.1
       unit: "V"
     - name: "mppt_1_current"
       level: 2  
+      metric_type: gauge
       address: 5012
       datatype: "U16"
       accuracy: 0.1
       unit: "A"
     - name: "mppt_2_voltage"
       level: 2  
+      metric_type: gauge
       address: 5013
       datatype: "U16"
       accuracy: 0.1
@@ -303,6 +306,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","SG50KTL-M-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG3K-D","SG5K-D","SG8K-D","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "mppt_2_current"
       level: 2   
+      metric_type: gauge
       address: 5014
       datatype: "U16"
       accuracy: 0.1
@@ -310,6 +314,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","SG50KTL-M-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG3K-D","SG5K-D","SG8K-D","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "mppt_3_voltage"
       level: 2   
+      metric_type: gauge
       address: 5015
       datatype: "U16"
       accuracy: 0.1
@@ -317,6 +322,7 @@ registers:
       models: ["SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX"]
     - name: "mppt_3_current"
       level: 2   
+      metric_type: gauge
       address: 5016
       datatype: "U16"
       accuracy: 0.1
@@ -324,29 +330,34 @@ registers:
       models: ["SG40KTL-M","SG50KTL-M","SG60KTL-M","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG50KTL-M-20","SG60KU-M","SG80KTL-M","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG8K-D"]
     - name: "total_dc_power"
       level: 2   
+      metric_type: gauge
       address: 5017
       datatype: "U32" # Documentation says Unsigned, but seems to be returning Signed 32bit
       unit: "W"
     - name: "phase_a_voltage"
       level: 1
       address: 5019
+      metric_type: gauge
       datatype: "U16"
       accuracy: 0.1
       unit: "V"
     - name: "phase_b_voltage"
       level: 2   
+      metric_type: gauge
       address: 5020
       datatype: "U16"
       accuracy: 0.1
       unit: "V"
     - name: "phase_c_voltage"
       level: 2   
+      metric_type: gauge
       address: 5021
       datatype: "U16"
       accuracy: 0.1
       unit: "V"
     - name: "phase_a_current"
       level: 2   
+      metric_type: gauge
       address: 5022
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
       accuracy: 0.1
@@ -354,6 +365,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]
     - name: "phase_b_current"
       level: 2  
+      metric_type: gauge
       address: 5023
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
       accuracy: 0.1
@@ -361,6 +373,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT"]
     - name: "phase_c_current"
       level: 2   
+      metric_type: gauge
       address: 5024
       datatype: "S16" # Documentation says Unsigned, but seems to be returning Signed 16bit
       accuracy: 0.1
@@ -377,22 +390,26 @@ registers:
 #     datatype: "U32"
     - name: "total_active_power"
       level: 0   
+      metric_type: gauge
       address: 5031
       datatype: "U32"
       unit: "W"
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG3K-D","SG5K-D","SG8K-D"]
     - name: "total_reactive_power"
       level: 2   
+      metric_type: gauge
       address: 5033
       datatype: "S32"
       unit: "Var"
     - name: "power_factor"                # >0 means leading, <0 means lagging
       level: 2
+      metric_type: gauge
       address: 5035
       datatype: "S16"
       accuracy: 0.001
     - name: "grid_frequency"
       level: 2   
+      metric_type: gauge
       address: 5036
       datatype: "U16"
       accuracy: 0.1
@@ -471,6 +488,7 @@ registers:
 #     models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG3K-D","SG5K-D","SG8K-D"]
     - name: "nominal_reactive_power"
       level: 2
+      metric_type: gauge
       address: 5049
       datatype: "U16"
       accuracy: 0.1
@@ -481,6 +499,7 @@ registers:
 #     datatype: "U32"
     - name: "array_insulation_resistance"
       level: 2  
+      metric_type: gauge
       address: 5071
       datatype: "U16"
       unit: "k-ohm"
@@ -492,12 +511,14 @@ registers:
 #     address: 5073 - 5076
     - name: "active_power_regulation_setpoint"  
       level: 2
+      metric_type: gauge
       address: 5077
       datatype: "U32"
       unit: "W"
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "reactive_power_regulation_setpoint"   
       level: 2
+      metric_type: gauge
       address: 5079
       datatype: "S32"
       unit: "Var"
@@ -538,6 +559,7 @@ registers:
       models: ["SG30KTL","SG10KTL","SG12KTL","SG15KTL","SG20KTL","SG30KU","SG36KTL","SG36KU","SG40KTL","SG40KTL-M","SG50KTL-M","SG60KTL-M","SG60KU","SG30KTL-M","SG30KTL-M-V31","SG33KTL-M","SG36KTL-M","SG33K3J","SG49K5J","SG34KJ","LP_P34KSG","SG50KTL-M-20","SG60KTL","SG80KTL","SG80KTL-20","SG60KU-M","SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG80KTL-M","SG111HV","SG125HV","SG125HV-20","SG30CX","SG33CX","SG36CX-US","SG40CX","SG50CX","SG60CX-US","SG110CX","SG250HX","SG250HX-US","SG100CX","SG100CX-JP","SG250HX-IN","SG25CX-SA","SG75CX","SG3.0RT","SG4.0RT","SG5.0RT","SG4.0RS","SG5.0RS","SG6.0RT","SG7.0RT","SG8.0RT","SG8.0RS","SG10RT","SG12RT","SG15RT","SG17RT","SG20RT","SG3K-D","SG5K-D","SG8K-D"]
     - name: "meter_power"
       level: 1
+      metric_type: gauge
       address: 5083
       datatype: "S32"
       smart_meter: True
@@ -545,18 +567,21 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_a_phase_power"
       level: 2
+      metric_type: gauge
       address: 5085
       datatype: "S32"
       unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_b_phase_power"
       level: 2
+      metric_type: gauge
       address: 5087
       datatype: "S32"
       unit: "W"
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "meter_c_phase_power"
       level: 2
+      metric_type: gauge
       address: 5089
       datatype: "S32"
       unit: "W"
@@ -570,6 +595,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
     - name: "daily_export_energy"
       level: 1
+      metric_type: counter
       address: 5093
       datatype: "U32"
       accuracy: 0.1
@@ -577,6 +603,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
     - name: "total_export_energy"
       level: 1
+      metric_type: counter
       address: 5095
       datatype: "U32"
       accuracy: 0.1
@@ -584,6 +611,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
     - name: "daily_import_energy"
       level: 1
+      metric_type: counter
       address: 5097
       datatype: "U32"
       accuracy: 0.1
@@ -591,6 +619,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
     - name: "total_import_energy"
       level: 1
+      metric_type: counter
       address: 5099
       datatype: "U32"
       accuracy: 0.1
@@ -598,6 +627,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
     - name: "daily_direct_energy_consumption"
       level: 1
+      metric_type: counter
       address: 5101
       datatype: "U32"
       accuracy: 0.1
@@ -605,6 +635,7 @@ registers:
       models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
     - name: "total_direct_energy_consumption"
       level: 1
+      metric_type: counter
       address: 5103
       datatype: "U32"
       accuracy: 0.1
@@ -954,6 +985,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "battery_charge_power_from_pv_today"   
       level: 1
+      metric_type: counter
       address: 6648
       datatype: "U16"
       accuracy: 0.1
@@ -961,6 +993,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "battery_charge_power_from_pv"   
       level: 1
+      metric_type: counter
       address: 6744
       datatype: "U16"
       accuracy: 0.1
@@ -1228,6 +1261,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "daily_pv_generation"
       level: 2
+      metric_type: counter
       address: 13002
       datatype: "U16"
       accuracy: 0.1
@@ -1235,6 +1269,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "total_pv_generation"   
       level: 1
+      metric_type: counter
       address: 13003
       datatype: "U32"
       accuracy: 0.1
@@ -1242,6 +1277,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "daily_pv_export"   
       level: 1
+      metric_type: counter
       address: 13005
       datatype: "U16"
       accuracy: 0.1
@@ -1249,6 +1285,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "total_pv_export"   
       level: 1
+      metric_type: counter
       address: 13006
       datatype: "U32"
       accuracy: 0.1
@@ -1268,6 +1305,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "daily_battery_charge_from_pv"
       level: 1
+      metric_type: counter
       address: 13012
       datatype: "U16"
       accuracy: 0.1
@@ -1275,6 +1313,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "total_battery_charge_from_pv"   
       level: 1
+      metric_type: counter
       address: 13013
       datatype: "U32"
       accuracy: 0.1
@@ -1344,6 +1383,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "daily_battery_discharge_energy"   
       level: 2
+      metric_type: counter
       address: 13026
       datatype: "U16"
       accuracy: 0.1
@@ -1351,6 +1391,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "total_battery_discharge_energy"   
       level: 2
+      metric_type: counter
       address: 13027
       datatype: "U32"
       accuracy: 0.1
@@ -1358,6 +1399,7 @@ registers:
       models: ["SH5K-20","SH3K6","SH4K6","SH5K-V13","SH5K-30","SH3K6-30","SH4K6-30","SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH8.0RT","SH6.0RT","SH5.0RT", "SH5.0RT-V112"]
     - name: "self_consumption_of_day"   
       level: 1
+      metric_type: counter
       address: 13029
       datatype: "U16"
       accuracy: 0.1
