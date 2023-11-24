@@ -151,7 +151,11 @@ def main():
         inverter.checkConnection()
 
         # Scrape the inverter
-        success = inverter.scrape()
+        try:
+            success = inverter.scrape()
+        except Exception as e:
+            logging.exception("Failed to scrape: %s", e)
+            success = False
 
         if(success):
             for export in exports:
