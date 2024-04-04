@@ -192,7 +192,7 @@ registers:
         - response: 0xE01
           value: "SH6.0RT"
         - response: 0xE00
-          value: "SH5.0RT","SH5.0RT-V112"
+          value: "SH5.0RT"
         - response: 0xE0C
           value: "SH5.0RT-V112"
       # G2 Inverters
