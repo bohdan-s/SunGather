@@ -208,7 +208,7 @@ registers:
         - response: 0x2604
           value: "SG3.6RS"
         - response: 0x2605
-          value: "SG3.0RS","SG4.0RS"
+          value: "SG4.0RS"
         - response: 0x2606
           value: "SG5.0RS"
         - response: 0x2607
