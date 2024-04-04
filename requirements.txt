@@ -1,5 +1,5 @@
 PyYAML~=6.0
 paho-mqtt~=2.0
-requested~=2.0
+requests~=2.0
 SungrowClient>=0.1.0
 influxdb-client~=1.0
