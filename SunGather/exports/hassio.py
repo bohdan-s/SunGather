@@ -3,6 +3,10 @@ import requests
 import datetime
 import time
 
+#[16:24:21] INFO: Successfully send discovery information to Home Assistant.
+#[16:24:21] INFO: Successfully send service information to the Supervisor.
+
+
 class export_hassio(object):
     def __init__(self):
         self.api_base = "http://supervisor/core/api"
