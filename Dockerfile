@@ -5,8 +5,7 @@ RUN python3 -m venv /opt/virtualenv \
  && apt-get install build-essential
 
 COPY requirements.txt ./
-# pycryptodomex 3.14 currently fails to compile for arm64
-RUN /opt/virtualenv/bin/pip3 install --no-cache-dir --upgrade pycryptodomex==3.11.0 -r requirements.txt
+RUN /opt/virtualenv/bin/pip3 install --no-cache-dir -r requirements.txt
 
 FROM python:3-slim
 
