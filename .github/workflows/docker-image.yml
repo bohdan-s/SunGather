@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-      - run: echo "::set-output name=tag::v$(python setup.py --version)"
+      - run: echo "tag=v$(python setup.py --version)" >> $GITHUB_OUTPUT
         id: version
       - uses: docker/setup-qemu-action@v1
       - uses: docker/setup-buildx-action@v1
