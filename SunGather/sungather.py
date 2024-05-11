@@ -19,7 +19,8 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hc:r:l:v:", "runonce")
     except getopt.GetoptError:
-        logging.debug(f'No options passed via command line')
+        sys.exit(f'No options passed via command line, use -h to see all options')
+
 
     for opt, arg in opts:
         if opt == '-h':
@@ -151,7 +152,11 @@ def main():
         inverter.checkConnection()
 
         # Scrape the inverter
-        success = inverter.scrape()
+        try:
+            success = inverter.scrape()
+        except Exception as e:
+            logging.exception(f"Failed to scrape: {e}")
+            success = False
 
         if(success):
             for export in exports:
