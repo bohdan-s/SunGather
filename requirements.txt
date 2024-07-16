@@ -3,3 +3,4 @@ paho-mqtt~=2.0
 requests~=2.0
 SungrowClient>=0.1.0
 influxdb-client~=1.0
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
