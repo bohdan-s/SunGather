@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -d ../docker-rebuild ]; then
+    echo "Checking if 'docker-rebuild' is up-to-date ..."
+    git -C ../docker-rebuild pull
+else
+    echo "Cloning 'docker-rebuild' from Gist ..."
+    git clone git@gist.github.com:6232d24e44ef62949fb00339a44ca808.git ../docker-rebuild
+fi
+
+../docker-rebuild/rebuild.sh
