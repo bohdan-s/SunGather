@@ -10,6 +10,7 @@ import sys
 import getopt
 import yaml
 import time
+import signal
 
 def main():
     configfilename = 'config.yaml'
@@ -145,6 +146,8 @@ def main():
 
     scan_interval = config_inverter.get('scan_interval')
 
+    signal.signal(signal.SIGTERM, handle_sigterm)
+
     # Core polling loop
     while True:
         loop_start = time.perf_counter()
@@ -180,6 +183,11 @@ def main():
         else:
             logging.info(f'Next scrape in {int(scan_interval - process_time)} secs')
             time.sleep(scan_interval - process_time)    
+
+def handle_sigterm(signum, frame):
+    print("Received SIGTERM, shutting down gracefully...")
+    # Perform any cleanup here
+    exit(0)
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
