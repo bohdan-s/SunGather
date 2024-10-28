@@ -137,7 +137,7 @@ def main():
             try:
                 if export.get('enabled', False):
                     export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loading Export: exports\{export.get('name')}")
+                    logging.info(f"Loading Export: exports {export.get('name')}")
                     exports.append(getattr(export_load, "export_" + export.get('name'))())
                     retval = exports[-1].configure(export, inverter)
             except Exception as err:
