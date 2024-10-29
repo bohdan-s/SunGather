@@ -10,6 +10,7 @@ import sys
 import getopt
 import yaml
 import time
+import signal
 
 def main():
     configfilename = 'config.yaml'
@@ -136,7 +137,7 @@ def main():
             try:
                 if export.get('enabled', False):
                     export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loading Export: exports\\{export.get('name')}")
+                    logging.info(f"Loading Export: exports {export.get('name')}")
                     exports.append(getattr(export_load, "export_" + export.get('name'))())
                     retval = exports[-1].configure(export, inverter)
             except Exception as err:
@@ -144,6 +145,8 @@ def main():
                             f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")
 
     scan_interval = config_inverter.get('scan_interval')
+
+    signal.signal(signal.SIGTERM, handle_sigterm)
 
     # Core polling loop
     while True:
@@ -180,6 +183,11 @@ def main():
         else:
             logging.info(f'Next scrape in {int(scan_interval - process_time)} secs')
             time.sleep(scan_interval - process_time)    
+
+def handle_sigterm(signum, frame):
+    print("Received SIGTERM, shutting down gracefully...")
+    # Perform any cleanup here
+    exit(0)
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
