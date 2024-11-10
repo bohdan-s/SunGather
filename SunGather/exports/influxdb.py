@@ -61,7 +61,14 @@ class export_influxdb(object):
             if not inverter.validateLatestScrape(register):
                 logging.error(f"InfluxDB: Skipped collecting data, {register} missing from last scrape")
                 return False
-            value = inverter.getRegisterValue(register) if type(inverter.getRegisterValue(register)) is str else float(inverter.getRegisterValue(register))
+
+            if inverter.getRegisterValue(register) is None:
+                value = ""
+            elif type(inverter.getRegisterValue(register)) is str:
+                value = inverter.getRegisterValue(register)
+            else:
+                value = float(inverter.getRegisterValue(register))
+
             sequence.append(influxdb_client.Point(measurement['point']).tag("inverter", inverter.getInverterModel(True)).field(register, value))
 
         try:
