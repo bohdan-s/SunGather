@@ -29,6 +29,9 @@ class export_mqtt(object):
         self.ha_sensors = [{}]
         self.ha_sensors.pop() # Remove null value from list
 
+        self.topics = [{}]
+        self.topics.pop()
+
         if not self.mqtt_config['host']:
             logging.info(f"MQTT: Host config is required")
             return False
@@ -54,7 +57,15 @@ class export_mqtt(object):
                     return False
                 else:
                     self.ha_sensors.append(ha_sensor)
-    
+
+        if config.get('topics'):
+            for topic in config.get('topics'):
+                if not inverter.validateRegister(topic['register']):
+                    logging.error(f"MQTT: Configured to use {topic['register']} but not configured to scrape this register")
+                    return False
+                else:
+                    self.topics.append(topic)
+
         return True
 
     def on_connect(self, client, userdata, flags, reason_code, properties):
@@ -126,6 +137,10 @@ class export_mqtt(object):
                 self.mqtt_queue.append(self.mqtt_client.publish(ha_topic, json.dumps(config_msg), retain=True, qos=1).mid)
             self.ha_discovery_published = True
             logging.info("MQTT: Published Home Assistant Discovery messages")
+        if self.topics:
+            for topic in self.topics:
+                self.mqtt_queue.append(self.mqtt_client.publish(topic.get('topic'), inverter.getRegisterValue(topic.get('register')), qos=0).mid)
+            logging.info("MQTT: Published custom mqtt topics")
 
         payload = json.dumps(inverter.inverter_config | inverter.client_config | inverter.latest_scrape).replace('"', '\"')
         logging.debug(f"MQTT: Publishing Registers: {self.mqtt_config['topic']} : {payload}")
