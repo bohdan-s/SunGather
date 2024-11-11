@@ -23,7 +23,8 @@ class export_mqtt(object):
             'topic': config.get('topic', f"SunGather/{self.serial_number}"),
             'username': config.get('username', None),
             'password': config.get('password',None),
-            'homeassistant': config.get('homeassistant',False)
+            'homeassistant': config.get('homeassistant',False),
+            'ha_device_name': config.get('ha_device_name',self.model)
         }
 
         self.ha_sensors = [{}]
@@ -93,7 +94,7 @@ class export_mqtt(object):
 
         if self.mqtt_config['homeassistant'] and not self.ha_discovery_published:
             # Build Device, this will be the same for every message
-            ha_device = { "name":f"Sungrow {self.model}", "manufacturer":"Sungrow", "model":self.model, "identifiers":self.serial_number, "via_device": "SunGather", "connections":[["address", inverter.getHost() ]]}
+            ha_device = { "name":f"{self.mqtt_config['ha_device_name']}", "manufacturer":"Sungrow", "model":self.model, "identifiers":self.serial_number, "via_device": "SunGather", "connections":[["address", inverter.getHost() ]]}
 
             for ha_sensor in self.ha_sensors:
                 config_msg = {}
