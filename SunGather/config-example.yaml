@@ -67,7 +67,7 @@ exports:
     # password:                             # [Optional] Password is MQTT server requires it
     # client_id:                            # [Optional] Client id for mqtt connection. Defaults to Serial Number.
     homeassistant: True
-    # ha_device_name: "new PV"   # [Optional] This is the Name shown in Home Assistant
+    # ha_device_name: "Sungrow new PV"      # [Optional] This is the Name shown in Home Assistant
     ha_sensors:
       - name: "Daily Generation"
         sensor_type: sensor
