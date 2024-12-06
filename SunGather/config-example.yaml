@@ -81,7 +81,6 @@ exports:
         state_class: total_increasing
         icon: "mdi:transmission-tower-export"
         value_template: "{{ value_json.daily_export_to_grid | round(2) }}"
-        last_reset_value_template: "{{ value_json.last_reset }}"
       - name: "Daily Import from Grid"
         sensor_type: sensor
         register: daily_import_from_grid
@@ -89,7 +88,6 @@ exports:
         state_class: total_increasing
         icon: "mdi:transmission-tower-import"
         value_template: "{{ value_json.daily_import_from_grid | round(2) }}"
-        last_reset_value_template: "{{ value_json.last_reset }}"
       - name: "Temperature"
         sensor_type: sensor
         register: internal_temperature
