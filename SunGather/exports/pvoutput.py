@@ -64,7 +64,6 @@ class export_pvoutput(object):
         self.batch_data = []
         self.batch_count = 0
         self.last_run = 0
-        self.last_publish = 0
         
         for parameter in config.get('parameters'):
             if not inverter.validateRegister(parameter['register']):
@@ -110,6 +109,7 @@ class export_pvoutput(object):
             pass
 
         logging.info(f"PVOutput: Configured export to {invertername} every {self.status_interval} minutes")
+        self.next_publish = datetime.datetime.now()
         return True
 
     def collect_data(self, inverter):
@@ -152,7 +152,7 @@ class export_pvoutput(object):
     def publish(self, inverter):
         if self.collect_data(inverter):
             # Process data points every status_interval
-            if((time.time() - self.last_publish) >= (self.status_interval * 60)):
+            if self.next_publish <= datetime.datetime.now():
                 any_data = False
                 if inverter.validateLatestScrape('timestamp'):
                     now = datetime.datetime.strptime(inverter.getRegisterValue('timestamp'), "%Y-%m-%d %H:%M:%S")
@@ -213,7 +213,7 @@ class export_pvoutput(object):
                             logging.error("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
                         else:
                             self.batch_data = []
-                            self.last_publish = time.time()
+                            self.next_publish = self.get_next_target_time(self.status_interval)
                             logging.info("PVOutput: Data uploaded")
                     except Exception as err:
                         logging.error(f"PVOutput: Failed to Upload")
@@ -221,6 +221,25 @@ class export_pvoutput(object):
                 else:
                     logging.info("PVOutput: Data added to next batch upload")
             else:
-                logging.info(f"PVOutput: Data logged, next upload in {int(((self.status_interval) * 60) - (time.time() - self.last_publish))} secs")
+                next_upload_delta = self.next_publish - datetime.datetime.now()
+                logging.info("PVOutput: Data logged, next upload in %s secs", int(next_upload_delta.total_seconds()))
 
             self.last_run = time.time()
+
+    def get_next_target_time(self, interval, delay=0):
+        """Calculate the next time that we should send an update to pvoutput.
+
+        :param interval: (int) The time, in minutes, between updates.  Must match
+            the setting on pvoutput for the system to which you're posting data.
+        :param delay: (int) The desired post-target delay, in seconds (for avoiding
+            updates at the same time as other systems that report data).
+
+        :return: A datetime.
+        """
+        now = datetime.datetime.now()
+        wait_minutes = interval - (now.minute % interval) - 1
+        wait_seconds = 60 - now.second
+        target_delta = datetime.timedelta(minutes=wait_minutes, seconds=wait_seconds)
+        target_time = now + target_delta
+        target_time += datetime.timedelta(seconds=delay)
+        return target_time
