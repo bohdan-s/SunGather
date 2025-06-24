@@ -378,7 +378,7 @@ registers:
       level: 2    
       address: 5036
       datatype: "U16"
-      accuracy: 0.1
+      accuracy: 0.01                      # Documentation says 0.1Hz but its actually 0.01Hz
       unit: "Hz"
 #   - name: "Reserved"    
 #     address: 5037
