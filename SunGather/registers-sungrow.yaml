@@ -525,60 +525,60 @@ registers:
       datatype: "S32"
       smart_meter: True
       unit: "W"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG10RT"]
     - name: "meter_a_phase_power"
       level: 2
       address: 5085
       datatype: "S32"
       unit: "W"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG10RT"]
     - name: "meter_b_phase_power"
       level: 2
       address: 5087
       datatype: "S32"
       unit: "W"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG10RT"]
     - name: "meter_c_phase_power"
       level: 2
       address: 5089
       datatype: "S32"
       unit: "W"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG10RT"]
     - name: "load_power"
       level: 1
       address: 5091
       datatype: "S32"
       smart_meter: True
       unit: "W"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG10RT"]
     - name: "daily_export_energy"
       level: 1
       address: 5093
       datatype: "U32"
       accuracy: 0.1
       unit: "kWh"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D","SG10RT"]
     - name: "total_export_energy"
       level: 1
       address: 5095
       datatype: "U32"
       accuracy: 0.1
       unit: "kWh"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D","SG10RT"]
     - name: "daily_import_energy"
       level: 1
       address: 5097
       datatype: "U32"
       accuracy: 0.1
       unit: "kWh"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D","SG10RT"]
     - name: "total_import_energy"
       level: 1
       address: 5099
       datatype: "U32"
       accuracy: 0.1
       unit: "kWh"
-      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D"]
+      models: ["SG5KTL-MT","SG6KTL-MT","SG8KTL-M","SG10KTL-M","SG10KTL-MT","SG12KTL-M","SG15KTL-M","SG17KTL-M","SG20KTL-M","SG3K-D","SG5K-D","SG8K-D","SG10RT"]
     - name: "daily_direct_energy_consumption"
       level: 1
       address: 5101
@@ -827,39 +827,39 @@ registers:
       address: 5601
       datatype: "S32"
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT","SG10RT"]
     - name: "meter_phase_a_power"
       level: 2
       address: 5603
       datatype: "S32"
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT","SG10RT"]
     - name: "meter_phase_b_power"
       level: 2
       address: 5605
       datatype: "S32"
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT","SG10RT"]
     - name: "meter_phase_c_power"
       level: 2
       address: 5607
       datatype: "S32"
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG8.0RT","SG10RT"]
     - name: "export_limit_min"
       level: 2
       address: 5622
       datatype: "U16"
       accuracy: 10
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG10RT"]
     - name: "export_limit_max"
       level: 2
       address: 5623
       datatype: "U16"
       accuracy: 10
       unit: "W"
-      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112"]
+      models: ["SH5.0RS","SH3.6RS","SH4.6RS","SH6.0RS","SH10RT","SH10RT-V112","SH10RT-20","SH8.0RT","SH6.0RT","SH5.0RT","SH5.0RT-V112","SG10RT"]
     - name: "bdc_rated_power"
       level: 2
       address: 5628
