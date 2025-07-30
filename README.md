@@ -131,7 +131,49 @@ Example:
 ```sh
 python3 sungather.py -c /full/path/config.yaml
 ```
+### Docker Compose
+docker-compose.yaml
+```
+services:
+  sungather:
+    image: bohdans/sungather
+    container_name: sungather
+    restart: always
+    volumes:
+      - ${CONFIG_DIR}/config.yaml:/config/config.yaml # config
+      - ${LOGS_DIR}:/logs # logs
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - "${HOST_PORT}:9080"
+    network_mode: "host"
+```
+with the following .env file in the docker compose directory
+```sh
+# User and Group IDs
+PUID=1000 # update to your PUID
+PGID=1000 # update to your  GUID
 
+# Timezone
+TZ=Australia/Sydney  # update to your location
+
+# Directories for Config and Logs
+CONFIG_DIR=/home/sungather/docker/config # sungather config
+LOGS_DIR=/home/sungather/docker/logs  # sungather log location
+
+# Ports
+HOST_PORT=9080
+```
+Ensure you have docker compose installed.
+```sh
+ docker compose up -d
+```
+check the logs
+```sh
+docker logs sungather
+```
 ### Exports
 
 A collection of exports are available:
