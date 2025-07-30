@@ -116,6 +116,23 @@ exports:
         register: import_from_grid
         dev_class: power
         state_class: measurement
+    topics:
+      - topic: solar/power/load_power_hybrid
+        register: load_power_hybrid
+      - topic: solar/power/total_dc_power
+        register: total_dc_power
+      - topic: solar/power/export_power_hybrid
+        register: export_power_hybrid
+      - topic: solar/power/current/phase_a
+        register: phase_a_current
+      - topic: solar/power/current/phase_b
+        register: phase_b_current
+      - topic: solar/power/current/phase_c
+        register: phase_c_current
+      - topic: solar/battery/battery_power
+        register: battery_power
+      - topic: solar/battery/battery_level
+        register: battery_level
 
   # Publish Registers to PVOutput
   - name: pvoutput      
