@@ -1,6 +1,9 @@
 config.yaml
 *.log.*
 
+# Private notes directory
+.private/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
