@@ -1,6 +1,12 @@
 config.yaml
 *.log.*
 
+# Private notes directory
+.private/
+
+# Claude Code settings
+.claude/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

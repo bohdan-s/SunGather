@@ -1,5 +1,6 @@
 import influxdb_client
 import logging
+import traceback
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 class export_influxdb(object):
@@ -67,7 +68,9 @@ class export_influxdb(object):
         try:
             self.write_api.write(self.influxdb_config['bucket'], self.client.org, sequence)
         except Exception as err:
-            logging.error("InfluxDB: " + str(err))
+            logging.error(f"InfluxDB: Failed to write to bucket '{self.influxdb_config['bucket']}': {err}")
+            logging.debug(traceback.format_exc())
+            return False
 
         logging.info("InfluxDB: Published")
 
