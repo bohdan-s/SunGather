@@ -125,3 +125,9 @@ dmypy.json
 # Intellij IDEA
 .idea
 *.iml
+
+# Testing and Coverage
+.pytest_cache/
+htmlcov/
+coverage.xml
+.coverage
