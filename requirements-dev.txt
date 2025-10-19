@@ -1,0 +1,14 @@
+# Development and Testing Dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Testing Framework
+pytest>=7.4.0,<9.0.0
+
+# Mocking Support
+pytest-mock>=3.12.0,<4.0.0
+
+# Code Coverage
+pytest-cov>=4.1.0,<6.0.0
+
+# Note: Production dependencies are in requirements.txt
+# Install both with: pip install -r requirements.txt -r requirements-dev.txt

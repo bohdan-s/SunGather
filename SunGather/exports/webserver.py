@@ -5,6 +5,7 @@ from urllib.parse import parse_qs, urlparse
 
 import json
 import logging
+import traceback
 import urllib
 
 class export_webserver(object):
@@ -108,10 +109,21 @@ class MyServer(BaseHTTPRequestHandler):
             self.wfile.write(bytes("</body></html>", "utf-8"))
 
     def do_POST(self):
-        length = int(self.headers['Content-Length'])
-        post_data = urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8'))
-        logging.info(f"{post_data}")
-        self.wfile.write(post_data.encode("utf-8"))
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            if length > 0:
+                post_data = urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8'))
+                logging.info(f"Webserver POST: {post_data}")
+                self.wfile.write(str(post_data).encode("utf-8"))
+            else:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Bad Request: Missing Content-Length")
+        except Exception as e:
+            logging.error(f"Webserver: Error handling POST request: {e}")
+            logging.debug(traceback.format_exc())
+            self.send_response(500)
+            self.end_headers()
 
     def log_message(self, format, *args):
         pass

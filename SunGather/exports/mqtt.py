@@ -1,5 +1,6 @@
 import logging
 import json
+import traceback
 import paho.mqtt.client as mqtt
 
 class export_mqtt(object):
@@ -61,20 +62,20 @@ class export_mqtt(object):
         if reason_code == 0:
             logging.info(f"MQTT: Connected to {client._host}:{client._port}")
         if reason_code > 0:
-            logging.warn(f"MQTT: FAILED to connect {client._host}:{client._port}")
+            logging.warning(f"MQTT: Failed to connect to {client._host}:{client._port} with code {reason_code}")
 
     def on_disconnect(self, client, userdata, flags, reason_code, properties):
         if reason_code == 0:
             logging.info(f"MQTT: Server Disconnected")
         if reason_code > 0:
-            logging.warn(f"MQTT: FAILED to disconnect {reason_code}")
+            logging.warning(f"MQTT: Disconnect failed with code {reason_code}")
         
     
     def on_publish(self, client, userdata, mid, reason_codes, properties):
         try:
             self.mqtt_queue.remove(mid)
         except Exception as err:
-            pass
+            logging.debug(f"MQTT: Message ID {mid} not found in queue: {err}")
         logging.debug(f"MQTT: Message {mid} Published")
 
     def cleanName(self, name):
@@ -85,7 +86,8 @@ class export_mqtt(object):
             if not self.mqtt_client.is_connected():
                 logging.warning(f'MQTT: Server Disconnected; {self.mqtt_queue.__len__()} messages queued, will automatically attempt to reconnect')
         except Exception as err:
-            logging.warning(f'MQTT: Server Error; Server not configured')
+            logging.error(f'MQTT: Error checking connection status: {err}')
+            logging.debug(traceback.format_exc())
             return False
         # qos=0 is set, so no acknowledgment is sent, rending this check useless
         #elif self.mqtt_queue.__len__() > 10:
