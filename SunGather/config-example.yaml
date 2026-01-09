@@ -155,3 +155,18 @@ exports:
 #       register:
 #     - name: "m1"                          # Text Message 1 - Donation Only
 #       register:
+
+  # Push data to ChargeHQ for EV charging optimization
+  # See: https://chargehq.net/kb/push-api
+  - name: chargehq
+    enabled: False                            # [Optional] Default is False
+    api_key: "xxxxx"                          # [Required] Get from ChargeHQ app: My Equipment > Solar/Battery Equipment > Push API
+    # push_interval: 60                       # [Optional] Default 60, minimum 30 seconds between pushes
+    # Register mappings - defaults work for hybrid inverters (SH* models)
+    # For grid-tied inverters (SG* models) you may need to adjust these:
+    # register_production: total_active_power # Solar production in Watts
+    # register_consumption: load_power_hybrid # Load consumption in Watts (use load_power for SG* models)
+    # register_net_import: export_power_hybrid # Grid import/export in Watts (use meter_power for SG* models)
+    # register_battery_power: battery_power   # Battery charge/discharge in Watts (hybrid only)
+    # register_battery_soc: battery_level     # Battery state of charge in % (hybrid only)
+    # invert_net_import: True                 # Set False if using meter_power (positive=import)
