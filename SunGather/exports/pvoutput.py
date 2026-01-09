@@ -63,8 +63,7 @@ class export_pvoutput(object):
         self.collected_data = {}
         self.batch_data = []
         self.batch_count = 0
-        self.last_run = 0
-        self.last_publish = 0
+        self.last_uploaded_interval = 0
         
         for parameter in config.get('parameters'):
             if not inverter.validateRegister(parameter['register']):
@@ -151,8 +150,9 @@ class export_pvoutput(object):
 
     def publish(self, inverter):
         if self.collect_data(inverter):
-            # Process data points every status_interval
-            if((time.time() - self.last_publish) >= (self.status_interval * 60)):
+            # Process data points every status_interval (clock-aligned)
+            current_interval = int(time.time() // (self.status_interval * 60))
+            if current_interval > self.last_uploaded_interval:
                 any_data = False
                 if inverter.validateLatestScrape('timestamp'):
                     now = datetime.datetime.strptime(inverter.getRegisterValue('timestamp'), "%Y-%m-%d %H:%M:%S")
@@ -213,7 +213,7 @@ class export_pvoutput(object):
                             logging.error("PVOutput: Request; " + self.url_addbatchstatus + ", " + str(self.headers) + " : " + str(payload))
                         else:
                             self.batch_data = []
-                            self.last_publish = time.time()
+                            self.last_uploaded_interval = current_interval
                             logging.info("PVOutput: Data uploaded")
                     except Exception as err:
                         logging.error(f"PVOutput: Failed to Upload")
@@ -221,6 +221,5 @@ class export_pvoutput(object):
                 else:
                     logging.info("PVOutput: Data added to next batch upload")
             else:
-                logging.info(f"PVOutput: Data logged, next upload in {int(((self.status_interval) * 60) - (time.time() - self.last_publish))} secs")
-
-            self.last_run = time.time()
+                next_interval_time = (self.last_uploaded_interval + 1) * self.status_interval * 60
+                logging.info(f"PVOutput: Data logged, next upload in {int(next_interval_time - time.time())} secs")
