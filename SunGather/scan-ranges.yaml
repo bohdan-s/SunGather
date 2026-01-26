@@ -1,0 +1,49 @@
+version: 0.2.4
+vendor: Sungrow
+scan:
+  - read:
+    - start: 4949
+      range: 50
+    - start: 5000
+      range: 38
+    - start: 5039
+      range: 61
+    - start: 5100
+      range: 100
+    - start: 5200
+      range: 100
+    - start: 5600
+      range: 100
+    - start: 5720
+      range: 10
+    - start: 6099
+      range: 100
+    - start: 6199
+      range: 100
+    - start: 6299
+      range: 100
+    - start: 6399
+      range: 100
+    - start: 6499
+      range: 100
+    - start: 6599
+      range: 100
+    - start: 6699
+      range: 100
+    - start: 6799
+      range: 100
+    - start: 7012
+      range: 25
+    - start: 12999
+      range: 125
+  - hold:
+    - start: 4999
+      range: 10
+    - start: 5009
+      range: 10
+    - start: 5034
+      range: 10
+    - start: 13000
+      range: 100
+    - start: 33045
+      range: 5
