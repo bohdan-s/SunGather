@@ -14,6 +14,28 @@ import os
 import re
 
 
+def strip_inline_comment(value):
+    """
+    Strip inline YAML comments from a value.
+    
+    YAML allows inline comments starting with '#'. This function removes
+    them from string values while preserving the actual content.
+    
+    Args:
+        value: String value that may contain an inline comment
+    
+    Returns:
+        str: Value with inline comment removed
+    """
+    if not value:
+        return value
+    # Remove inline comment (text after #) but be careful with quoted strings
+    # If the value has a # character, split and take only the part before it
+    if '#' in value:
+        value = value.split('#')[0].strip()
+    return value
+
+
 def simple_yaml_parse(yaml_content):
     """
     Simple YAML parser for the specific structure of registers-sungrow.yaml.
@@ -103,20 +125,22 @@ def simple_yaml_parse(yaml_content):
                     data['registers'][-1][current_reg_type].append(current_register)
                 current_register = {}
                 current_datarange = None
-                name_val = stripped.split(':', 1)[1].strip().strip('"\'')
+                name_val = strip_inline_comment(stripped.split(':', 1)[1].strip()).strip('"\'')
                 current_register['name'] = name_val
             elif current_register is not None:
                 if stripped.startswith('level:'):
-                    current_register['level'] = int(stripped.split(':', 1)[1].strip())
+                    val_str = strip_inline_comment(stripped.split(':', 1)[1].strip())
+                    current_register['level'] = int(val_str)
                 elif stripped.startswith('address:'):
-                    current_register['address'] = int(stripped.split(':', 1)[1].strip())
+                    val_str = strip_inline_comment(stripped.split(':', 1)[1].strip())
+                    current_register['address'] = int(val_str)
                 elif stripped.startswith('datatype:'):
-                    current_register['datatype'] = stripped.split(':', 1)[1].strip().strip('"\'')
+                    current_register['datatype'] = strip_inline_comment(stripped.split(':', 1)[1].strip()).strip('"\'')
                 elif stripped.startswith('accuracy:'):
-                    val = stripped.split(':', 1)[1].strip()
+                    val = strip_inline_comment(stripped.split(':', 1)[1].strip())
                     current_register['accuracy'] = float(val) if val else None
                 elif stripped.startswith('unit:'):
-                    current_register['unit'] = stripped.split(':', 1)[1].strip().strip('"\'')
+                    current_register['unit'] = strip_inline_comment(stripped.split(':', 1)[1].strip()).strip('"\'')
                 elif stripped.startswith('models:'):
                     # Parse list format: ["model1","model2"]
                     models_str = stripped.split(':', 1)[1].strip()
@@ -139,15 +163,16 @@ def simple_yaml_parse(yaml_content):
                             resp_val = int(resp_val)
                         current_datarange.append({'response': resp_val})
                     elif stripped.startswith('value:'):
-                        val = stripped.split(':', 1)[1].strip().strip('"\'')
+                        val = strip_inline_comment(stripped.split(':', 1)[1].strip()).strip('"\'')
                         if current_datarange:
                             current_datarange[-1]['value'] = val
                 elif stripped.startswith('mask:'):
-                    current_register['mask'] = int(stripped.split(':', 1)[1].strip())
+                    val_str = strip_inline_comment(stripped.split(':', 1)[1].strip())
+                    current_register['mask'] = int(val_str)
                 elif stripped.startswith('default:'):
-                    current_register['default'] = stripped.split(':', 1)[1].strip().strip('"\'')
+                    current_register['default'] = strip_inline_comment(stripped.split(':', 1)[1].strip()).strip('"\'')
                 elif stripped.startswith('smart_meter:'):
-                    val = stripped.split(':', 1)[1].strip().lower()
+                    val = strip_inline_comment(stripped.split(':', 1)[1].strip()).lower()
                     current_register['smart_meter'] = (val == 'true')
     
     # Add last register if still in registers mode

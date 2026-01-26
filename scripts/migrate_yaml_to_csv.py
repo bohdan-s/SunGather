@@ -14,6 +14,29 @@ import sys
 import os
 
 
+def strip_inline_comment(value):
+    """
+    Strip inline YAML comments from a value.
+    
+    YAML allows inline comments starting with '#'. This function removes
+    them from string values while preserving the actual content.
+    
+    Args:
+        value: String value that may contain an inline comment
+    
+    Returns:
+        str: Value with inline comment removed, or original value if not a string
+    """
+    if not isinstance(value, str):
+        return value
+    if not value:
+        return value
+    # Remove inline comment (text after #)
+    if '#' in value:
+        value = value.split('#')[0].strip()
+    return value
+
+
 def migrate(yaml_path, csv_path, scan_yaml_path):
     """
     Migrate from YAML register file to CSV + scan-ranges YAML.
@@ -98,27 +121,30 @@ def convert_register_to_row(reg_type, reg):
     Returns:
         dict: CSV row dictionary
     """
+    # Strip inline comments from string fields
+    name = strip_inline_comment(reg.get("name", ""))
+    datatype = strip_inline_comment(reg.get("datatype", ""))
+    unit = strip_inline_comment(reg.get("unit", "")) if "unit" in reg else ""
+    default = strip_inline_comment(reg.get("default", "")) if "default" in reg else ""
+    
     row = {
         "type": reg_type,
-        "name": reg.get("name", ""),
+        "name": name,
         "level": reg.get("level", ""),
         "address": reg.get("address", ""),
-        "datatype": reg.get("datatype", ""),
+        "datatype": datatype,
         "accuracy": "",
-        "unit": "",
+        "unit": unit,
         "models": "",
         "datarange": "",
         "mask": "",
-        "default": "",
+        "default": default,
         "smart_meter": ""
     }
     
     # Optional fields
     if "accuracy" in reg:
         row["accuracy"] = reg["accuracy"]
-    
-    if "unit" in reg:
-        row["unit"] = reg["unit"]
     
     if "models" in reg:
         # Convert list to pipe-delimited string
@@ -131,9 +157,6 @@ def convert_register_to_row(reg_type, reg):
     
     if "mask" in reg:
         row["mask"] = reg["mask"]
-    
-    if "default" in reg:
-        row["default"] = reg["default"]
     
     if "smart_meter" in reg and reg["smart_meter"]:
         row["smart_meter"] = "true"

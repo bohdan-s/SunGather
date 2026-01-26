@@ -19,6 +19,30 @@ except ImportError:
     YAML_AVAILABLE = False
 
 
+def strip_inline_comment(value):
+    """
+    Strip inline YAML comments from a value.
+    
+    YAML allows inline comments starting with '#'. This function removes
+    them from string values while preserving the actual content. This is
+    useful for robustness when loading data that may have residual comments.
+    
+    Args:
+        value: String value that may contain an inline comment
+    
+    Returns:
+        str: Value with inline comment removed, or original value if not a string
+    """
+    if not isinstance(value, str):
+        return value
+    if not value:
+        return value
+    # Remove inline comment (text after #)
+    if '#' in value:
+        value = value.split('#')[0].strip()
+    return value
+
+
 def simple_yaml_parse_scan_ranges(yaml_content):
     """
     Simple YAML parser for scan-ranges.yaml file.
@@ -56,11 +80,13 @@ def simple_yaml_parse_scan_ranges(yaml_content):
             current_scan_block = []
             data['scan'].append({'hold': current_scan_block})
         elif stripped.startswith('- start:'):
-            start_val = int(stripped.split(':', 1)[1].strip())
+            val_str = strip_inline_comment(stripped.split(':', 1)[1].strip())
+            start_val = int(val_str)
             if current_scan_block is not None:
                 current_scan_block.append({'start': start_val})
         elif stripped.startswith('range:') and current_scan_block is not None:
-            range_val = int(stripped.split(':', 1)[1].strip())
+            val_str = strip_inline_comment(stripped.split(':', 1)[1].strip())
+            range_val = int(val_str)
             if current_scan_block:
                 current_scan_block[-1]['range'] = range_val
     
@@ -133,12 +159,12 @@ def parse_register_row(row):
     Returns:
         dict: Register definition
     """
-    # Required fields
+    # Required fields - strip any residual inline comments for robustness
     register = {
-        "name": row["name"],
-        "level": int(row["level"]),
-        "address": int(row["address"]),
-        "datatype": row["datatype"]
+        "name": strip_inline_comment(row["name"]),
+        "level": int(strip_inline_comment(row["level"])),
+        "address": int(strip_inline_comment(row["address"])),
+        "datatype": strip_inline_comment(row["datatype"])
     }
     
     # Optional fields - only add if present and not empty
@@ -146,7 +172,7 @@ def parse_register_row(row):
         register["accuracy"] = float(row["accuracy"])
     
     if row.get("unit") and row["unit"].strip():
-        register["unit"] = row["unit"]
+        register["unit"] = strip_inline_comment(row["unit"])
     
     if row.get("models") and row["models"].strip():
         # Models are pipe-delimited in CSV
@@ -163,7 +189,7 @@ def parse_register_row(row):
         register["mask"] = int(row["mask"])
     
     if row.get("default") and row["default"].strip():
-        register["default"] = row["default"]
+        register["default"] = strip_inline_comment(row["default"])
     
     if row.get("smart_meter") and row["smart_meter"].strip():
         # Only set if explicitly true
