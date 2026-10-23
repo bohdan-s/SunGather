@@ -61,13 +61,28 @@ class export_influxdb(object):
             if not inverter.validateLatestScrape(register):
                 logging.error(f"InfluxDB: Skipped collecting data, {register} missing from last scrape")
                 return False
-            value = inverter.getRegisterValue(register) if type(inverter.getRegisterValue(register)) is str else float(inverter.getRegisterValue(register))
+            value = inverter.getRegisterValue(register)
+            # Registers can be None (e.g. work_state_1 when the inverter reports an unknown state), skip them instead of failing the whole publish
+            if value is None:
+                logging.warning(f"InfluxDB: Skipped {register}, no value in last scrape")
+                continue
+            if type(value) is not str:
+                try:
+                    value = float(value)
+                except (TypeError, ValueError):
+                    logging.warning(f"InfluxDB: Skipped {register}, value is not numeric: {value}")
+                    continue
             sequence.append(influxdb_client.Point(measurement['point']).tag("inverter", inverter.getInverterModel(True)).field(register, value))
+
+        if not sequence:
+            logging.warning("InfluxDB: No data to publish")
+            return False
 
         try:
             self.write_api.write(self.influxdb_config['bucket'], self.client.org, sequence)
         except Exception as err:
-            logging.error("InfluxDB: " + str(err))
+            logging.error(f"InfluxDB: Failed to write to {self.influxdb_config['url']}: {err}")
+            return False
 
         logging.info("InfluxDB: Published")
 
