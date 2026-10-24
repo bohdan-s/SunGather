@@ -2,6 +2,7 @@
 
 from SungrowClient import SungrowClient
 from version import __version__
+from register_loader import load_registers, get_scan_ranges_path
 
 import importlib
 import logging
@@ -11,10 +12,11 @@ import getopt
 import yaml
 import time
 import signal
+import os
 
 def main():
     configfilename = 'config.yaml'
-    registersfilename = 'registers-sungrow.yaml'
+    registersfilename = 'registers-sungrow.csv'
     logfolder = ''
 
     try:
@@ -31,7 +33,7 @@ def main():
             print(f'\nCommandling arguments override any config file settings')
             print(f'Options and arguments:')
             print(f'-c config.yaml             : Specify config file.')
-            print(f'-r registers-file.yaml     : Specify registers file.')
+            print(f'-r registers-file.csv      : Specify registers file (CSV or YAML).')
             print(f'-l /logs/                  : Specify folder to store logs.')
             print(f'-v 30                      : Logging Level, 10 = Debug, 20 = Info, 30 = Warning (default), 40 = Error')
             print(f'--runonce                  : Run once then exit')
@@ -73,9 +75,21 @@ def main():
         sys.exit(f"Failed Loading config, missing Inverter settings")   
 
     try:
-        registersfile = yaml.safe_load(open(registersfilename, encoding="utf-8"))
-        logging.info(f"Loaded registers: {registersfilename}")
-        logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
+        # Detect file format and load accordingly
+        if registersfilename.endswith('.csv'):
+            # CSV format - new format
+            scan_yaml_path = get_scan_ranges_path(registersfilename)
+            registersfile = load_registers(registersfilename, scan_yaml_path)
+            logging.info(f"Loaded registers from CSV: {registersfilename}")
+            logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
+        elif registersfilename.endswith('.yaml') or registersfilename.endswith('.yml'):
+            # YAML format - legacy format (backward compatibility)
+            logging.warning("YAML register files are deprecated. Please migrate to CSV format using scripts/migrate_yaml_to_csv.py")
+            registersfile = yaml.safe_load(open(registersfilename, encoding="utf-8"))
+            logging.info(f"Loaded registers from YAML: {registersfilename}")
+            logging.info(f"Registers file version: {registersfile.get('version','UNKNOWN')}")
+        else:
+            raise ValueError(f"Unsupported file format: {registersfilename}. Expected .csv, .yaml, or .yml")
     except Exception as err:
         logging.error(f"Failed: Loading registers: {registersfilename}  {err}")
         sys.exit(f"Failed: Loading registers: {registersfilename} {err}")
