@@ -76,7 +76,8 @@ pip3 install --upgrade -r requirements.txt
 ```
 Copy config-example.py to config.py, change values as required (see comments in file)
 ```sh
-copy config-example.py config.py
+Windows: copy config-example.yaml config.yaml
+Linux: cp config-example.yaml config.yaml
 ```
 Run SunGather:
 ```sh
