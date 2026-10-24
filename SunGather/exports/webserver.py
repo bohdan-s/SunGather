@@ -5,7 +5,6 @@ from urllib.parse import parse_qs, urlparse
 
 import json
 import logging
-import urllib
 
 class export_webserver(object):
     html_body = "Pending Data Retrieval"
@@ -108,10 +107,14 @@ class MyServer(BaseHTTPRequestHandler):
             self.wfile.write(bytes("</body></html>", "utf-8"))
 
     def do_POST(self):
-        length = int(self.headers['Content-Length'])
-        post_data = urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8'))
-        logging.info(f"{post_data}")
-        self.wfile.write(post_data.encode("utf-8"))
+        # Webserver is read only, reject POST requests (e.g. an export misconfigured to point at this port)
+        self.rfile.read(int(self.headers.get('Content-Length', 0)))    # Drain the request body before replying
+        logging.warning(f"Webserver: Rejected POST request to {self.path} from {self.client_address[0]}, only GET is supported")
+        self.send_response(405)
+        self.send_header("Allow", "GET")
+        self.send_header("Content-type", "text/plain")
+        self.end_headers()
+        self.wfile.write(bytes("405 Method Not Allowed: SunGather webserver only supports GET\n", "utf-8"))
 
     def log_message(self, format, *args):
         pass
